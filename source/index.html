@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tiled WMS</title>
+    <!-- <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css"> -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
+    <style>
+      /* 지도 컨테이너의 크기 지정 */
+      #map {
+        width: 100%;
+        height: 70%;
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <script>
+      const layers = [
+        new ol.layer.Tile({
+          source: new ol.source.XYZ({
+            url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+          })
+        })
+      ];
+      const map = new ol.Map({
+        layers: layers,
+        target: 'map',
+        view: new ol.View({
+          center: ol.proj.fromLonLat([126.9517, 37.5443]),
+          zoom: 17
+        })
+      }); 
+    </script>
+  </body>
+</html>
