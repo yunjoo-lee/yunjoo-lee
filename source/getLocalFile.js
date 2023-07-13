@@ -1,4 +1,4 @@
-const getFile = () => {
+const getGeojsonFile = () => {
   const input = document.createElement("input");
   input.type = "file";
   input.onchange = (event) => {
@@ -38,7 +38,7 @@ const addVectorLayer = (fileData) => {
         width: 2,
       }),
       fill: new ol.style.Fill({
-        color: "#FAE889",
+        color: "rgba(250, 232, 137, 0.6)",
       }),
     }),
   });
