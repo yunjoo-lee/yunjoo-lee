@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Openlayers Editor</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/ol.css" />
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <!-- <-- OpenLayers 라이브러리 가져오기 -->
+    <script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
+    <!-- ol-ext -->
+    <script type="text/javascript" src="./dist/ol-ext.js"></script>
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <!-- svg to geojson -->
+    <script src="dist/svg-to-geojson.min.js"></script>
+  <style>
+    /* 지도 컨테이너의 크기 지정 */
+    #map {
+      width: 100%;
+      height: 500px;
+    }
+
+    #downlink {
+        text-decoration: none;
+        border: 1px solid navy;
+        background-color: navy;
+        color: white;
+        padding: 10px;
+    }
+
+    .frame {
+        border: 1px solid black; /* 프레임 테두리 스타일 설정 */
+        margin: 10px; /* 프레임 외부 여백 설정 */
+        width: 200px; /* 프레임 너비 설정 */
+        height: 65px; /* 프레임 너비 설정 */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .container {
+        display: grid;
+        grid-template-columns: 550px 2fr 1fr;
+        grid-gap: 10px;
+        line-height: 1.5
+    }
+
+    .showinformation {
+      display: flex;
+      /* justify-content: center; */
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>  <!-- onload="loadVectorLayer()" -->
+  <div id="map"></div>
+  <div class="container">
+    <div class = "showinformation">
+    <div><button onclick="getGeojsonFile()">Open GeojsonFile</button></div>
+      <div class="frame" style="background:white; padding:0 0.45em;">
+        <div id="scaleinfo">scale: </div>
+        <div id="rotateinfo">rotate: </div>
+      </div>
+        <ul>
+        <!-- <li>
+          <input id="scale" type="checkbox" onchange="setPropertie(this.id);" checked="checked" /><label for="scale"> enable scale</label>
+        </li><li>
+          <input id="stretch" type="checkbox" onchange="setPropertie(this.id);" checked="checked" /><label for="stretch"> enable stretch</label>
+        </li><li> 
+          <input id="rotate" type="checkbox" onchange="setPropertie(this.id);" checked="checked" /><label for="rotate"> enable rotate</label>
+        </li>-->
+        <li><b>Shift</b> 버튼을 누른 채로 드래그하면 영역을 전체 선택할 수 있습니다.</li>
+        <li>Use <i>Shift</i> key to preserve proportions when scaling.</li>
+        <li>Use <i>Ctrl</i> key to modify the center when scaling.</li>
+      </ul>
+    </div>
+    <div>
+      <div><button onclick="openSVGFile()">Open SVG file</button></div>
+      <h5>중심좌표 설정</h5>
+      <li>위도: <input type='text' id='latitude' value ="37.3925837" ></li>
+      <li>경도: <input type='text' id='longitude' value="127.1119894"></li>
+      <hr>
+      <a id="downlink" target="_blank" onclick="convertGeojson()">지도에 svg 올리기</a> <br><br>
+      <h3>Show SVG</h3><br>
+      <div id="outsvg"> 이곳에 svg가 출력됩니다.</div>
+    </div>
+  </div>
+
+    <!-- <script src="./addTileLayer.js"></script> -->
+    <!-- <script src="./addFileFromLocal.js"></script> -->
+    <script src="./getLocalFile.js"></script>
+    <script src="./loadFromSvg.js"></script>
+    
+    <script>
+//////////////////////////////////////////////////////////////////////////////////
+// // // 수정 중인 코드 입니다.
+      // // svg 파일 불러오기
+      function openSVGFile() {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "svg";
+        input.onchange = function (event) {
+            transFile(event.target.files[0]);
+        };
+        input.click();
+      }
+
+      function transFile(file) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            outsvg.innerHTML = reader.result;
+        };
+        reader.readAsText(file, "euc-kr");
+      }
+
+      function convertGeojson() {
+        const svg = document.querySelector('svg');
+        var box = svg.getAttribute('viewBox');
+        var box = svg.viewBox.baseVal;
+        svg.setAttribute('id', 'mysvg');
+        // svg.setAttribute('width', String(box.width)+"px");  // 가로 설정
+        // svg.setAttribute('height', String(box.height)+"px");  // 세로 설정
+
+        svg.style.width = '100%';
+        svg.style.height = '100%';
+
+        const latitude = parseFloat(document.getElementById("latitude").value); // 위도
+        const longitude = parseFloat(document.getElementById("longitude").value); // 경도
+        const bound = [[latitude+box.height*0.000001,longitude+box.width*0.000001],
+                        [latitude,longitude]]
+        console.log(bound);                  
+        const geoJson = svgtogeojson.svgToGeoJson(bound, document.getElementById('mysvg'), 10);
+
+        loadFromSvg(geoJson);
+        console.log('일단 실행은 했습니다.');
+      }
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+    // 배경 타일맵 설정
+    const layers = [
+      new ol.layer.Tile({
+        source: new ol.source.OSM(),
+      }),
+    ];
+
+    // map 좌표 및 줌레벨 설정
+    var map = new ol.Map({
+      target: 'map',
+        view: new ol.View({
+          center: ol.proj.fromLonLat([127.1119894,  37.3925837]),
+          zoom: 17,
+        }),
+        layers: layers
+      });
+
+    // GeoJSON 파일 로드 및 표시
+    const vectorSource = new ol.source.Vector({
+      url: "./sample.geojson",
+      format: new ol.format.GeoJSON(),
+      loader: function (extent, resolution, projection) {
+        const url = this.getUrl();
+        if (url) {
+          fetch(url)
+            .then(function (response) {
+              return response.json();
+            })
+            .then(function (json) {
+              const format = vectorSource.getFormat();
+              const features = format.readFeatures(json, {
+                dataProjection: "EPSG:4326", // GeoJSON 데이터의 좌표 체계
+                featureProjection: "EPSG:3857", // 맵에 표시할 좌표 체계
+              });
+              vectorSource.addFeatures(features);
+            });
+        }
+      },
+    });
+
+    // // geojson 레이어 로드
+    var vectorLayer = new ol.layer.Vector({
+      source: vectorSource,
+      style: new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: "rgba(255, 255, 255, 0.7)",
+          width: 2,
+        }),
+        fill: new ol.style.Fill({
+          color: "rgba(113, 138, 227, 0.5)"
+        }),
+      }),
+    });
+
+    map.addLayer(vectorLayer);
+
+    // Set cursor style
+    ol.interaction.Transform.prototype.Cursors['rotate'] = 'url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAAXNSR0IArs4c6QAAAeBJREFUSEvdlbFLW1EUh7/zQlJMGhd1sRpIyaBT/wgXh0IpaN26u1sK3Tp0aTs6dHcSHUQoTi7iJIU62SFLIFIXo0SCkaZ5t5zkpd4mN7nXRYoX3vDePe9+5/7O+d0r3MOQe2Dw30Ei4DEwAdSAX4kKN5YaGhP3qxOykyVgyyPrOlAExoH3wL4d74OcAPP6gzHGyRHpLjGef0T96gYR2QVehEDWgE9RFNFut729oaBeEiLyFXjug9wJMKC/yA7w0gfp6OKSp1AQqlWYnYHqaXeZ/rhQuZyQnvZ2hq5EQuUy/T9rbYwx34AF4ApYNMbsuYolIl+AVa9cNiTZge5OPWCPReApcJk8M8A1sG15qBM/0MIiYuL41k8jIN6u6wV4IYVZ0SK/CjDkUKgX8mQ64ueZ2QBeO1ZZBjYtRZzJuBw/UPhEsrfARwv0DDjW91Qq1TFtYsrBxB3ZmVKpRLlc/mdqcjJNrfa79+0d8GF+bkxOfmitu0NhcRxPAee+7qrrUTTsrBpV7UwmQ6vVSgN/s3F2F6AyfFed7wIqFieoVC5crT700lLQod4foaCkbsGFtxVR2FEul8s0Gg2nUtlslmazqXNvgM/OUyDQUQo7APJ9BlZ5Vnwe8l1agTmMDns4kD/NNpkafvid6QAAAABJRU5ErkJggg==\') 5 5, auto';
+    ol.interaction.Transform.prototype.Cursors['rotate0'] = 'url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAAXNSR0IArs4c6QAAAu9JREFUSEvdld1L01Ecxj/nNzd1uZWWDEulGbIsV0YQQRdBEXVVROALXURmV0VQVgRddhGWhZBELxeVFEVvf0CUhFIURJQvvVGouQzb1GnUtLlz4uRmS2f7BSHRuTv8nvN9zvN8n+/5CaZhiWng4J8j0ReyAXbgKxCJujAa54bGqInumFGyBFgPLEtLS9uSmZlpkVJKv9/fJ6W8CbwC+oFcwAE0AG/jiZKRlAPnvN5ix4OmNmREMDxsxW6XIEYJBmH1Grfq6OgQTkcqTfdHKFlONXDSLInTMIxg6zMlFhVNcuAXR4QVVBh8HyBvPgeB42ZIlhmG8ejMaZtt545h0wEMhcDuZC9QZ4bkTXuLKIxXcK9RsL1KMdMJg4MgpQVfV6z3YyUDAcjOMWdXiddb3NjytC0zdpv2F7kUL/Xp7RdglW7w1Ssrm8tLH/8Spm4f5LvN2bVnaIA6R8bYDGkF6zZwRynVChwGRgBPbQ2thYVY7XZITYWBIKMjw6jSCiqBy8nsqh7wUztr1hgsvwC6u0mLFo8/6wGyo+r03Gjl34DncTP0Az8pwoZhHOp8J4/m6dQD3hJkWzsW091PAExEsr+vVx4fV+JGdfsw/jbJvmCfPOHIGCs7L1/Q81GVAjemINIq1wIhoDkRJtHEH3jfwbGYXZ8/L8aZ1a6zmg/0JCgStlgsKZFIRAkh3iul5pt5u+Z5PJ6WV22vs2LgI0fLqK+//frTp3AFEAYGgfqihekbc3JGuXU9jLbXkmr0Synzog/oONdUb1dZVaVx7fxZOQ70+53cbRxCT3V6OhiGYPOm2dhsgXGMzW4NhcNhbfTPg4nSFSd1xe5dMx6fqtPzl3y5C7Po7OxfBLw0Y1cMo1VWP2wWNQVuq+Fy6RGYvILBFPZWq9DFhogm6DTb+Im4bS6Xa+7Wit5KIcQCq1UIKQ2UUhIiTy5cmnM9EAjo/0rXVHqT/U/iz+moWoH0aFx14vReT/tv15+QJKs15ff/h+Q7KS/zGtdE+2gAAAAASUVORK5CYII=\') 5 5, auto';
+
+    
+    /** Style the transform handles for the current interaction
+    */
+    function setHandleStyle(){
+      if (!interaction instanceof ol.interaction.Transform) return;
+      if ($("#style").prop('checked')) {
+        // Style the rotate handle
+        const circle = new ol.style.RegularShape({
+          fill: new ol.style.Fill({color:[255,255,255,0.01]}),
+          stroke: new ol.style.Stroke({width:1, color:[0,0,0,0.01]}),
+          radius: 8,
+          points: 10
+        });
+        interaction.setStyle ('rotate',
+          new ol.style.Style({
+            text: new ol.style.Text ({
+              text:'\uf0e2', 
+              // font:"16px Fontawesome",
+              textAlign: "left",
+              fill:new ol.style.Fill({color:'red'})
+            }),
+            image: circle
+          }));
+        // Center of rotation
+        interaction.setStyle ('rotate0',
+          new ol.style.Style({
+            text: new ol.style.Text ({
+              text:'\uf0e2', 
+              // font:"20px Fontawesome",
+              fill: new ol.style.Fill({ color:[255,255,255,0.8] }),
+              stroke: new ol.style.Stroke({ width:2, color:'red' })
+            }),
+          }));
+        // Style the move handle
+        interaction.setStyle('translate',
+          new ol.style.Style({
+            text: new ol.style.Text ({
+              text:'\uf047', 
+              font:"20px Fontawesome", 
+              fill: new ol.style.Fill({ color:[255,255,255,0.8] }),
+              stroke: new ol.style.Stroke({ width:2, color:'red' })
+            })
+          }));
+      } else {
+        interaction.setDefaultStyle ();
+      }
+      // Refresh
+      interaction.set('translate', interaction.get('translate'));
+    };
+
+    /** Set properties
+    */
+    function setPropertie (p) {
+      interaction.set(p, $("#"+p).prop('checked'));
+      if (!$("#scale").prop("checked")) $("#stretch").prop('disabled', true);
+      else $("#stretch").prop('disabled', false);
+    }
+
+    function setAspectRatio (p) {
+      if ($("#"+p).prop('checked')) interaction.set("keepAspectRatio", ol.events.condition.always);
+      else interaction.set("keepAspectRatio", (e) => { return e.originalEvent.shiftKey });
+    }
+
+    var interaction = new ol.interaction.Transform ({
+      enableRotatedTransform: false,
+      addCondition: ol.events.condition.shiftKeyOnly,
+      hitTolerance: 2,
+      translateFeature: $("#translateFeature").prop('checked'),
+      scale: $("#scale").prop('checked'),
+      rotate: $("#rotate").prop('checked'),
+      keepAspectRatio: $("#keepAspectRatio").prop('checked') ? ol.events.condition.always : undefined,
+      keepRectangle: false,
+      translate: $("#translate").prop('checked'),
+      stretch: $("#stretch").prop('checked'),
+      // Get scale on points
+      pointRadius: (f) => {
+        const radius = f.get('radius') || 10;
+        return [radius, radius];
+      }
+    });
+
+    map.addInteraction(interaction);
+
+    // DragBox 인터랙션 생성
+    var dragBox = new ol.interaction.DragBox({
+      condition: ol.events.condition.shiftKeyOnly // 마우스 드래그 조건을 Shift 키로 변경
+    });
+    // 박스 안에 있는 피처를 선택하는 함수
+    function selectFeaturesInBox() {
+      const extent = dragBox.getGeometry().getExtent(); // 드래그 박스의 영역 가져오기
+      vectorLayer.getSource().forEachFeatureIntersectingExtent(extent, function(feature) {
+        interaction.select(feature, true);
+      });
+    }
+
+    // DragBox 인터랙션의 boxend 이벤트에서 박스 안에 있는 피처 선택 함수 호출
+    dragBox.on('boxend', selectFeaturesInBox);
+
+    // DragBox 인터랙션 활성화
+    map.addInteraction(dragBox);
+
+    // Style handles
+    setHandleStyle();
+    // Events handlers
+    var startangle = 0;
+    var startRadius = 10;
+    var d=[0,0];
+
+    // Handle rotate on first point
+    var firstPoint = false;
+    interaction.on (['select'], (e) => {
+      if (firstPoint && e.features && e.features.getLength()) {
+        interaction.setCenter(e.features.getArray()[0].getGeometry().getFirstCoordinate());
+      }
+    });
+
+    interaction.on (['rotatestart','translatestart','scalestart'], (e) => {
+      // Rotation
+      startangle = e.feature.get('angle')||0;
+      // radius
+      startRadius = e.feature.get('radius')||10;
+      // // Translation: 이동 거리를 구해야할 때 이 옵션 주석 처리 해제
+      // d=[0,0];
+    });
+    interaction.on('rotating', (e) => {
+      $('#rotateinfo').text("rotate: "+((e.angle*180/Math.PI -180)%360+180).toFixed(2)); 
+      // Set angle attribute to be used on style !
+      e.feature.set('angle', startangle - e.angle);
+    });
+    // interaction.on('translating', function (e){
+    //   d[0]+=e.delta[0];
+    //   d[1]+=e.delta[1];
+    //   $('#info').text("translate: "+d[0].toFixed(2)+","+d[1].toFixed(2)); 
+    //   if (firstPoint) {
+    //     interaction.setCenter(e.features.getArray()[0].getGeometry().getFirstCoordinate());
+    //   }
+    // });
+    interaction.on('scaling', (e) => {
+      $('#scaleinfo').text("scale: "+e.scale[0].toFixed(2)+","+e.scale[1].toFixed(2)); 
+      if (firstPoint) {
+        interaction.setCenter(e.features.getArray()[0].getGeometry().getFirstCoordinate());
+      }
+      if (e.features.getLength() === 1) {
+        const feature = e.features.item(0);
+        feature.set('radius', startRadius * Math.abs(e.scale[0]));
+      }
+    });
+    </script>
+</body>
+</html>
