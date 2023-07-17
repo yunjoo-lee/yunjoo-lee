@@ -34,5 +34,3 @@ export { getMapInformation };
 
 // const myArray = getMapInformation();
 // console.log(myArray);
-
-export { getMapInformation };
