@@ -8,22 +8,27 @@ const eocndgkatn = async () => {
     Authorization: `Bearer ${token}`,
   };
 
+  const url = "https://api.dabeeomaps.com/v2/maps?";
+
   const reponsedata = axios
     .get(url, { headers: headers })
     .then((response) => {
-      const tempRes = response.data;
+      const mapList = response.data.payload;
 
-      if (typeof tempRes === "string") {
-        return "쿠키가 만료되었습니다.";
-      } else {
-        // return tempRes.awsUseCostTag;
-        console.log(tempRes);
-      }
+      //   if (typeof mapList === "string") {
+      //     return "쿠키가 만료되었습니다.";
+      //   } else {
+      //     // console.log(mapList);
+      //   }
+      return mapList;
     })
     .catch((error) => {
       console.error("Error:", error);
     });
-  return [reponsedata, params.INVOICE_MM];
+  return reponsedata;
 };
 
 export { eocndgkatn };
+
+const myArray = await eocndgkatn();
+console.log(myArray.length);
