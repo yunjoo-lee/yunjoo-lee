@@ -63,7 +63,7 @@ export { getInfoByVersion };
 
 // (async () => {
 //   try {
-//     await fs.writeFile(`getMapdeployed.js`, code, "utf-8");
+//     await fs.writeFile(`fileMapDeployed.js`, code, "utf-8");
 //     console.log("File created successfully.");
 //   } catch (error) {
 //     console.error("Error creating file:", error);
