@@ -27,10 +27,14 @@ const getInfoByVersion = async () => {
         joinedDate
       );
 
-      // 최신 버전 정보 받아와서 시작 값으로 지정
-      version = Number(responseLastest.version) * 10;
-      // 최신버전 값을 array에 push
-      responseLastest && versionDeployed.push(responseLastest);
+      if (responseLastest !== undefined) {
+        // 최신 버전 정보 받아와서 시작 값으로 지정
+        version = Number(responseLastest.version) * 10;
+        // 최신버전 값을 array에 push
+        versionDeployed.push(responseLastest);
+      } else {
+        console.log(mapId);
+      }
     }
 
     for (let v = version - 1; v >= 10; v--) {
