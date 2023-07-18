@@ -7,7 +7,7 @@ import axios from "axios";
  */
 const connectApi = async (url) => {
   const token =
-    "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJ5dW5qb28iLCJvd25lcl9pZCI6IkNMSS1kYWJlZW8iLCJzY29wZSI6WyJ0cnVzdCIsInJlYWQiLCJ3cml0ZSJdLCJleHAiOjE2ODk1OTAwMjUsImF1dGhvcml0aWVzIjpbIlJPTEVfTUFOQUdFUiJdLCJqdGkiOiI3NTQxZTE3OS1kY2JjLTRkNzgtYWMxNC0yN2EzOTA2MzdjNzIiLCJjbGllbnRfaWQiOiJyZWZlcmVuY2VfYXBwbGljYXRpb24ifQ.ad3-TzM6A04nYB7mGNS7N2x2z3rjPZAi9xmuRTCazAnopWymYvROTE2RNWgMGJrVtE04brfL0Ssxm7mUBEACqRpC7lXFcKMgw9CGNJ9jXsxli9hyuoLyHlOOb3Qw4QNCjrT3hruRLGbFtSPt58w6-1_uA4qWCZO2jJ-oVV3scdgInH0vZ3HDdrSFosT76cWtbcskPFwE8MNLQsLSavhYEVPHquitaah9vExHhwJu7smo-niPYV58yPbAGifpIt03AmYzs6WaeYL_z0UWF7smM5IQoZUzrGCbo_ntNHDljjg18yCe56MDSyqZqeTUZeh53L2Q6fAi1EAax2dgt-IvNA";
+    "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJ5dW5qb28iLCJvd25lcl9pZCI6IkNMSS1kYWJlZW8iLCJzY29wZSI6WyJ0cnVzdCIsInJlYWQiLCJ3cml0ZSJdLCJleHAiOjE2ODk2NzM5NzgsImF1dGhvcml0aWVzIjpbIlJPTEVfTUFOQUdFUiJdLCJqdGkiOiIzZmU3MDk3Ny02MzFhLTQwNDItYWRjZS03MDliODBmMWJhZmEiLCJjbGllbnRfaWQiOiJyZWZlcmVuY2VfYXBwbGljYXRpb24ifQ.QfejBrxlYs5HoChwxJSezWeqo9kLSAo9OruPO3NyvYJsSPdCFMF9X6sCNt9I0atIv-XEc81X1BMInFH-gOd-h0XKJ0ksc9w7P0Vx5SF-Feo019TGzzdIMaOO8A672CLA6CV-Z3fo6TqVdP4GB0NlfbhNDBsBR6TF8WiDqLp56eARC2JGeDYFSxv_HkZZY6gkppi5bgZYf-jLUs1-88NZcnDd9wsJC0URbuu-lahbZlPsa2K3Ca5Pn0ftGoxVJAyGRuf1nKUbnbaPLyYal2J0kWn3vJWhVrX65hwKjgHBB5BHJdY2H3lMLDaoh6YBY3Ii8O_5ewgzBFj8CI4rPo79xw";
 
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -33,6 +33,6 @@ const connectApi = async (url) => {
 
 export { connectApi };
 
-// const myurl = "https://api.dabeeomaps.com/v2/maps?";
+// const myurl = "https://private-api.dabeeomaps.com/v2/maps?";
 // const myArray = await connectApi(myurl);
 // console.log(myArray); // 지도의 갯수 출력 가능;

@@ -1,13 +1,13 @@
 import { connectApi } from "./connectApi.js";
 
 const getAllMapList = async () => {
-  const url = "https://api.dabeeomaps.com/v2/maps?";
-  const djWjrn = await connectApi(url);
+  const url = "https://private-api.dabeeomaps.com/v2/maps?";
+  const allMapRes = await connectApi(url);
 
-  return djWjrn;
+  return allMapRes;
 };
 
 export { getAllMapList };
 
-const myArray = await getAllMapList();
-console.log(myArray.length); // 지도의 갯수 출력 가능;
+// const myArray = await getAllMapList();
+// console.log(myArray);
