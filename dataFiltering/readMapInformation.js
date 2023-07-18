@@ -11,7 +11,7 @@ const csv_string = fs.readFileSync(
 );
 
 // // csv 불러와서 json array로 반환하는 함수
-const getMapInformation = () => {
+const readMapInformation = () => {
   console.log("read CSV");
   const rows = csv_string.split("\n");
   const readCsvFile = [];
@@ -30,7 +30,7 @@ const getMapInformation = () => {
   return readCsvFile;
 };
 
-export { getMapInformation };
+export { readMapInformation };
 
-// const myArray = getMapInformation();
+// const myArray = readMapInformation();
 // console.log(myArray);
