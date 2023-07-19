@@ -1,8 +1,9 @@
-// var vectorLayer;
+var vectorLayer;
 
-const getGeojsonFile = () => {
+const loadGeojsonFile = () => {
   const input = document.createElement("input");
   input.type = "file";
+  input.accept = "geojson";
   input.onchange = (event) => {
     processFile(event.target.files[0]);
   };

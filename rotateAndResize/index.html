@@ -77,9 +77,9 @@
     </div>
     <div>
       <div>
-        <button onclick="getGeojsonFile()">Open GeojsonFile</button>
+        <button onclick="loadGeojsonFile()">Open GeojsonFile</button>
         <button onclick="openSVGFile()">Open SVG file</button></div>
-      <h5>중심좌표 설정</h5>
+      <h5>지도 중심 좌표</h5>
       <li>위도: <input type='text' id='latitude' value ="37.3925837" ></li>
       <li>경도: <input type='text' id='longitude' value="127.1119894"></li>
       <!-- <hr> --> <br>
@@ -91,13 +91,14 @@
     </div>
   </div>
 
-    <script src="./addTileLayer.js"></script>
-    <script src="./getLocalFile.js"></script>
-    <script src="./loadSvgFile.js"></script>
-    <script src="./svgToMapLayer.js"></script>
-    <script src="./setStyleOfMap.js"></script>
-    <script src="./setInteractionMode.js"></script>
-    <script src="./showChangedValues.js"></script>
+  <script src="./addTileLayer.js"></script>
+  <script src="./loadGeojsonFile.js"></script>
+  <script src="./loadSvgFile.js"></script>
+  <script src="./svgToMapLayer.js"></script>
+  <script src="./setStyleOfMap.js"></script>
+  <script src="./setInteractionMode.js"></script>
+  <script src="./showChangedValues.js"></script>
+  <script src="./moveHandler.js"></script>
     
 </body>
 </html>

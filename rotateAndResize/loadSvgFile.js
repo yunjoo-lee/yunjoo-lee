@@ -5,7 +5,7 @@ const openSVGFile = () => {
   const input = document.createElement("input");
   input.type = "file";
   input.accept = "svg";
-  input.onchange = function (event) {
+  input.onchange = (event) => {
     transFile(event.target.files[0]);
   };
   input.click();
@@ -13,7 +13,7 @@ const openSVGFile = () => {
 
 const transFile = (file) => {
   const reader = new FileReader();
-  reader.onload = function () {
+  reader.onload = () => {
     outsvg.innerHTML = reader.result;
   };
   reader.readAsText(file, "euc-kr");

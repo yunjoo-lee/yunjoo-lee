@@ -15,8 +15,7 @@ const setAspectRatio = (p) => {
     });
 };
 
-// const setInteraction = () => {
-var interaction = new ol.interaction.Transform({
+const interaction = new ol.interaction.Transform({
   enableRotatedTransform: false,
   addCondition: ol.events.condition.shiftKeyOnly,
   hitTolerance: 2,
@@ -39,7 +38,7 @@ var interaction = new ol.interaction.Transform({
 map.addInteraction(interaction);
 
 // DragBox 인터랙션 생성
-var dragBox = new ol.interaction.DragBox({
+const dragBox = new ol.interaction.DragBox({
   condition: ol.events.condition.platformModifierKeyOnly, // 마우스 드래그 조건을 Shift 키로 변경
 });
 
@@ -48,7 +47,7 @@ const selectFeaturesInBox = () => {
   const extent = dragBox.getGeometry().getExtent(); // 드래그 박스의 영역 가져오기
   vectorLayer
     .getSource()
-    .forEachFeatureIntersectingExtent(extent, function (feature) {
+    .forEachFeatureIntersectingExtent(extent, (feature) => {
       interaction.select(feature, true);
     });
 };
@@ -58,4 +57,3 @@ dragBox.on("boxend", selectFeaturesInBox);
 
 // DragBox 인터랙션 활성화
 map.addInteraction(dragBox);
-// };

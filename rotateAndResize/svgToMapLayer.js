@@ -2,17 +2,20 @@ var vectorLayer;
 
 const convertGeojson = () => {
   const svg = document.querySelector("svg");
-  var box = svg.getAttribute("viewBox");
+  let box = svg.getAttribute("viewBox");
   box = svg.viewBox.baseVal;
   svg.setAttribute("id", "mysvg");
   svg.setAttribute("width", String(box.width) + "px"); // 가로 설정
   svg.setAttribute("height", String(box.height) + "px"); // 세로 설정
 
+  const latitude = parseFloat(document.getElementById("latitude").value); // 위도
+  const longitude = parseFloat(document.getElementById("longitude").value); // 경도
+
   const bound = [
     [latitude + box.height * 0.000001, longitude + box.width * 0.000001],
     [latitude, longitude],
   ];
-  // console.log(bound);
+
   const geoJson = svgtogeojson.svgToGeoJson(
     bound,
     document.getElementById("mysvg"),
@@ -26,11 +29,9 @@ const convertGeojson = () => {
 };
 
 const svgToMapLayer = (fileData) => {
-  //   console.log(fileData); // 일단 여기까지는 geojson으로 제대로 변환됨
   const geojsonFormat = new ol.format.GeoJSON();
   const features = geojsonFormat.readFeatures(fileData);
 
-  // // 여기서 뭔가 이상해 지는듯
   // GeoJSON 데이터의 좌표 체계를 3857로 변환
   features.forEach((feature) => {
     const geometry = feature.getGeometry();
