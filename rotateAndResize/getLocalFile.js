@@ -1,3 +1,5 @@
+// var vectorLayer;
+
 const getGeojsonFile = () => {
   const input = document.createElement("input");
   input.type = "file";
@@ -30,7 +32,7 @@ const addVectorLayer = (fileData) => {
     features: features,
   });
 
-  const vectorLayer = new ol.layer.Vector({
+  vectorLayer = new ol.layer.Vector({
     source: vectorSource,
     style: new ol.style.Style({
       stroke: new ol.style.Stroke({
@@ -38,7 +40,7 @@ const addVectorLayer = (fileData) => {
         width: 2,
       }),
       fill: new ol.style.Fill({
-        color: "rgba(250, 232, 137, 0.6)",
+        color: "rgba(0, 130, 15, 0.6)",
       }),
     }),
   });

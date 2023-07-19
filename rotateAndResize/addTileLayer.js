@@ -1,8 +1,12 @@
-const longitude = 127.1119894;
-const latitude = 37.3925837;
-
+// const longitude = 127.1119894;
+// const latitude = 37.3925837;
 var map;
-document.addEventListener("DOMContentLoaded", function () {
+const addTileLayer = () => {
+  // var map;
+
+  const latitude = parseFloat(document.getElementById("latitude").value); // 위도
+  const longitude = parseFloat(document.getElementById("longitude").value); // 경도
+
   // OpenLayers 맵 생성
   const layers = [
     new ol.layer.Tile({
@@ -17,4 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
       zoom: 17,
     }),
   });
-});
+};
+
+addTileLayer();
