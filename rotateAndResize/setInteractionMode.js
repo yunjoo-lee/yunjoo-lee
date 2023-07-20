@@ -44,6 +44,11 @@ const dragBox = new ol.interaction.DragBox({
 
 // 박스 안에 있는 피처를 선택하는 함수
 const selectFeaturesInBox = () => {
+  if (vectorLayer === undefined) {
+    console.log("선택할 수 있는 레이어가 없습니다.");
+    return;
+  }
+
   const extent = dragBox.getGeometry().getExtent(); // 드래그 박스의 영역 가져오기
   vectorLayer
     .getSource()
