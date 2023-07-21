@@ -1,12 +1,12 @@
 import ExcelJS from "exceljs";
 import { getInfoByVersion } from "./getInfoByVersion.js";
-import exportedFile from "./fileMapDeployed.js";
+// import exportedFile from "./fileMapDeployed.js";
 
 // // 만들어진 배열을 excel 형태로 만들고 export
 const exportToExcel = async () => {
   // // api에서 직접 받아오기
-  // const allMapList = await getInfoByVersion();
-  const allMapList = exportedFile;
+  const allMapList = await getInfoByVersion();
+  // const allMapList = exportedFile;
   const flatMap = allMapList.flat();
 
   // 배열의 각 객체에 대해 작업 수행
@@ -29,15 +29,15 @@ const exportToExcel = async () => {
 
   // // 배열의 속성명 중 사용할 column의 명칭을 object로 지정
   const columnName = {
-    companyName: "이용 고객",
+    companyName: "기업명",
     joinedDate: "회원 가입 날짜",
     mapId: "map id",
     version: "배포 버전",
+    deployedDate: "배포 날짜",
     objectsSum: "object 수",
     nodesSum: "node 수",
     sectionsSum: "section 수",
     poisSum: "poi 수",
-    deployedDate: "배포 날짜",
   };
 
   // console.log(typeof flatMap[50].joinedDate);
@@ -119,7 +119,7 @@ const exportToExcel = async () => {
  */
 
   // // 파일명 설정
-  const filename = "sample_export";
+  const filename = "sample_export2";
 
   // // 파일 저장
   workbook.xlsx.writeFile(`./${filename}.xlsx`).then(function () {

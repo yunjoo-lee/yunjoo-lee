@@ -11,6 +11,7 @@ const getInfoByVersion = async () => {
   const mapInfoCsv = readMapInformation();
 
   const arrayElement = [];
+  // const temp = mapInfoCsv.slice(20, 25);
 
   for (const m of mapInfoCsv) {
     const versionDeployed = [];

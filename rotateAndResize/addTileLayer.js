@@ -1,8 +1,16 @@
-const longitude = 127.1119894;
-const latitude = 37.3925837;
-
+/**
+ * 지도 기본 구성을 위한 var 변수 설정
+ */
 var map;
-document.addEventListener("DOMContentLoaded", function () {
+var vectorLayer = [];
+
+/**
+ * 페이지에서 위경도 값 받아와서 OSM 배경 데이터 생성
+ */
+const addTileLayer = () => {
+  const latitude = parseFloat(document.getElementById("latitude").value); // 위도
+  const longitude = parseFloat(document.getElementById("longitude").value); // 경도
+
   // OpenLayers 맵 생성
   const layers = [
     new ol.layer.Tile({
@@ -17,4 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
       zoom: 17,
     }),
   });
-});
+};
+
+addTileLayer();
