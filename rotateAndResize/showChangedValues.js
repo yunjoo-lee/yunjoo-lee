@@ -9,7 +9,7 @@ var d = [0, 0];
 // Handle rotate on first point
 var firstPoint = false;
 interaction.on(["select"], (e) => {
-  if (firstPoint && e.features && e.features.getLength()) {
+  if (firstPoint) {
     interaction.setCenter(
       e.features.getArray()[0].getGeometry().getFirstCoordinate()
     );
