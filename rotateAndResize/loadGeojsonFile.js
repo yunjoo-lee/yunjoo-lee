@@ -1,5 +1,3 @@
-var vectorLayer;
-
 const loadGeojsonFile = () => {
   const input = document.createElement("input");
   input.type = "file";
@@ -33,7 +31,7 @@ const addVectorLayer = (fileData) => {
     features: features,
   });
 
-  vectorLayer = new ol.layer.Vector({
+  const vectorFromGeojson = new ol.layer.Vector({
     source: vectorSource,
     style: new ol.style.Style({
       stroke: new ol.style.Stroke({
@@ -45,6 +43,7 @@ const addVectorLayer = (fileData) => {
       }),
     }),
   });
-
-  map.addLayer(vectorLayer);
+  // map에 레이어 추가하고, vectorLayer 배열에 추가한 레이어 객체 추가
+  vectorLayer.push(vectorFromGeojson);
+  map.addLayer(vectorFromGeojson);
 };

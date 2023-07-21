@@ -1,5 +1,3 @@
-var vectorLayer;
-
 const convertGeojson = () => {
   const svg = document.querySelector("svg");
   let box = svg.getAttribute("viewBox");
@@ -36,14 +34,13 @@ const svgToMapLayer = (fileData) => {
   features.forEach((feature) => {
     const geometry = feature.getGeometry();
     geometry.transform("EPSG:4326", "EPSG:3857");
-    // console.log(feature.getGeometry());
   });
 
   const vectorSource = new ol.source.Vector({
     features: features,
   });
 
-  vectorLayer = new ol.layer.Vector({
+  const vectorFromSvg = new ol.layer.Vector({
     source: vectorSource,
     style: new ol.style.Style({
       stroke: new ol.style.Stroke({
@@ -56,5 +53,7 @@ const svgToMapLayer = (fileData) => {
     }),
   });
 
-  map.addLayer(vectorLayer);
+  // map에 레이어 추가하고, vectorLayer 배열에 추가한 레이어 객체 추가
+  vectorLayer.push(vectorFromSvg);
+  map.addLayer(vectorFromSvg);
 };
