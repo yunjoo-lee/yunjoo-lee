@@ -19,3 +19,8 @@ const initMap = () => {
 
 // OpenLayers 맵 초기화 함수 호출
 initMap();
+
+// "crs": {
+//   "type": "name",
+//   "properties": { "name": "urn:ogc:def:crs:EPSG::3857" }
+// },
