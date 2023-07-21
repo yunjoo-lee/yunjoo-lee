@@ -92,7 +92,7 @@
   </div>
 
   <script src="./addTileLayer.js"></script>
-  <!-- <script src="./addFileFromLocal.js"></script> -->
+  <script src="./addFileFromLocal.js"></script>
   <script src="./loadGeojsonFile.js"></script>
   <script src="./loadSvgFile.js"></script>
   <script src="./svgToMapLayer.js"></script>
@@ -101,21 +101,5 @@
   <script src="./showChangedValues.js"></script>
   <script src="./moveHandler.js"></script>
     
-  <script>
-    const fixedVectorLayer = new ol.layer.Vector({
-      source: fixedvectorSource,
-      style: new ol.style.Style({
-        stroke: new ol.style.Stroke({
-          color: "rgba(255, 255, 255, 0.7)",
-          width: 2,
-        }),
-        fill: new ol.style.Fill({
-          color: "#718AE3",
-        }),
-      }),
-    });
-
-
-  </script>
 </body>
 </html>
