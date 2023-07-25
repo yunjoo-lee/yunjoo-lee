@@ -12,6 +12,7 @@
   "type": "module",
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^3.3.34",
+    "axios": "^1.4.0",
     "ol": "^7.4.0",
     "openlayers": "^3.0.0"
   }

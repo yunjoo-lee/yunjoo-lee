@@ -54,7 +54,7 @@
   </style>
 </head>
 <body>
-  <div id="map"></div>
+  <div id="map"></div>  <div id="googlemap"></div>
   <hr>
   <div class="container">
     <div class = "showinformation">
@@ -103,6 +103,45 @@
   <script src="./showChangedValues.js"></script>
   <script src="./moveHandler.js"></script>
   <script src="./downloadFile.js"></script>
+  <script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBdbA1dwQpU-jLr_TvYSqZwlvjITpCor8&libraries=places&callback=initMap"
+  async defer></script>
+<script>
+var map;
+var service;
+var infowindow;
 
+function initMap() {
+  var seoul = new google.maps.LatLng(37.5665, 126.9780);
+
+  infowindow = new google.maps.InfoWindow();
+
+  map = new google.maps.Map(
+      document.getElementById('map'), {center: seoul, zoom: 15});
+
+  var request = {
+      query: '서울시청',
+      fields: ['name', 'geometry'],
+  };
+
+  service = new google.maps.places.PlacesService(map);
+
+  service.findPlaceFromQuery(request, function(results, status) {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+              createMarker(results[i]);
+          }
+
+          map.setCenter(results[0].geometry.location);
+      }
+  });
+}
+
+function createMarker(place) {
+  // Log latitude and longitude
+  console.log("Latitude: " + place.geometry.location.lat());
+  console.log("Longitude: " + place.geometry.location.lng());
+}
+</script>
 </body>
 </html>
