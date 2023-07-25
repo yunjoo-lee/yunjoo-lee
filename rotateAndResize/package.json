@@ -11,7 +11,8 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@googlemaps/google-maps-services-js": "^3.3.34",
     "ol": "^7.4.0",
-    "openlayers": "^4.6.5"
+    "openlayers": "^3.0.0"
   }
 }
