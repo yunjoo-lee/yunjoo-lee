@@ -21,10 +21,13 @@ const addVectorLayer = (fileData) => {
   const geojsonFormat = new ol.format.GeoJSON();
   const features = geojsonFormat.readFeatures(fileData);
 
+  // // GeoJSON의 좌표체계를 수정할 수 있도록 좌표코드 변수 할닫
+  const orgProjection = geojsonFormat.dataProjection.getCode();
+
   // GeoJSON 데이터의 좌표 체계를 3857로 변환
   features.forEach((feature) => {
     const geometry = feature.getGeometry();
-    geometry.transform("EPSG:4326", "EPSG:3857");
+    geometry.transform(orgProjection, "EPSG:3857");
   });
 
   const vectorSource = new ol.source.Vector({

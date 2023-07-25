@@ -33,7 +33,7 @@ const interaction = new ol.interaction.Transform({
     : undefined,
   keepRectangle: false,
   translate: true,
-  stretch: true,
+  stretch: false,
   // Get scale on points
   pointRadius: (f) => {
     const radius = f.get("radius") || 10;
