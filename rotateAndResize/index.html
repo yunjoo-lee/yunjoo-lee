@@ -21,11 +21,14 @@
     }
 
     #downlink {
-        text-decoration: none;
+        /* text-decoration: none; */
+        height: 55px;
+        width: 110px;
         border: 1px solid #94B2E3;
         background-color: navy;
         color: white;
         padding: 10px;
+        margin-top: 10px;
     }
 
     .frame {
@@ -41,7 +44,7 @@
 
     .container {
         display: grid;
-        grid-template-columns: 2fr 2fr 1fr;
+        grid-template-columns: 3fr 3fr 2fr;
         grid-gap: 10px;
         line-height: 1.5
     }
@@ -81,18 +84,21 @@
         <button onclick="openSVGFile()">Open<br>SVG file</button>
         <button onclick="downloadFile()" style="background-color:#94B2E3;">Download<br>Geojson</button>
       </div>
-      <h3>지도 검색</h3>
-      주소 검색: <input type='text' id='searchAddress' value = "현대백화점 판교점"><button onclick="initialize()">검색</button>
       <hr> 
-      <h5>지도 중심 좌표</h5>
+      <h3>지도 중심 좌표</h3>
       <li>위도: <input type='text' id='latitude' value ="37.3925837" ></li>
       <li>경도: <input type='text' id='longitude' value="127.1119894"></li>
       <br>
-      <button id="downlink" onclick="convertGeojson()">지도에 svg 올리기</button>
+      <hr> 
+      <div class = "container">
+        <h4>Show SVG</h4>
+        <button id="downlink" onclick="convertGeojson()">Load SVG<br>on map</button>
+      </div>
+      <div id="outsvg"> 이곳에 svg가 출력됩니다.</div> <br>
     </div>
     <div>
-      <h3>Show SVG</h3><br>
-      <div id="outsvg"> 이곳에 svg가 출력됩니다.</div>
+      <h3>지도 검색</h3>
+      주소 검색: <input type='text' id='searchAddress' value = "현대백화점 판교점"><button onclick="searchCoordinate()">검색</button>
     </div>
   </div>
 
