@@ -16,7 +16,6 @@ const downloadFile = (e) => {
 
   // // 파일 정보 설정
   const filename = "converted_file.geojson";
-  const properties = { type: "text/plain" };
   // 문자열로 변환
   const myJson = JSON.stringify(geoJsonObj);
 
