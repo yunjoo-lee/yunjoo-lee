@@ -4,6 +4,7 @@ setHandleStyle();
 // Events handlers
 // let startangle = 0;
 // let startRadius = 10;
+let previousLength = vectorLayer.length;
 
 let rotating = 0;
 let rotated = 0;
@@ -13,6 +14,14 @@ let scaling = [1, 1];
 // Handle rotate on first point
 const firstPoint = false;
 interaction.on(["select"], (e) => {
+  if (vectorLayer.length > previousLength) {
+    rotating = 0;
+    rotated = 0;
+    scaled = [1, 1];
+    scaling = [1, 1];
+    // 이전 배열의 길이 업데이트
+    previousLength = vectorLayer.length;
+  }
   if (firstPoint) {
     interaction.setCenter(
       e.features.getArray()[0].getGeometry().getFirstCoordinate()

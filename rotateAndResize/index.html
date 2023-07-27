@@ -91,7 +91,7 @@
       <div>
         <button onclick="loadGeojsonFile()">Open<br>GeojsonFile</button>
         <button onclick="openSVGFile()">Open<br>SVG file</button>
-        <button onclick="downloadFile()" style="background-color:#94B2E3;">Download<br>Geojson</button>
+        <button onclick="downloadFileWithAttr()" style="background-color:#94B2E3;">Download<br>Geojson</button>
       </div>
       <div>
         <hr>
@@ -130,8 +130,8 @@
   <script src="./showChangedValues.js"></script>
   <script src="./moveHandler.js"></script>
   <script src="./downloadFile.js"></script>
+  <script src="./downloadFileWithAttr.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBdbA1dwQpU-jLr_TvYSqZwlvjITpCor8&libraries=places&callback=initialize" async defer></script>
-  <!-- <script src -->
   <script src="./getAddressCenter.js"></script>
 
 </body>
