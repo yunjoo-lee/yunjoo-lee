@@ -11,19 +11,23 @@ const downloadFileWithAttr = (e) => {
 
   // // 지도의 레이어를 object 형태의 geojson으로 만든다
   const geoJsonArr = vectorLayer[vectorOrder - 1].getSource().getFeatures();
-
+  /**
+   * for 문을 돌면서
+   * geoJsonArr[3].getGeometry().getArea(); 의 값이 가장 큰 geometry의 geometry 값 저장
+   * geoJsonArr[3].getGeometry().getFirstCoordinate()
+   */
   geoJsonArr.forEach((e) => {
     e.setProperties({
-      map_id: "MP-r1l5pvkoe6p20169", //  mapId, -> svg 획득 api에서 받아오기
+      map_id: "MP-r1l5pvkoe6p20169", //  mapId, -> imstudio api에서 받아오기
       group_code: document.getElementById("groupName").value, // 완료
-      area_code: "1101", // 카카오,네이버 지도 api에서 획득 가능
-      level_section_name: "ddd ", // levelSectionName,
+      area_code: "11240", // 카카오,네이버 지도 api에서 획득 가능
+      level_section_name: "SECTION", // imstudio api에서 받아오기
       width_ratio: scaled[0], // 완료
       height_ratio: scaled[1], // 완료
       rotate: rotated, // 완료
       source_crs: map.getProperties().view.getProjection().code_, // 완료 (지도 api에서 획득 가능)
-      lon: parseFloat(document.getElementById("longitude").value),
-      lat: parseFloat(document.getElementById("latitude").value),
+      lon: parseFloat(document.getElementById("longitude").value), //imstudio api에서 받아온 도형으로 처리
+      lat: parseFloat(document.getElementById("latitude").value), // imstudio api에서 받아온 도형으로 처리
     });
   });
   // // // 지도의 레이어를 object 형태의 geojson으로 만든다

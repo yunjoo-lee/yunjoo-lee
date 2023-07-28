@@ -4,4 +4,6 @@ map.on("moveend", () => {
 
   document.getElementById("longitude").setAttribute("value", newLon);
   document.getElementById("latitude").setAttribute("value", newLat);
+  // googleMap.setCenter({ lat: newLat, lng: newLon });
+  naverMap.setCenter({ y: newLat, _lat: newLat, x: newLon, _lng: newLon });
 });
