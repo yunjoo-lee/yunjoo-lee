@@ -21,15 +21,15 @@ const setGoogleMap = async () => {
   });
 };
 
-// const maplist = { setNaverMap, setGoogleMap };
-// const styleSelector = document.getElementById("tileMapSelect");
+const maplist = { naver: setNaverMap, google: setGoogleMap };
+const mapSelector = document.getElementById("tileMapSelect");
 
-// const update = () => {
-//   const style = styles[styleSelector.value];
-//   layer.setSource(style);
-// };
+const update = () => {
+  const loadMap = maplist[mapSelector.value];
+  loadMap();
+};
 
-// styleSelector.addEventListener("change", update);
+mapSelector.addEventListener("change", update);
 
-// setGoogleMap();
-setNaverMap();
+setGoogleMap();
+// setNaverMap();
