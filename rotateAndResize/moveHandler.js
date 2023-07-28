@@ -27,7 +27,7 @@ const moveGoogle = (newLat, newLon) => {
 };
 
 const moveNaver = (newLat, newLon) => {
-  referMap.setCenter({ y: newLat, _lat: newLat, x: newLon, _lng: newLon });
+  referMap.setCenter(new naver.maps.LatLng(newLat, newLon));
 };
 
 const moveKakao = (newLat, newLon) => {
