@@ -85,7 +85,7 @@
 <body>
   <div class="mapContainer">
     <div id="map"></div> 
-    <div id="navermap"></div>
+    <div id="referMap"></div>
   </div>
   <hr>
   <div class="externalBox">
@@ -100,9 +100,9 @@
       <h3>참조 지도 선택</h3>
       <select id="tileMapSelect" class="selectBox">
         <!-- <option value="">지도 선택</option> -->
+        <option value="kakao" selected>Kakao</option>
         <option value="naver">Naver</option>
-        <option value="google" selected>Google</option>
-        <option value="kakao" hidden>Kakao</option>
+        <option value="google">Google</option>
       </select>
       <ul>
         <!-- <li>
@@ -168,8 +168,11 @@
   <script src="./getAddressCenter.js"></script> <!-- 순서유지 필수 - 1번 -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBdbA1dwQpU-jLr_TvYSqZwlvjITpCor8&libraries=places&callback=initialize"></script> <!-- 순서유지 필수 - 2번 -->
   <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=sbnmewccyt"></script>
-  <script src="./selectRefTile.js"></script><!-- 순서유지 필수 - 3번 -->
-  <script src="./moveHandler.js"></script><!-- 순서유지 필수 - 3번 -->
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71ab92bd93f47073d9668e4884c29f83"></script>
+  <!-- 순서유지 필수 - 3번 -->
+  <script src="./selectRefTile.js"></script>
+  <!--순서유지 필수 - 4번 -->
+  <script src="./moveHandler.js"></script>
 
 </body>
 </html>

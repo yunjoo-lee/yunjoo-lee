@@ -15,13 +15,21 @@ map.on("moveend", () => {
     case "google":
       moveGoogle(newLat, newLon);
       break;
+
+    case "kakao":
+      moveKakao(newLat, newLon);
+      break;
   }
 });
 
 const moveGoogle = (newLat, newLon) => {
-  googleMap.setCenter({ lat: newLat, lng: newLon });
+  referMap.setCenter({ lat: newLat, lng: newLon });
 };
 
 const moveNaver = (newLat, newLon) => {
-  naverMap.setCenter({ y: newLat, _lat: newLat, x: newLon, _lng: newLon });
+  referMap.setCenter({ y: newLat, _lat: newLat, x: newLon, _lng: newLon });
+};
+
+const moveKakao = (newLat, newLon) => {
+  referMap.setCenter(new kakao.maps.LatLng(newLat, newLon));
 };
