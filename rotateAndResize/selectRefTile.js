@@ -9,7 +9,7 @@ let longitude = parseFloat(document.getElementById("longitude").value); // 경�
 /**
  * 위경도값을 변수로 받아 네이버맵 로드
  */
-const setNaverMap = (latitude, longitude) => {
+const setNaverMap = async (latitude, longitude) => {
   referMap = new naver.maps.Map("referMap", {
     center: new naver.maps.LatLng(latitude, longitude),
     zoom: 17,
@@ -31,7 +31,7 @@ const setGoogleMap = async (latitude, longitude) => {
 /**
  * 위경도값을 변수로 받아 카카오맵 로드
  */
-const setKakaoMap = (latitude, longitude) => {
+const setKakaoMap = async (latitude, longitude) => {
   const container = document.getElementById("referMap"); //지도를 담을 영역의 DOM 레퍼런스
   const options = {
     //지도를 생성할 때 필요한 기본 옵션
@@ -55,7 +55,7 @@ const mapSelector = document.getElementById("tileMapSelect");
 /**
  * select box가 선택될 때 실행될 함수 정의
  */
-const update = () => {
+const setReferenceMap = () => {
   latitude = parseFloat(document.getElementById("latitude").value); // 위도
   longitude = parseFloat(document.getElementById("longitude").value); // 경도
 
@@ -83,11 +83,9 @@ const update = () => {
 /**
  * 셀렉트 박스의 선택이 바뀔 때 마다 지도 불러오는 함수 실행
  */
-mapSelector.addEventListener("change", update);
+mapSelector.addEventListener("change", setReferenceMap);
 
-// setGoogleMap(latitude, longitude);
-// setNaverMap(latitude, longitude);
 /**
- * 기본값으로 정의될 함수 실행
+ * 기본값으로 선택된 함수 실행
  */
-setKakaoMap(latitude, longitude);
+setReferenceMap();

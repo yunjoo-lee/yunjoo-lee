@@ -27,4 +27,7 @@ const addTileLayer = () => {
   });
 };
 
+// google api 사용 시 필요한 콜밸 함수 정의
+window.initMap = () => {};
+
 addTileLayer();

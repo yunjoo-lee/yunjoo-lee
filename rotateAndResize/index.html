@@ -146,9 +146,9 @@
           <option value="AVN">AVN</option>
         </select>
       <hr>
-      <form name="searchAdd" action="" method="" onsubmit="event.preventDefault(); searchPlace()">
+      <form name="searchAdd" action="" method="" onsubmit="event.preventDefault(); searchPlaceToCoor()">
         <h3>지도 검색</h3>
-        주소 검색: <input type='text' id='searchAddress'><button type="submit" onclick="searchPlace()">검색</button>
+        주소 검색: <input type='text' id='searchAddress'><button type="submit">검색</button>
       </form>
     </div>
   </div>
@@ -164,15 +164,11 @@
   <script src="./showChangedValues.js"></script>
   <script src="./downloadFile.js"></script>
   <script src="./downloadFileWithAttr.js"></script>
-  <!-- 순서유지 필수 - 1번 -->
-  <script src="./getAddressCenter.js"></script> 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBdbA1dwQpU-jLr_TvYSqZwlvjITpCor8&libraries=places&callback=initialize"></script> <!-- 순서유지 필수 - 2번 -->
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBdbA1dwQpU-jLr_TvYSqZwlvjITpCor8&callback=initMap"></script>
   <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=sbnmewccyt"></script>
-  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71ab92bd93f47073d9668e4884c29f83&libraries=services"></script>
-  <!-- 순서유지 필수 - 3번 -->
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71ab92bd93f47073d9668e4884c29f83&libraries=services"></script>  
   <script src="./selectRefTile.js"></script>
   <script src="./searchPlaceCoor.js"></script>
-  <!--순서유지 필수 - 4번 -->
   <script src="./moveHandler.js"></script>
 
 </body>
