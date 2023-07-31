@@ -20,6 +20,17 @@
       height: 500px;
     }
 
+    #navermap {
+      width: 100%;
+      height: 500px;
+    }
+
+    .mapContainer{
+      display: grid;
+      flex-direction: column;
+      grid-template-columns: 2fr 1fr;
+    }
+
     #downlink {
         /* text-decoration: none; */
         height: 55px;
@@ -28,44 +39,70 @@
         background-color: navy;
         color: white;
         padding: 10px;
-        margin-top: 10px;
+        /* margin-top: 10px; */
+    }
+
+    .externalBox {
+      display: grid;
+      grid-template-columns: 530px 1fr 1fr;
+      flex-direction: row;
+      align-items: start;
+    }
+
+    .rowRangeBox {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .columnRangeBox {
+      display: grid;
+      flex-direction: column;
+      justify-items: center;
+      grid-gap: 10px;
+      margin: 10px; /* 프레임 외부 여백 설정 */
     }
 
     .frame {
-        border: 1px solid black; /* 프레임 테두리 스타일 설정 */
-        margin: 10px; /* 프레임 외부 여백 설정 */
-        width: 200px; /* 프레임 너비 설정 */
-        height: 65px; /* 프레임 너비 설정 */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
+      border: 1px solid black;
+      margin: 5px;
+      padding: 10px;
+      width: 150px;
+      height: 30px;
+      display: grid;
+      justify-content: flex-start;
+      align-content: center;
     }
 
-    .container {
-        display: grid;
-        grid-template-columns: 3fr 3fr 2fr;
-        grid-gap: 10px;
-        line-height: 1.5
+    .selectBox{
+      width:120px;
+      height:30px;
+      font-size:12pt
     }
 
-    .showinformation {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
   </style>
 </head>
 <body>
-  <div id="map"></div>  <div id="googlemap"></div>
+  <div class="mapContainer">
+    <div id="map"></div> 
+    <div id="referMap"></div>
+  </div>
   <hr>
-  <div class="container">
-    <div class = "showinformation">
-      <div class="frame" style="background:white; padding:0 0.45em;">
-        <div id="scaleinfo">scale: </div>
-        <div id="rotateinfo">rotate: </div>
-      </div>
-      <hr>
+  <div class="externalBox">
+    <div class="columnRangeBox">
+      <!-- <h3>배경 지도 선택</h3>
+      <select id="tileMapSelect" class="selectBox">
+        <option value="osmSource" selected>OSM</option>
+        <option value="samahSource">SAMAH</option>
+        <option value="maxarSource">MAXAR</option>
+        <option value="ngiSource">NGII</option>
+      </select> -->
+      <h3>참조 지도 선택</h3>
+      <select id="tileMapSelect" class="selectBox">
+        <option value="kakao" selected>Kakao</option>
+        <option value="naver">Naver</option>
+        <option value="google">Google</option>
+      </select>
       <ul>
         <!-- <li>
           <input id="scale" type="checkbox" onchange="setPropertie(this.id);" checked="checked" /><label for="scale"> enable scale</label>
@@ -74,35 +111,50 @@
         </li><li> 
           <input id="rotate" type="checkbox" onchange="setPropertie(this.id);" checked="checked" /><label for="rotate"> enable rotate</label>
         </li>-->
+        <hr>
         <li><b>Ctrl</b> or <b>Cmd</b> 버튼을 누른 채로 드래그하면 영역을 전체 선택할 수 있습니다.</li>
         <li><b>Shift</b> 버튼을 누른 채로 조절하면 원본 비율을 유지할 수 있습니다.</li>
+        <hr>
       </ul>
+      <div class="rowRangeBox">
+        <div id="scaleinfo" class="frame">scale: </div>
+        <div id="rotateinfo" class="frame">rotate: </div>
+      </div>
     </div>
-    <div>
+    <div class="columnRangeBox">
       <div>
         <button onclick="loadGeojsonFile()">Open<br>GeojsonFile</button>
         <button onclick="openSVGFile()">Open<br>SVG file</button>
-        <button onclick="downloadFile()" style="background-color:#94B2E3;">Download<br>Geojson</button>
+        <button onclick="downloadFileWithAttr()" style="background-color:#94B2E3;">Download<br>Geojson</button>
+        <hr>
       </div>
-      <hr> 
-      <h3>지도 중심 좌표</h3>
-      <li>위도: <input type='text' id='latitude' value ="37.3925837" ></li>
-      <li>경도: <input type='text' id='longitude' value="127.1119894"></li>
-      <br>
-      <hr> 
-      <div class = "container">
-        <h4>Show SVG</h4>
-        <button id="downlink" onclick="convertGeojson()">Load SVG<br>on map</button>
+      <div>
+        <h3>지도 중심 좌표</h3>
+        <li>위도: <input type='text' id='latitude' value ="37.3925837" ></li>
+        <li>경도: <input type='text' id='longitude' value="127.1119894"></li>
+        <br>
       </div>
-      <div id="outsvg"> 이곳에 svg가 출력됩니다.</div> <br>
+      <h4>Show SVG</h4>
+      <button id="downlink" onclick="convertGeojson()">Load SVG<br>on map</button>
+      <div id="outsvg"> 이곳에 svg가 출력됩니다.</div>
     </div>
     <div>
-      <h3>지도 검색</h3>
-      주소 검색: <input type='text' id='searchAddress' value = "현대백화점 판교점"><button onclick="searchCoordinate()">검색</button>
+      <h3>레이어 그룹 선택</h3>
+        <select id="groupName" class="selectBox">
+          <option value="">분류선택</option>
+          <option value="DEP">DEP</option>
+          <option value="AVN">AVN</option>
+        </select>
+      <hr>
+      <form name="searchAdd" action="" method="" onsubmit="event.preventDefault(); searchPlace()">
+        <h3>지도 검색</h3>
+        주소 검색: <input type='text' id='searchAddress'><button type="submit" onclick="searchPlace()">검색</button>
+      </form>
     </div>
   </div>
 
   <script src="./addTileLayer.js"></script>
+  <!-- <script src="./selectTileLayer.js"></script> -->
   <script src="./addFileFromLocal.js"></script>
   <script src="./loadGeojsonFile.js"></script>
   <script src="./loadSvgFile.js"></script>
@@ -110,11 +162,18 @@
   <script src="./setStyleOfMap.js"></script>
   <script src="./setInteractionMode.js"></script>
   <script src="./showChangedValues.js"></script>
-  <script src="./moveHandler.js"></script>
   <script src="./downloadFile.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBdbA1dwQpU-jLr_TvYSqZwlvjITpCor8&libraries=places&callback=initialize" async defer></script>
-  <!-- <script src -->
-  <script src="./getAddressCenter.js"></script>
+  <script src="./downloadFileWithAttr.js"></script>
+  <!-- 순서유지 필수 - 1번 -->
+  <script src="./getAddressCenter.js"></script> 
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBdbA1dwQpU-jLr_TvYSqZwlvjITpCor8&libraries=places&callback=initialize"></script> <!-- 순서유지 필수 - 2번 -->
+  <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=sbnmewccyt"></script>
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71ab92bd93f47073d9668e4884c29f83&libraries=services"></script>
+  <!-- 순서유지 필수 - 3번 -->
+  <script src="./selectRefTile.js"></script>
+  <script src="./searchPlaceCoor.js"></script>
+  <!--순서유지 필수 - 4번 -->
+  <script src="./moveHandler.js"></script>
 
 </body>
 </html>

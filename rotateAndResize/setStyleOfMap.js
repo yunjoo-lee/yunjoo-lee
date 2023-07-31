@@ -21,7 +21,6 @@ const setHandleStyle = () => {
       new ol.style.Style({
         text: new ol.style.Text({
           text: "\uf0e2",
-          // font:"16px Fontawesome",
           textAlign: "left",
           fill: new ol.style.Fill({ color: "red" }),
         }),
@@ -34,7 +33,6 @@ const setHandleStyle = () => {
       new ol.style.Style({
         text: new ol.style.Text({
           text: "\uf0e2",
-          // font:"20px Fontawesome",
           fill: new ol.style.Fill({ color: [255, 255, 255, 0.8] }),
           stroke: new ol.style.Stroke({ width: 2, color: "red" }),
         }),
@@ -46,7 +44,6 @@ const setHandleStyle = () => {
       new ol.style.Style({
         text: new ol.style.Text({
           text: "\uf047",
-          font: "20px Fontawesome",
           fill: new ol.style.Fill({ color: [255, 255, 255, 0.8] }),
           stroke: new ol.style.Stroke({ width: 2, color: "red" }),
         }),

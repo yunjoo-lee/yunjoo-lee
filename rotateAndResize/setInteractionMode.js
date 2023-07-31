@@ -7,12 +7,12 @@ const setPropertie = (p) => {
 };
 
 const setAspectRatio = (p) => {
-  if ($("#" + p).prop("checked"))
-    interaction.set("keepAspectRatio", ol.events.condition.always);
-  else
-    interaction.set("keepAspectRatio", (e) => {
-      return e.originalEvent.shiftKey;
-    });
+  // if ($("#" + p).prop("checked"))
+  //   interaction.set("keepAspectRatio", ol.events.condition.always);
+  // else
+  interaction.set("keepAspectRatio", (e) => {
+    return e.originalEvent.shiftKey;
+  });
 };
 
 /**

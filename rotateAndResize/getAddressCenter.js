@@ -1,5 +1,4 @@
 var service;
-
 window.initialize = () => {
   service = new google.maps.places.PlacesService(document.createElement("div"));
 };
@@ -7,7 +6,15 @@ window.initialize = () => {
 const searchCoordinate = () => {
   const request = {
     query: document.getElementById("searchAddress").value,
-    fields: ["name", "geometry"],
+    fields: [
+      "name",
+      "geometry",
+      "business_status",
+      "formatted_address",
+      "place_id",
+      "plus_code",
+      "types",
+    ],
   };
 
   service.findPlaceFromQuery(request, (results, status) => {
@@ -16,7 +23,6 @@ const searchCoordinate = () => {
       const newLon = results[0].geometry.location.lng();
 
       map.getView().setCenter(ol.proj.fromLonLat([newLon, newLat]));
-      // console.log(request.query);
     }
   });
 };

@@ -17,6 +17,4 @@ const transFile = (file) => {
     outsvg.innerHTML = reader.result;
   };
   reader.readAsText(file, "euc-kr");
-
-  convertGeojson();
 };
