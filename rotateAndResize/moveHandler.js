@@ -9,27 +9,15 @@ map.on("moveend", () => {
 
   switch (mapSelector.value) {
     case "naver":
-      moveNaver(newLat, newLon);
+      referMap.setCenter(new naver.maps.LatLng(newLat, newLon));
       break;
 
     case "google":
-      moveGoogle(newLat, newLon);
+      referMap.setCenter(new google.maps.LatLng(newLat, newLon));
       break;
 
     case "kakao":
-      moveKakao(newLat, newLon);
+      referMap.setCenter(new kakao.maps.LatLng(newLat, newLon));
       break;
   }
 });
-
-const moveGoogle = (newLat, newLon) => {
-  referMap.setCenter({ lat: newLat, lng: newLon });
-};
-
-const moveNaver = (newLat, newLon) => {
-  referMap.setCenter(new naver.maps.LatLng(newLat, newLon));
-};
-
-const moveKakao = (newLat, newLon) => {
-  referMap.setCenter(new kakao.maps.LatLng(newLat, newLon));
-};

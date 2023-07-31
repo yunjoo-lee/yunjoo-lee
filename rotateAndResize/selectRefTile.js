@@ -10,8 +10,6 @@ let longitude = parseFloat(document.getElementById("longitude").value); // 경�
  * 위경도값을 변수로 받아 네이버맵 로드
  */
 const setNaverMap = (latitude, longitude) => {
-  document.getElementById("referMap").innerHTML = "";
-  document.getElementById("referMap").style = {};
   referMap = new naver.maps.Map("referMap", {
     center: new naver.maps.LatLng(latitude, longitude),
     zoom: 17,
@@ -62,6 +60,22 @@ const update = () => {
   longitude = parseFloat(document.getElementById("longitude").value); // 경도
 
   const loadMap = maplist[mapSelector.value];
+
+  // 부모 요소 찾기
+  const parentCont = document.querySelector(".mapContainer");
+  // 기존 referMap 요소 찾기
+  const childCont = document.querySelector("#referMap");
+
+  // 기존 referMap 요소 삭제
+  if (childCont) {
+    parentCont.removeChild(childCont);
+    const newchildCont = document
+      .querySelector(".mapContainer")
+      .appendChild(document.createElement("div"));
+
+    // 생성된 요소에 id 설정
+    newchildCont.id = "referMap";
+  }
 
   loadMap(latitude, longitude);
 };
