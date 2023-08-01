@@ -6,11 +6,17 @@ setHandleStyle();
 // let startRadius = 10;
 let previousLength = vectorLayer.length;
 
-var rotateArray = [0];
-var scaleArray = [[1, 1]];
+let rotatedElement, scaledElement;
 
-let rotatedElement = 0;
-let scaledElement = [1, 1];
+var rotateArray, scaleArray;
+
+const makeResetValue = () => {
+  rotatedElement = 0;
+  scaledElement = [1, 1];
+
+  rotateArray = [rotatedElement];
+  scaleArray = [scaledElement];
+};
 
 const sumArrayElements = (arr) => {
   return arr.reduce((sum, current) => sum + current, 0);
@@ -27,8 +33,7 @@ const multiplyArrayElements = (arr) => {
 const firstPoint = false;
 interaction.on(["select"], (e) => {
   if (vectorLayer.length > previousLength) {
-    rotateArray = [0];
-    scaleArray = [[1, 1]];
+    makeResetValue();
     // 이전 배열의 길이 업데이트
     previousLength = vectorLayer.length;
   }
@@ -50,19 +55,15 @@ interaction.on(["rotatestart", "translatestart", "scalestart"], (e) => {
 
 interaction.on("rotating", (e) => {
   rotatedElement = (((e.angle * 180) / Math.PI - 180) % 360) + 180;
-  console.log(rotatedElement);
   $("#rotateinfo").text(
     "rotate: " + (sumArrayElements(rotateArray) + rotatedElement).toFixed(2)
   );
-  // console.log(sumArrayElements(rotateArray));
   // Set angle attribute to be used on style !
   // e.feature.set("angle", startangle - e.angle);
 });
 
-// "scale: " + e.scale[0].toFixed(2) + "," + e.scale[1].toFixed(2)
 interaction.on("scaling", (e) => {
   scaledElement = [e.scale[0], e.scale[1]];
-  console.log(scaledElement);
   $("#scaleinfo").text(
     "scale: " +
       (multiplyArrayElements(scaleArray)[0] * scaledElement[0]).toFixed(2) +
@@ -82,7 +83,5 @@ interaction.on("scaling", (e) => {
 
 interaction.on(["rotateend", "translateend", "scaleend"], (e) => {
   rotateArray.push(rotatedElement);
-  // scaled = [scaling[0] * scaled[0], scaling[1] * scaled[1]];
   scaleArray.push(scaledElement);
-  console.log(scaleArray);
 });

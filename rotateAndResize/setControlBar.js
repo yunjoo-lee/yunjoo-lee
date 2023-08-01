@@ -8,7 +8,7 @@ const editbar = new ol.control.EditBar({
   edition: false,
   interactions: {
     Select: false,
-    Delete: true,
+    Delete: false,
     Info: false,
     Split: false,
     Offset: false,
@@ -24,18 +24,31 @@ map.addInteraction(undoInteraction);
 const bar = new ol.control.Bar({
   group: true,
   controls: [
+    // new ol.control.Button({
+    //   html: '<i class="fa fa-undo" ></i>',
+    //   title: "undo...",
+    //   handleClick: function () {
+    //     undoInteraction.undo();
+    //   },
+    // }),
+    // new ol.control.Button({
+    //   html: '<i class="fa fa-repeat" ></i>',
+    //   title: "redo...",
+    //   handleClick: function () {
+    //     undoInteraction.redo();
+    //   },
+    // }),
     new ol.control.Button({
       html: '<i class="fa fa-undo" ></i>',
-      title: "undo...",
+      title: "reset...",
       handleClick: function () {
-        undoInteraction.undo();
-      },
-    }),
-    new ol.control.Button({
-      html: '<i class="fa fa-repeat" ></i>',
-      title: "redo...",
-      handleClick: function () {
-        undoInteraction.redo();
+        const actionCnt = undoInteraction.length();
+        for (let i = 0; i < actionCnt; i++) {
+          undoInteraction.undo();
+          $("#rotateinfo").text("rotate: ");
+          $("#scaleinfo").text("scale: ");
+          makeResetValue();
+        }
       },
     }),
   ],
