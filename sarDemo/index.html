@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>GeoTiff on Openlayers</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/ol.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <-- OpenLayers 라이브러리 가져오기 -->
+    <script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
+    <!-- proj4 라이브러리 가져오기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.9.0/proj4.js"></script>
+    <!-- ol-ext -->
+    <!-- <link rel="stylesheet" href="./dist/ol-ext.css" /> -->
+    <!-- <script type="text/javascript" src="./dist/ol-ext.js"></script> -->
+    <!-- FontAwesome -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <!-- svg to geojson -->
+    <!-- <script src="dist/svg-to-geojson.min.js"></script> -->
+    <style>
+        /* 지도 컨테이너의 크기 지정 */
+        #map {
+        width: 100%;
+        height: 800px;
+        /* border-right: 2px solid darkgray; */
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="./addTileLayer.js"></script>
+    <script>
+        // WMS 레이어 생성
+        var layer50224 = new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'https://editor.dabeeo.com:18080/geoserver/SARsample/wms',  // GeoServer의 WMS 서비스 URL
+                params: {'LAYERS': 'SARsample:K5_50224',
+                        'TILED': false,
+                        'CRS': 'EPSG:3857'},  // 레이어 이름 등 WMS 파라미터 설정
+                serverType: 'geoserver' ,// 서버 타입 설정
+            }),
+            opacity: 0.7,
+        });
+
+        var layer44548 = new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'https://editor.dabeeo.com:18080/geoserver/SARsample/wms',  // GeoServer의 WMS 서비스 URL
+                params: {'LAYERS': 'SARsample:K5_44548',
+                        'TILED': false,
+                        'CRS': 'EPSG:3857'},  // 레이어 이름 등 WMS 파라미터 설정
+                serverType: 'geoserver' ,// 서버 타입 설정
+            }),
+            opacity: 0.7,
+        });
+
+        var layer44563 = new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'https://editor.dabeeo.com:18080/geoserver/SARsample/wms',  // GeoServer의 WMS 서비스 URL
+                params: {'LAYERS': 'SARsample:K5_44563',
+                        'TILED': false,
+                        'CRS': 'EPSG:3857'},  // 레이어 이름 등 WMS 파라미터 설정
+                serverType: 'geoserver' ,// 서버 타입 설정
+            }),
+            opacity: 0.7,
+        });
+
+
+        var spss = new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'https://editor.dabeeo.com:18080/geoserver/SARsample/wms',  // GeoServer의 WMS 서비스 URL
+                params: {FORMAT: "image/jpeg",
+                        LAYERS: "SARsample:final_23",
+                        // VERSION: "1.1.1",
+                        // exceptiosns: "application/vnd.ogc.se_inimage",
+                        tiled: true,
+                        // tilesOrigin: "0,-294",
+                        CRS: 'EPSG:3857'
+                        },  // 레이어 이름 등 WMS 파라미터 설정
+                serverType: 'geoserver' ,// 서버 타입 설정
+            }),
+            opacity: 0.5,
+        });
+        map.addLayer(layer50224);
+        map.addLayer(layer44548);
+        map.addLayer(layer44563);
+        // map.addLayer(spss);
+    </script>
+</body>
+</html>

@@ -46,7 +46,10 @@ const addVectorLayer = (fileData) => {
       }),
     }),
   });
-  // map에 레이어 추가하고, vectorLayer 배열에 추가한 레이어 객체 추가
+
+  // // geojson을 편집 가능한 상태로 불러오고 싶을 경우 아래 코드 추가하여 빌딩 mask import
   vectorLayer.push(vectorFromGeojson);
+
+  // map에 레이어 추가
   map.addLayer(vectorFromGeojson);
 };

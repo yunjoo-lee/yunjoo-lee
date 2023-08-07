@@ -4,31 +4,33 @@
   <meta charset="utf-8">
   <title>Openlayers Editor</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/ol.css" />
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- <-- OpenLayers 라이브러리 가져오기 -->
     <script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
     <!-- ol-ext -->
+    <link rel="stylesheet" href="./dist/ol-ext.css" />
     <script type="text/javascript" src="./dist/ol-ext.js"></script>
+    <!-- FontAwesome -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
     <!-- jQuery -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
     <!-- svg to geojson -->
     <script src="dist/svg-to-geojson.min.js"></script>
+    
   <style>
     /* 지도 컨테이너의 크기 지정 */
     #map {
       width: 100%;
       height: 500px;
-    }
-
-    #navermap {
-      width: 100%;
-      height: 500px;
+      border-right: 2px solid darkgray;
     }
 
     .mapContainer{
+      border: 2px solid darkgray;
       display: grid;
       flex-direction: column;
       grid-template-columns: 2fr 1fr;
+      grid-gap: 2px
     }
 
     #downlink {
@@ -87,7 +89,6 @@
     <div id="map"></div> 
     <div id="referMap"></div>
   </div>
-  <hr>
   <div class="externalBox">
     <div class="columnRangeBox">
       <!-- <h3>배경 지도 선택</h3>
@@ -125,18 +126,18 @@
       <div>
         <button onclick="loadGeojsonFile()">Open<br>GeojsonFile</button>
         <button onclick="openSVGFile()">Open<br>SVG file</button>
+        <button onclick="buttonbutton()">Reset<br>Object</button>
         <button onclick="downloadFileWithAttr()" style="background-color:#94B2E3;">Download<br>Geojson</button>
-        <hr>
       </div>
       <div>
+        <hr>
         <h3>지도 중심 좌표</h3>
-        <li>위도: <input type='text' id='latitude' value ="37.3925837" ></li>
-        <li>경도: <input type='text' id='longitude' value="127.1119894"></li>
+        <li>위도: <input type='text' id='latitude' value ="37.5468962" ></li>
+        <li>경도: <input type='text' id='longitude' value="126.9535027"></li>
         <br>
+        <hr>
       </div>
-      <h4>Show SVG</h4>
-      <button id="downlink" onclick="convertGeojson()">Load SVG<br>on map</button>
-      <div id="outsvg"> 이곳에 svg가 출력됩니다.</div>
+      <div id="outsvg"></div>
     </div>
     <div>
       <h3>레이어 그룹 선택</h3>
@@ -146,34 +147,31 @@
           <option value="AVN">AVN</option>
         </select>
       <hr>
-      <form name="searchAdd" action="" method="" onsubmit="event.preventDefault(); searchPlace()">
+      <form name="searchAdd" action="" method="" onsubmit="event.preventDefault(); searchPlaceToCoor()">
         <h3>지도 검색</h3>
-        주소 검색: <input type='text' id='searchAddress'><button type="submit" onclick="searchPlace()">검색</button>
+        주소 검색: <input type='text' id='searchAddress'><button type="submit">검색</button>
       </form>
     </div>
   </div>
 
   <script src="./addTileLayer.js"></script>
   <!-- <script src="./selectTileLayer.js"></script> -->
-  <script src="./addFileFromLocal.js"></script>
+  <!-- <script src="./addFileFromLocal.js"></script> -->
   <script src="./loadGeojsonFile.js"></script>
   <script src="./loadSvgFile.js"></script>
-  <script src="./convertSvgToLayer.js"></script>
   <script src="./setStyleOfMap.js"></script>
   <script src="./setInteractionMode.js"></script>
   <script src="./showChangedValues.js"></script>
   <script src="./downloadFile.js"></script>
   <script src="./downloadFileWithAttr.js"></script>
-  <!-- 순서유지 필수 - 1번 -->
-  <script src="./getAddressCenter.js"></script> 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBdbA1dwQpU-jLr_TvYSqZwlvjITpCor8&libraries=places&callback=initialize"></script> <!-- 순서유지 필수 - 2번 -->
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBdbA1dwQpU-jLr_TvYSqZwlvjITpCor8&callback=initMap"></script>
   <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=sbnmewccyt"></script>
-  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71ab92bd93f47073d9668e4884c29f83&libraries=services"></script>
-  <!-- 순서유지 필수 - 3번 -->
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71ab92bd93f47073d9668e4884c29f83&libraries=services"></script>  
   <script src="./selectRefTile.js"></script>
   <script src="./searchPlaceCoor.js"></script>
-  <!--순서유지 필수 - 4번 -->
   <script src="./moveHandler.js"></script>
+  <!-- 이 부분을 interaction 부분에 추가하면 아래 setControlBar 삭제 가능 -->
+  <script src="./setControlBar.js"></script>
 
 </body>
 </html>

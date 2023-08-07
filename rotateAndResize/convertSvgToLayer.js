@@ -1,13 +1,14 @@
 const convertGeojson = () => {
-  const svg = document.querySelector("svg");
+  const outsvg = document.getElementById("outsvg");
+  const svg = outsvg.querySelector("svg");
   let box = svg.getAttribute("viewBox");
   box = svg.viewBox.baseVal;
   svg.setAttribute("id", "mysvg");
   svg.setAttribute("width", String(box.width) + "px"); // 가로 설정
   svg.setAttribute("height", String(box.height) + "px"); // 세로 설정
 
-  const latitude = parseFloat(document.getElementById("latitude").value); // 위도
-  const longitude = parseFloat(document.getElementById("longitude").value); // 경도
+  const center = map.getView().getCenter();
+  const [longitude, latitude] = ol.proj.toLonLat(center);
 
   const bound = [
     [latitude + box.height * 0.000001, longitude + box.width * 0.000001],

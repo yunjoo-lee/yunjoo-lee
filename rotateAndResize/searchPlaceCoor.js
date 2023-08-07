@@ -1,40 +1,64 @@
-// 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
-// var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+var areaCode; // 지역코드를 담을 변수 선언
 
-// var mapContainer = document.getElementById("map"), // 지도를 표시할 div
-//   mapOption = {
-//     center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-//     level: 3, // 지도의 확대 레벨
-//   };
+/**
+ * kakaAPI를 사용해 검색한 위치의 위경도 값을 받아오는 함수
+ * @param {string} keyword 검색할 장소 명칭
+ * @returns 장소에 대한 결과의 Object
+ */
+const placesSearch = (keyword) => {
+  const placeApi = new kakao.maps.services.Places();
 
-// 지도를 생성합니다
-// var map = new kakao.maps.Map(mapContainer, mapOption);
+  return new Promise((resolve, reject) => {
+    placeApi.keywordSearch(keyword, (data, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        resolve(data[0]);
+      } else {
+        reject(new Error("Failed to get address name"));
+      }
+    });
+  });
+};
 
-const searchPlace = () => {
-  const ps = new kakao.maps.services.Places();
-  // 장소 검색 객체를 생성합니다
+/**
+ * kakaAPI를 사용해 검색한 위치의 행정 정보를 받아오는 함수
+ * @param {number} lon 경도 (124~130)
+ * @param {number} lat 위도 (35~37)
+ * @returns 장소에 대한 결과의 Object
+ */
+const getAddressName = (lon, lat) => {
+  const geocoderApi = new kakao.maps.services.Geocoder();
+
+  return new Promise((resolve, reject) => {
+    geocoderApi.coord2RegionCode(lon, lat, (result, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        resolve(result[0]);
+      } else {
+        reject(new Error("Failed to get address name"));
+      }
+    });
+  });
+};
+
+/**
+ * Kakao api를 사용해 받아온 결과를 지도에 반영하고, 저장하는 함수
+ * html에서 searchAddress 버튼 누르면 실행
+ */
+const searchPlaceToCoor = async () => {
+  // 장소 검색할 키워드를 html에서 받아옵니다
   const keyword = document.getElementById("searchAddress").value;
 
-  // 키워드로 장소를 검색합니다
-  ps.keywordSearch(keyword, placesSearchCB);
+  try {
+    const placeResult = await placesSearch(keyword);
+    const coorX = placeResult.x;
+    const coorY = placeResult.y;
 
-  // 키워드 검색 완료 시 호출되는 콜백함수 입니다
-  function placesSearchCB(data, status, pagination) {
-    if (status === kakao.maps.services.Status.OK) {
-      // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-      // LatLngBounds 객체에 좌표를 추가합니다
-      var bounds = new kakao.maps.LatLngBounds();
-
-      bounds.extend(new kakao.maps.LatLng(data[0].y, data[0].x));
-
-      // for (var i = 0; i < data.length; i++) {
-      //   displayMarker(data[i]);
-      //   bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-      // }
-
-      // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-      referMap.setBounds(bounds);
-      console.log(data[0]);
-    }
+    // 받아온 결과로 지도 center 이동
+    map.getView().setCenter(ol.proj.fromLonLat([coorX, coorY]));
+    // 받아온 결과로 행정동 위치 검색
+    const coordResult = await getAddressName(coorX, coorY);
+    // 행정코드를 var areaCode에 저장
+    areaCode = coordResult.code.substring(0, 5);
+  } catch (error) {
+    console.error("An error occurred:", error);
   }
 };

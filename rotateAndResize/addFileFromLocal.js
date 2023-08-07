@@ -43,4 +43,3 @@ fixedVectorLayer = new ol.layer.Vector({
 });
 
 map.addLayer(fixedVectorLayer);
-// };

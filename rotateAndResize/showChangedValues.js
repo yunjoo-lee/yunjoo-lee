@@ -6,19 +6,32 @@ setHandleStyle();
 // let startRadius = 10;
 let previousLength = vectorLayer.length;
 
-let rotating = 0;
-let rotated = 0;
-let scaled = [1, 1];
-let scaling = [1, 1];
+var rotated, scaled;
+let rotating, scaling;
+
+const makeResetValue = () => {
+  rotating = 0;
+  rotated = 0;
+  scaling = [1, 1];
+  scaled = [1, 1];
+};
+
+const sumArrayElements = (arr) => {
+  return arr.reduce((sum, current) => sum + current, 0);
+};
+
+const multiplyArrayElements = (arr) => {
+  return arr.reduce(
+    (product, current) => [product[0] * current[0], product[1] * current[1]],
+    [1, 1]
+  );
+};
 
 // Handle rotate on first point
 const firstPoint = false;
 interaction.on(["select"], (e) => {
   if (vectorLayer.length > previousLength) {
-    rotating = 0;
-    rotated = 0;
-    scaled = [1, 1];
-    scaling = [1, 1];
+    makeResetValue();
     // 이전 배열의 길이 업데이트
     previousLength = vectorLayer.length;
   }
@@ -29,26 +42,13 @@ interaction.on(["select"], (e) => {
   }
 });
 
-interaction.on(["rotatestart", "translatestart", "scalestart"], (e) => {
-  // Rotation
-  // startangle = e.feature.get("angle") || 0;
-  // radius
-  // startRadius = e.feature.get("radius") || 10;
-  // // Translation: 이동 거리를 구해야할 때 이 옵션 주석 처리 해제
-  // d=[0,0];
-});
 interaction.on("rotating", (e) => {
   rotating = (((e.angle * 180) / Math.PI - 180) % 360) + 180 || 0;
   $("#rotateinfo").text("rotate: " + (rotated + rotating).toFixed(2));
   // Set angle attribute to be used on style !
   // e.feature.set("angle", startangle - e.angle);
 });
-interaction.on(["rotateend", "translateend", "scaleend"], (e) => {
-  rotated = rotating + rotated;
-  scaled = [scaling[0] * scaled[0], scaling[1] * scaled[1]];
-});
 
-// "scale: " + e.scale[0].toFixed(2) + "," + e.scale[1].toFixed(2)
 interaction.on("scaling", (e) => {
   scaling = [e.scale[0], e.scale[1]];
   $("#scaleinfo").text(
@@ -66,4 +66,10 @@ interaction.on("scaling", (e) => {
   //   const feature = e.features.item(0);
   // feature.set("radius", startRadius * Math.abs(e.scale[0]));
   // }
+});
+
+// // 이동이 끝났을 때 rotated, scaled에 기존 값 저장
+interaction.on(["rotateend", "translateend", "scaleend"], (e) => {
+  rotated = rotating + rotated;
+  scaled = [scaling[0] * scaled[0], scaling[1] * scaled[1]];
 });
