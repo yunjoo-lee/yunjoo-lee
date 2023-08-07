@@ -6,16 +6,14 @@ setHandleStyle();
 // let startRadius = 10;
 let previousLength = vectorLayer.length;
 
-let rotatedElement, scaledElement;
-
-var rotateArray, scaleArray;
+var rotated, scaled;
+let rotating, scaling;
 
 const makeResetValue = () => {
-  rotatedElement = 0;
-  scaledElement = [1, 1];
-
-  rotateArray = [rotatedElement];
-  scaleArray = [scaledElement];
+  rotating = 0;
+  rotated = 0;
+  scaling = [1, 1];
+  scaled = [1, 1];
 };
 
 const sumArrayElements = (arr) => {
@@ -44,31 +42,20 @@ interaction.on(["select"], (e) => {
   }
 });
 
-interaction.on(["rotatestart", "translatestart", "scalestart"], (e) => {
-  // Rotation
-  // startangle = e.feature.get("angle") || 0;
-  // radius
-  // startRadius = e.feature.get("radius") || 10;
-  // // Translation: 이동 거리를 구해야할 때 이 옵션 주석 처리 해제
-  // d=[0,0];
-});
-
 interaction.on("rotating", (e) => {
-  rotatedElement = (((e.angle * 180) / Math.PI - 180) % 360) + 180;
-  $("#rotateinfo").text(
-    "rotate: " + (sumArrayElements(rotateArray) + rotatedElement).toFixed(2)
-  );
+  rotating = (((e.angle * 180) / Math.PI - 180) % 360) + 180 || 0;
+  $("#rotateinfo").text("rotate: " + (rotated + rotating).toFixed(2));
   // Set angle attribute to be used on style !
   // e.feature.set("angle", startangle - e.angle);
 });
 
 interaction.on("scaling", (e) => {
-  scaledElement = [e.scale[0], e.scale[1]];
+  scaling = [e.scale[0], e.scale[1]];
   $("#scaleinfo").text(
     "scale: " +
-      (multiplyArrayElements(scaleArray)[0] * scaledElement[0]).toFixed(2) +
-      " , " +
-      (multiplyArrayElements(scaleArray)[1] * scaledElement[1]).toFixed(2)
+      (scaling[0] * scaled[0]).toFixed(2) +
+      "," +
+      (scaling[1] * scaled[1]).toFixed(2)
   );
   if (firstPoint) {
     interaction.setCenter(
@@ -81,7 +68,8 @@ interaction.on("scaling", (e) => {
   // }
 });
 
+// // 이동이 끝났을 때 rotated, scaled에 기존 값 저장
 interaction.on(["rotateend", "translateend", "scaleend"], (e) => {
-  rotateArray.push(rotatedElement);
-  scaleArray.push(scaledElement);
+  rotated = rotating + rotated;
+  scaled = [scaling[0] * scaled[0], scaling[1] * scaled[1]];
 });

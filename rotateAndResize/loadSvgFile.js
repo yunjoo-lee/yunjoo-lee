@@ -7,7 +7,13 @@ const openSVGFile = () => {
   input.type = "file";
   input.accept = "svg";
   input.onchange = (event) => {
-    transFile(event.target.files[0]).then(convertGeojson).catch(console.error);
+    const svgFile = event.target.files[0];
+    transFile(svgFile)
+      .then((res) => {
+        const svgName = svgFile.name.split(".")[0];
+        convertGeojson(svgName);
+      })
+      .catch(console.error);
   };
   input.click();
 };
@@ -34,11 +40,10 @@ const transFile = (file) => {
  * -> svg를 geojson으로 변환
  * 이후 svg 파일을 지도 레이어로 올리는 함수 연속적으로 실행
  */
-const convertGeojson = () => {
+const convertGeojson = (fileName) => {
   const outsvg = document.getElementById("outsvg");
   const svg = outsvg.querySelector("svg");
-  let box = svg.getAttribute("viewBox");
-  box = svg.viewBox.baseVal;
+  const box = svg.viewBox.baseVal;
   svg.setAttribute("id", "mysvg");
   svg.setAttribute("width", String(box.width) + "px"); // 가로 설정
   svg.setAttribute("height", String(box.height) + "px"); // 세로 설정
@@ -57,7 +62,7 @@ const convertGeojson = () => {
     10
   );
 
-  svgToMapLayer(geoJson);
+  svgToMapLayer(geoJson, fileName);
 
   document.getElementById("outsvg").innerHTML =
     "지도에 SVG 레이어를 추가했습니다.";
@@ -69,7 +74,7 @@ const convertGeojson = () => {
  * 지도 상에 띄우는 함수
  * @param {*} fileData
  */
-const svgToMapLayer = (fileData) => {
+const svgToMapLayer = (fileData, fileName) => {
   const geojsonFormat = new ol.format.GeoJSON();
   const features = geojsonFormat.readFeatures(fileData);
 
@@ -83,20 +88,48 @@ const svgToMapLayer = (fileData) => {
     features: features,
   });
 
-  const vectorFromSvg = new ol.layer.Vector({
-    source: vectorSource,
-    style: new ol.style.Style({
-      stroke: new ol.style.Stroke({
-        color: "rgba(255, 255, 255, 0.7)",
-        width: 2,
+  if (fileName.includes("canvas")) {
+    const convasLayer = new ol.layer.Vector({
+      source: vectorSource,
+      style: new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: "rgba(255, 0, 0, 0.8)",
+          width: 2,
+        }),
+        fill: new ol.style.Fill({
+          color: "rgba(0, 0, 0, 0)",
+        }),
       }),
-      fill: new ol.style.Fill({
-        color: "rgba(109, 0, 126, 0.6)",
-      }),
-    }),
-  });
+      properties: {
+        layerType: fileName,
+      },
+    });
 
-  // map에 레이어 추가하고, vectorLayer 배열에 추가한 레이어 객체 추가
-  vectorLayer.push(vectorFromSvg);
-  map.addLayer(vectorFromSvg);
+    // map에 레이어 추가하고, vectorLayer 배열에 추가한 레이어 객체 추가
+    vectorLayer.push(convasLayer);
+    map.addLayer(convasLayer);
+
+    return;
+  }
+
+  if (!fileName.includes("canvas")) {
+    const vectorFromSvg = new ol.layer.Vector({
+      source: vectorSource,
+      style: new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: "rgba(255, 255, 255, 0.5)",
+          width: 2,
+        }),
+        fill: new ol.style.Fill({
+          color: "rgba(100, 0, 120, 0.3)",
+        }),
+      }),
+    });
+
+    // map에 레이어 추가하고, vectorLayer 배열에 추가한 레이어 객체 추가
+    vectorLayer.push(vectorFromSvg);
+    map.addLayer(vectorFromSvg);
+
+    return;
+  }
 };

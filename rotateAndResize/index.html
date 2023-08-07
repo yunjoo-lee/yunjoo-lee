@@ -126,13 +126,14 @@
       <div>
         <button onclick="loadGeojsonFile()">Open<br>GeojsonFile</button>
         <button onclick="openSVGFile()">Open<br>SVG file</button>
+        <button onclick="buttonbutton()">Reset<br>Object</button>
         <button onclick="downloadFileWithAttr()" style="background-color:#94B2E3;">Download<br>Geojson</button>
       </div>
       <div>
         <hr>
         <h3>지도 중심 좌표</h3>
-        <li>위도: <input type='text' id='latitude' value ="37.3925837" ></li>
-        <li>경도: <input type='text' id='longitude' value="127.1119894"></li>
+        <li>위도: <input type='text' id='latitude' value ="37.5468962" ></li>
+        <li>경도: <input type='text' id='longitude' value="126.9535027"></li>
         <br>
         <hr>
       </div>
@@ -155,10 +156,9 @@
 
   <script src="./addTileLayer.js"></script>
   <!-- <script src="./selectTileLayer.js"></script> -->
-  <script src="./addFileFromLocal.js"></script>
+  <!-- <script src="./addFileFromLocal.js"></script> -->
   <script src="./loadGeojsonFile.js"></script>
   <script src="./loadSvgFile.js"></script>
-  <!-- <script src="./convertSvgToLayer.js"></script> -->
   <script src="./setStyleOfMap.js"></script>
   <script src="./setInteractionMode.js"></script>
   <script src="./showChangedValues.js"></script>
@@ -170,6 +170,7 @@
   <script src="./selectRefTile.js"></script>
   <script src="./searchPlaceCoor.js"></script>
   <script src="./moveHandler.js"></script>
+  <!-- 이 부분을 interaction 부분에 추가하면 아래 setControlBar 삭제 가능 -->
   <script src="./setControlBar.js"></script>
 
 </body>
