@@ -47,6 +47,12 @@ const searchPlaceToCoor = async () => {
   // 장소 검색할 키워드를 html에서 받아옵니다
   const keyword = document.getElementById("searchAddress").value;
 
+  // // 참조맵이 구글로 설정되어 있고, 검색어가 영어로만 이루어져 있다면 구글맵에서 검색
+  if (mapSelector.value === "google" && !/[\uAC00-\uD7A3]/g.test(keyword)) {
+    searchGoogleMap(keyword);
+    return;
+  }
+
   try {
     const placeResult = await placesSearch(keyword);
     const coorX = placeResult.x;
@@ -61,4 +67,29 @@ const searchPlaceToCoor = async () => {
   } catch (error) {
     console.error("An error occurred:", error);
   }
+};
+
+const searchGoogleMap = (keyword) => {
+  const service = new google.maps.places.PlacesService(referMap);
+  const request = {
+    query: keyword,
+    fields: [
+      "name",
+      "geometry",
+      "business_status",
+      "formatted_address",
+      "place_id",
+      "plus_code",
+      "types",
+    ],
+  };
+
+  service.findPlaceFromQuery(request, (results, status) => {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      const newLat = results[0].geometry.location.lat();
+      const newLon = results[0].geometry.location.lng();
+
+      map.getView().setCenter(ol.proj.fromLonLat([newLon, newLat]));
+    }
+  });
 };
