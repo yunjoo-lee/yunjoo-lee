@@ -68,15 +68,16 @@
       margin: 10px; /* 프레임 외부 여백 설정 */
     }
 
-    .frame {
-      border: 1px solid black;
-      margin: 5px;
-      padding: 10px;
-      width: 150px;
-      height: 30px;
-      display: grid;
-      justify-content: flex-start;
-      align-content: center;
+    .frame  {
+    border: 1px solid black;
+    margin: 5px;
+    padding: 10px 30px 30px 30px;
+    /* width: 300px; */
+    /* height: 120px; */
+    display: grid;
+    justify-items: stretch;
+    justify-content: space-evenly;
+    align-items: start;
     }
 
     .selectBox{
@@ -123,8 +124,11 @@
         <hr>
       </ul>
       <div class="rowRangeBox">
-        <div id="scaleinfo" class="frame">scale: </div>
-        <div id="rotateinfo" class="frame">rotate: </div>
+        <div class="frame">
+          <h3>객체 크기 비율, 회전 비율</h3>
+          <span id="scaleinfo">scale:</span>
+          <span id="rotateinfo">rotate:</span>
+        </div>
       </div>
     </div>
     <div class="columnRangeBox">
@@ -135,13 +139,10 @@
         <button onclick="newnewnew()">참조지도에<br>띄우는버튼</button>
         <button onclick="downloadFileWithAttr()" style="background-color:#94B2E3;">Download<br>Geojson</button>
       </div>
-      <div>
-        <hr>
+      <div class="frame">
         <h3>지도 중심 좌표</h3>
         <li>위도: <span id='latitude'>37.5468962</span></li>
         <li>경도: <span id='longitude'>126.9535027</span></li>
-        <br>
-        <hr>
       </div>
       <div id="outsvg"></div>
     </div>

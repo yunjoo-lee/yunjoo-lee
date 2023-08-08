@@ -52,7 +52,10 @@ const convertGeojson = (fileName) => {
   const [longitude, latitude] = ol.proj.toLonLat(center);
 
   const bound = [
-    [calculateLat(longitude, latitude), calculateLon(longitude, latitude)],
+    [
+      calculateLat(longitude, latitude, box),
+      calculateLon(longitude, latitude, box),
+    ],
     [latitude, longitude],
   ];
 
@@ -139,10 +142,10 @@ const svgToMapLayer = (fileData, fileName) => {
  * TO-DO: pixel이나 scale비 넣어서 실제와 비슷하게 계산
  * 현재는 잠실점 기준으로 1500으로 설정
  */
-const calculateLon = (lon, lat) => {
+const calculateLon = (lon, lat, box) => {
   const radius = 111319.49079; // 1 degree of longitude at the equator, in meters
   const radians = (lat * Math.PI) / 180; // Convert latitude from degrees to radians
-  const deltaLongitude = 595 / (radius * Math.cos(radians)); // Calculate the change in longitude
+  const deltaLongitude = (box.width * 0.1) / (radius * Math.cos(radians)); // Calculate the change in longitude
   const newLongitude = lon + deltaLongitude; // Add the change in longitude to the original longitude
   return newLongitude;
 };
@@ -152,9 +155,9 @@ const calculateLon = (lon, lat) => {
  * TO-DO: pixel이나 scale비 넣어서 실제와 비슷하게 계산
  * 현재는 잠실점 기준으로 750으로 설정
  */
-const calculateLat = (lon, lat) => {
+const calculateLat = (lon, lat, box) => {
   const metersPerDegree = 111000; // 1 degree of latitude in meters
-  const deltaLatitude = 335 / metersPerDegree; // Calculate the change in latitude
+  const deltaLatitude = (box.height * 0.1) / metersPerDegree; // Calculate the change in latitude
   const newLatitude = lat + deltaLatitude; // Add the change in latitude to the original latitude
   return newLatitude;
 };
