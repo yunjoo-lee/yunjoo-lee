@@ -55,7 +55,7 @@ map.addInteraction(undoInteraction);
 // });
 // mainbar.addControl(bar);
 
-const buttonbutton = () => {
+const resetEdit = () => {
   const actionCnt = undoInteraction.length();
   for (let i = 0; i < actionCnt; i++) {
     undoInteraction.undo();
