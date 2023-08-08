@@ -142,7 +142,7 @@ const svgToMapLayer = (fileData, fileName) => {
 const calculateLon = (lon, lat) => {
   const radius = 111319.49079; // 1 degree of longitude at the equator, in meters
   const radians = (lat * Math.PI) / 180; // Convert latitude from degrees to radians
-  const deltaLongitude = 1500 / (radius * Math.cos(radians)); // Calculate the change in longitude
+  const deltaLongitude = 595 / (radius * Math.cos(radians)); // Calculate the change in longitude
   const newLongitude = lon + deltaLongitude; // Add the change in longitude to the original longitude
   return newLongitude;
 };
@@ -154,7 +154,7 @@ const calculateLon = (lon, lat) => {
  */
 const calculateLat = (lon, lat) => {
   const metersPerDegree = 111000; // 1 degree of latitude in meters
-  const deltaLatitude = 750 / metersPerDegree; // Calculate the change in latitude
+  const deltaLatitude = 335 / metersPerDegree; // Calculate the change in latitude
   const newLatitude = lat + deltaLatitude; // Add the change in latitude to the original latitude
   return newLatitude;
 };

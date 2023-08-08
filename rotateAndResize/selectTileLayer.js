@@ -8,8 +8,8 @@
  * 페이지에서 위경도 값 받아와서 OSM 배경 데이터 생성
  */
 // const select = () => {
-const latitude = parseFloat(document.getElementById("latitude").value); // 위도
-const longitude = parseFloat(document.getElementById("longitude").value); // 경도
+// const latitude = parseFloat(document.getElementById("latitude").value); // 위도
+// const longitude = parseFloat(document.getElementById("longitude").value); // 경도
 
 // OpenLayers 맵 생성
 

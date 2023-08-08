@@ -16,16 +16,16 @@ const makeResetValue = () => {
   scaled = [1, 1];
 };
 
-const sumArrayElements = (arr) => {
-  return arr.reduce((sum, current) => sum + current, 0);
-};
+// const sumArrayElements = (arr) => {
+//   return arr.reduce((sum, current) => sum + current, 0);
+// };
 
-const multiplyArrayElements = (arr) => {
-  return arr.reduce(
-    (product, current) => [product[0] * current[0], product[1] * current[1]],
-    [1, 1]
-  );
-};
+// const multiplyArrayElements = (arr) => {
+//   return arr.reduce(
+//     (product, current) => [product[0] * current[0], product[1] * current[1]],
+//     [1, 1]
+//   );
+// };
 
 // Handle rotate on first point
 const firstPoint = false;
@@ -69,7 +69,11 @@ interaction.on("scaling", (e) => {
 });
 
 // // 이동이 끝났을 때 rotated, scaled에 기존 값 저장
-interaction.on(["rotateend", "translateend", "scaleend"], (e) => {
-  rotated = rotating + rotated;
+interaction.on(["scaleend"], (e) => {
   scaled = [scaling[0] * scaled[0], scaling[1] * scaled[1]];
+});
+
+// // 이동이 끝났을 때 rotated, scaled에 기존 값 저장
+interaction.on(["rotateend"], (e) => {
+  rotated = rotating + rotated;
 });

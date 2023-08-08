@@ -56,6 +56,8 @@
       display: flex;
       flex-direction: row;
       justify-content: center;
+      align-items: center;
+      grid-gap: 10px;
     }
 
     .columnRangeBox {
@@ -80,7 +82,7 @@
     .selectBox{
       width:120px;
       height:30px;
-      font-size:12pt
+      font-size:12pt;
     }
 
   </style>
@@ -92,6 +94,7 @@
   </div>
   <div class="externalBox">
     <div class="columnRangeBox">
+      <div class="rowRangeBox">
       <!-- <h3>배경 지도 선택</h3>
       <select id="myselectbox" class="selectBox">
         <option value="osmSource" selected>OSM</option>
@@ -105,6 +108,7 @@
         <option value="naver">Naver</option>
         <option value="google">Google</option>
       </select>
+      </div>
       <ul>
         <!-- <li>
           <input id="scale" type="checkbox" onchange="setPropertie(this.id);" checked="checked" /><label for="scale"> enable scale</label>
@@ -134,8 +138,8 @@
       <div>
         <hr>
         <h3>지도 중심 좌표</h3>
-        <li>위도: <input type='text' id='latitude' value ="37.5468962" ></li>
-        <li>경도: <input type='text' id='longitude' value="126.9535027"></li>
+        <li>위도: <span id='latitude'>37.5468962</span></li>
+        <li>경도: <span id='longitude'>126.9535027</span></li>
         <br>
         <hr>
       </div>
@@ -161,7 +165,8 @@
   <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=sbnmewccyt"></script>
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71ab92bd93f47073d9668e4884c29f83&libraries=services"></script>  
   <script src="./selectRefTile.js"></script>
-  <script src="./selectTileLayer.js"></script>  <!-- main map 자체를 바꾸는 파일 select 박스 부분도 함께 주석 해제해야함 -->
+  <!--  main map 자체를 바꾸는 파일 select 박스 부분도 함께 주석 해제해야함 -->
+  <script src="./selectTileLayer.js"></script>
   <!-- <script src="./addFileFromLocal.js"></script> -->
   <script src="./loadGeojsonFile.js"></script>
   <script src="./loadSvgFile.js"></script>

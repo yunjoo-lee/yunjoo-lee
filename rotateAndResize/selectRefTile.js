@@ -48,8 +48,8 @@ const mapSelector = document.getElementById("tileMapSelect");
  * select box가 선택될 때 실행될 함수 정의
  */
 const setReferenceMap = () => {
-  const latitude = parseFloat(document.getElementById("latitude").value); // 위도
-  const longitude = parseFloat(document.getElementById("longitude").value); // 경도
+  const latitude = parseFloat(document.getElementById("latitude").innerHTML); // 위도
+  const longitude = parseFloat(document.getElementById("longitude").innerHTML); // 경도
 
   const loadMap = maplist[mapSelector.value];
 
