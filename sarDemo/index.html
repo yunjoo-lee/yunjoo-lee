@@ -29,62 +29,92 @@
 </head>
 <body>
     <div id="map"></div>
+
+    <input type="radio" class = "Type" name = "chk_info" id="satelliteImg" value="satelliteImg" onclick="addSatelliteImg()">위성 영상 중첩
+    <input type="radio" class = "Type" name = "chk_info" id="addSTTImg" value="addSTTImg" onclick="addSTTImg()">해수면 온도
+
     <script src="./addTileLayer.js"></script>
     <script>
         // WMS 레이어 생성
-        var layer50224 = new ol.layer.Tile({
-            source: new ol.source.TileWMS({
-                url: 'https://editor.dabeeo.com:18080/geoserver/SARsample/wms',  // GeoServer의 WMS 서비스 URL
-                params: {'LAYERS': 'SARsample:K5_50224',
-                        'TILED': false,
-                        'CRS': 'EPSG:3857'},  // 레이어 이름 등 WMS 파라미터 설정
-                serverType: 'geoserver' ,// 서버 타입 설정
-            }),
-            opacity: 0.7,
-        });
+        const addSatelliteImg  = () => {
+            const existsLayer = map.getAllLayers().slice(1,);
+            
+            existsLayer.forEach(e => {
+                map.removeLayer(e);
+            });
 
-        var layer44548 = new ol.layer.Tile({
-            source: new ol.source.TileWMS({
-                url: 'https://editor.dabeeo.com:18080/geoserver/SARsample/wms',  // GeoServer의 WMS 서비스 URL
-                params: {'LAYERS': 'SARsample:K5_44548',
-                        'TILED': false,
-                        'CRS': 'EPSG:3857'},  // 레이어 이름 등 WMS 파라미터 설정
-                serverType: 'geoserver' ,// 서버 타입 설정
-            }),
-            opacity: 0.7,
-        });
+            const layer50224 = new ol.layer.Tile({
+                source: new ol.source.TileWMS({
+                    url: 'https://editor.dabeeo.com:18080/geoserver/SARsample/wms',  // GeoServer의 WMS 서비스 URL
+                    params: {'LAYERS': 'SARsample:K5_50224',
+                            'TILED': false,
+                            'CRS': 'EPSG:3857'},  // 레이어 이름 등 WMS 파라미터 설정
+                    serverType: 'geoserver' ,// 서버 타입 설정
+                }),
+                opacity: 0.7,
+            });
 
-        var layer44563 = new ol.layer.Tile({
-            source: new ol.source.TileWMS({
-                url: 'https://editor.dabeeo.com:18080/geoserver/SARsample/wms',  // GeoServer의 WMS 서비스 URL
-                params: {'LAYERS': 'SARsample:K5_44563',
-                        'TILED': false,
-                        'CRS': 'EPSG:3857'},  // 레이어 이름 등 WMS 파라미터 설정
-                serverType: 'geoserver' ,// 서버 타입 설정
-            }),
-            opacity: 0.7,
-        });
+            const layer44548 = new ol.layer.Tile({
+                source: new ol.source.TileWMS({
+                    url: 'https://editor.dabeeo.com:18080/geoserver/SARsample/wms',  // GeoServer의 WMS 서비스 URL
+                    params: {'LAYERS': 'SARsample:K5_44548',
+                            'TILED': false,
+                            'CRS': 'EPSG:3857'},  // 레이어 이름 등 WMS 파라미터 설정
+                    serverType: 'geoserver' ,// 서버 타입 설정
+                }),
+                opacity: 0.7,
+            });
+
+            const layer44563 = new ol.layer.Tile({
+                source: new ol.source.TileWMS({
+                    url: 'https://editor.dabeeo.com:18080/geoserver/SARsample/wms',  // GeoServer의 WMS 서비스 URL
+                    params: {'LAYERS': 'SARsample:K5_44563',
+                            'TILED': false,
+                            'CRS': 'EPSG:3857'},  // 레이어 이름 등 WMS 파라미터 설정
+                    serverType: 'geoserver' ,// 서버 타입 설정
+                }),
+                opacity: 0.7,
+            });
+
+            map.addLayer(layer50224);
+            map.addLayer(layer44548);
+            map.addLayer(layer44563);
+        }
+
+        const addSTTImg = () => {
+            
+            const existsLayer = map.getAllLayers().slice(1,);
+            
+            existsLayer.forEach(e => {
+                map.removeLayer(e);
+            });
+
+            const spss = new ol.layer.Tile({
+                source: new ol.source.TileWMS({
+                    url: 'https://editor.dabeeo.com:18080/geoserver/SARsample/wms',  // GeoServer의 WMS 서비스 URL
+                    params: {FORMAT: "image/jpeg",
+                            LAYERS: "SARsample:final_23",
+                            // VERSION: "1.1.1",
+                            // exceptiosns: "application/vnd.ogc.se_inimage",
+                            tiled: true,
+                            // tilesOrigin: "0,-294",
+                            CRS: 'EPSG:3857'
+                            },  // 레이어 이름 등 WMS 파라미터 설정
+                    serverType: 'geoserver' ,// 서버 타입 설정
+                }),
+                opacity: 0.5,
+            });
+
+            map.addLayer(spss);
+        }
 
 
-        var spss = new ol.layer.Tile({
-            source: new ol.source.TileWMS({
-                url: 'https://editor.dabeeo.com:18080/geoserver/SARsample/wms',  // GeoServer의 WMS 서비스 URL
-                params: {FORMAT: "image/jpeg",
-                        LAYERS: "SARsample:final_23",
-                        // VERSION: "1.1.1",
-                        // exceptiosns: "application/vnd.ogc.se_inimage",
-                        tiled: true,
-                        // tilesOrigin: "0,-294",
-                        CRS: 'EPSG:3857'
-                        },  // 레이어 이름 등 WMS 파라미터 설정
-                serverType: 'geoserver' ,// 서버 타입 설정
-            }),
-            opacity: 0.5,
-        });
-        map.addLayer(layer50224);
-        map.addLayer(layer44548);
-        map.addLayer(layer44563);
-        // map.addLayer(spss);
+        // document.querySelectorAll('.Type').forEach( (type) => {
+        //     type.addEventListener('click', () => {
+        //             console.log('라디오 버튼이 변경되었습니다. 선택된 ID: ' + type.id);
+        //     });
+        // });
+
     </script>
 </body>
 </html>
