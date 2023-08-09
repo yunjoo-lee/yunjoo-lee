@@ -59,8 +59,8 @@ const resetEdit = () => {
   const actionCnt = undoInteraction.length();
   for (let i = 0; i < actionCnt; i++) {
     undoInteraction.undo();
-    $("#rotateinfo").text("rotate: ");
-    $("#scaleinfo").text("scale: ");
+    $("#rotateinfo").text("0");
+    $("#scaleinfo").text("1, 1");
     makeResetValue();
     searchPlaceToCoor();
   }

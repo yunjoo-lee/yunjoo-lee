@@ -103,6 +103,7 @@ const svgToMapLayer = (fileData, fileName) => {
           color: "rgba(0, 0, 0, 0)",
         }),
       }),
+      zIndex: 0,
       properties: {
         layerType: fileName,
       },
@@ -115,18 +116,47 @@ const svgToMapLayer = (fileData, fileName) => {
     return;
   }
 
-  if (!fileName.includes("canvas")) {
+  if (fileName.includes("sections")) {
     const vectorFromSvg = new ol.layer.Vector({
       source: vectorSource,
       style: new ol.style.Style({
         stroke: new ol.style.Stroke({
-          color: "rgba(255, 255, 255, 0.5)",
-          width: 2,
+          color: "rgba(255, 255, 255, 0.3)",
+          width: 1,
         }),
         fill: new ol.style.Fill({
-          color: "rgba(100, 0, 120, 0.3)",
+          color: "rgba(102, 102, 102, 0.4)",
         }),
       }),
+      zIndex: 1,
+      properties: {
+        layerType: fileName,
+      },
+    });
+
+    // map에 레이어 추가하고, vectorLayer 배열에 추가한 레이어 객체 추가
+    vectorLayer.push(vectorFromSvg);
+    map.addLayer(vectorFromSvg);
+
+    return;
+  }
+
+  if (!fileName.includes("canvas") && !fileName.includes("sections")) {
+    const vectorFromSvg = new ol.layer.Vector({
+      source: vectorSource,
+      style: new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: "rgba(255, 255, 255, 0.3)",
+          width: 1,
+        }),
+        fill: new ol.style.Fill({
+          color: "rgba(102, 255, 102, 0.5)",
+        }),
+      }),
+      zIndex: 5,
+      properties: {
+        layerType: fileName,
+      },
     });
 
     // map에 레이어 추가하고, vectorLayer 배열에 추가한 레이어 객체 추가

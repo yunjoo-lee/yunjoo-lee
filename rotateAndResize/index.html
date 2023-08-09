@@ -21,17 +21,16 @@
     /* 지도 컨테이너의 크기 지정 */
 
     .mapContainer{
-      border: 2px solid darkgray;
       display: grid;
       flex-direction: column;
-      grid-template-columns: 2fr 3fr;
-      grid-gap: 2px
+      grid-template-columns: 1fr 2fr;
+      grid-gap: 15px
     }
 
     #map {
       width: 100%;
       height: 500px;
-      border-left: 2px solid darkgray;
+      border: 2px solid darkgray;
     }
 
     #downlink {
@@ -47,7 +46,7 @@
 
     .externalBox {
       display: grid;
-      grid-template-columns: 530px 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       flex-direction: row;
       align-items: start;
     }
@@ -65,19 +64,22 @@
       flex-direction: column;
       justify-items: center;
       grid-gap: 10px;
-      margin: 10px; /* 프레임 외부 여백 설정 */
+      margin: 30px; /* 프레임 외부 여백 설정 */
     }
 
     .frame  {
-    border: 1px solid black;
     margin: 5px;
     padding: 10px 30px 30px 30px;
     /* width: 300px; */
+    flex-shrink: 0;
+    border-radius: 5px;
+    border: 0.5px solid #5E5E5E;
+    background: #FFF;
     /* height: 120px; */
     display: grid;
-    justify-items: stretch;
-    justify-content: space-evenly;
-    align-items: start;
+    justify-items: start;
+    justify-content: start;
+    align-items: flex-start;
     }
 
     .selectBox{
@@ -95,7 +97,10 @@
   </div>
   <div class="externalBox">
     <div class="columnRangeBox">
-      <div class="rowRangeBox">
+      <h3>지도 검색</h3>
+      <form name="searchAdd" action="" method="" onsubmit="event.preventDefault(); searchPlaceToCoor()">
+        <input type='text' id='searchAddress'><button type="submit">검색</button>
+      </form>
       <!-- <h3>배경 지도 선택</h3>
       <select id="myselectbox" class="selectBox">
         <option value="osmSource" selected>OSM</option>
@@ -103,61 +108,58 @@
         <option value="googleSource">google</option>
         <option value="ngiSource">NGII</option>
       </select> -->
+      <br>
       <h3>참조 지도 선택</h3>
       <select id="tileMapSelect" class="selectBox">
         <option value="kakao" selected>Kakao</option>
         <option value="naver">Naver</option>
         <option value="google">Google</option>
       </select>
-      </div>
-      <ul>
-        <!-- <li>
-          <input id="scale" type="checkbox" onchange="setPropertie(this.id);" checked="checked" /><label for="scale"> enable scale</label>
-        </li><li>
-          <input id="stretch" type="checkbox" onchange="setPropertie(this.id);" checked="checked" /><label for="stretch"> enable stretch</label>
-        </li><li> 
-          <input id="rotate" type="checkbox" onchange="setPropertie(this.id);" checked="checked" /><label for="rotate"> enable rotate</label>
-        </li>-->
-        <hr>
-        <li><b>Ctrl</b> or <b>Cmd</b> 버튼을 누른 채로 드래그하면 영역을 전체 선택할 수 있습니다.</li>
-        <li><b>Shift</b> 버튼을 누른 채로 조절하면 원본 비율을 유지할 수 있습니다.</li>
-        <hr>
-      </ul>
-      <div class="rowRangeBox">
-        <div class="frame">
-          <h3>객체 크기 비율, 회전 비율</h3>
-          <span id="scaleinfo">scale:</span>
-          <span id="rotateinfo">rotate:</span>
-        </div>
+      <div>
+        <ul>
+          <hr>
+          <li><b>Ctrl</b> or <b>Cmd</b> 버튼을 누른 채로 드래그하면 영역을 전체 선택할 수 있습니다.</li>
+          <li><b>Shift</b> 버튼을 누른 채로 조절하면 원본 비율을 유지할 수 있습니다.</li>
+          <hr>
+        </ul>
       </div>
     </div>
     <div class="columnRangeBox">
-      <div>
-        <button onclick="loadGeojsonFile()">Open<br>GeojsonFile</button>
-        <button onclick="openSVGFile()">Open<br>SVG file</button>
-        <button onclick="resetEdit()">Reset<br>Edit</button>
-        <button onclick="newnewnew()">참조지도에<br>띄우는버튼</button>
-        <button onclick="downloadFileWithAttr()" style="background-color:#94B2E3;">Download<br>Geojson</button>
-      </div>
-      <div class="frame">
-        <h3>지도 중심 좌표</h3>
-        <li>위도: <span id='latitude'>37.5468962</span></li>
-        <li>경도: <span id='longitude'>126.9535027</span></li>
-      </div>
-      <div id="outsvg"></div>
-    </div>
-    <div>
-      <h3>레이어 그룹 선택</h3>
+      <div class="rowRangeBox">
+        <h3>레이어 그룹 선택</h3>
         <select id="groupName" class="selectBox">
           <option value="">분류선택</option>
           <option value="DEP">DEP</option>
           <option value="AVN">AVN</option>
         </select>
-      <hr>
-      <form name="searchAdd" action="" method="" onsubmit="event.preventDefault(); searchPlaceToCoor()">
-        <h3>지도 검색</h3>
-        주소 검색: <input type='text' id='searchAddress'><button type="submit">검색</button>
-      </form>
+      </div>
+      <div>
+        <button onclick="loadGeojsonFile()">Open<br>GeojsonFile</button>
+        <button onclick="openSVGFile()">Open<br>SVG file</button>
+        <button onclick="resetEdit()">Reset<br>Edit</button>
+        <!-- <button onclick="newnewnew()">참조지도에<br>띄우는버튼</button> -->
+      </div>
+      <div class="columnRangeBox">
+        <!-- <form method="POST"> -->
+          <span><input type="checkbox" name="showLayers" value="canvas" onclick="updateProperty(this)" checked> 캔버스</span>
+          <span><input type="checkbox" name="showLayers" value="sections" onclick="updateProperty(this)" checked> 바닥판</span>
+          <span><input type="checkbox" name="showLayers" value="objects" onclick="updateProperty(this)" checked> 오브젝트</span>
+        <!-- </form> -->
+      </div>
+      <div id="outsvg"></div>
+    </div>
+    <div class="columnRangeBox">
+      <div>
+       <button onclick="downloadFileWithAttr()" style="background-color:#94B2E3;">Download<br>Geojson</button>
+      </div>
+      <div class="frame">
+        <h4>Georeferencing</h4>
+        <li>위도: <span id='latitude'>37.5468962</span></li>
+        <li>경도: <span id='longitude'>126.9535027</span></li>
+        <br>
+        <li>Scale: <span id="scaleinfo">-</span></li>
+        <li>Rotate: <span id="rotateinfo">-</span></li>
+      </div>
     </div>
   </div>
 
@@ -167,7 +169,7 @@
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71ab92bd93f47073d9668e4884c29f83&libraries=services"></script>  
   <script src="./selectRefTile.js"></script>
   <!--  main map 자체를 바꾸는 파일 select 박스 부분도 함께 주석 해제해야함 -->
-  <script src="./selectTileLayer.js"></script>
+  <!-- <script src="./selectTileLayer.js"></script> -->
   <!-- <script src="./addFileFromLocal.js"></script> -->
   <script src="./loadGeojsonFile.js"></script>
   <script src="./loadSvgFile.js"></script>
@@ -181,6 +183,7 @@
   <script src="./setControlBar.js"></script>
   <!-- 아직 미완인 코드 -->
   <script src="./showOnReferenceMap.js"></script>
+  <script src="./onOffSelectBox.js"></script>
 
 </body>
 </html>

@@ -44,7 +44,7 @@ interaction.on(["select"], (e) => {
 
 interaction.on("rotating", (e) => {
   rotating = (((e.angle * 180) / Math.PI - 180) % 360) + 180 || 0;
-  $("#rotateinfo").text("rotate: " + (rotated + rotating).toFixed(2));
+  $("#rotateinfo").text((rotated + rotating).toFixed(2));
   // Set angle attribute to be used on style !
   // e.feature.set("angle", startangle - e.angle);
 });
@@ -52,8 +52,7 @@ interaction.on("rotating", (e) => {
 interaction.on("scaling", (e) => {
   scaling = [e.scale[0], e.scale[1]];
   $("#scaleinfo").text(
-    "scale: " +
-      (scaling[0] * scaled[0]).toFixed(2) +
+    (scaling[0] * scaled[0]).toFixed(2) +
       "," +
       (scaling[1] * scaled[1]).toFixed(2)
   );
