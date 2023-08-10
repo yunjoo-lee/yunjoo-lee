@@ -70,7 +70,7 @@
     .frame  {
     margin: 5px;
     padding: 10px 30px 30px 30px;
-    /* width: 300px; */
+    width: 300px;
     flex-shrink: 0;
     border-radius: 5px;
     border: 0.5px solid #5E5E5E;
@@ -108,7 +108,6 @@
         <option value="googleSource">google</option>
         <option value="ngiSource">NGII</option>
       </select> -->
-      <br>
       <h3>참조 지도 선택</h3>
       <select id="tileMapSelect" class="selectBox">
         <option value="kakao" selected>Kakao</option>
@@ -125,17 +124,9 @@
       </div>
     </div>
     <div class="columnRangeBox">
-      <div class="rowRangeBox">
-        <h3>레이어 그룹 선택</h3>
-        <select id="groupName" class="selectBox">
-          <option value="">분류선택</option>
-          <option value="DEP">DEP</option>
-          <option value="AVN">AVN</option>
-        </select>
-      </div>
       <div>
-        <button onclick="loadGeojsonFile()">Open<br>GeojsonFile</button>
-        <button onclick="openSVGFile()">Open<br>SVG file</button>
+        <button onclick="loadGeojsonFile()">Open<br>GeojsonFile</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button onclick="openSVGFile()">Open<br>SVG file</button>&nbsp;&nbsp;&nbsp;&nbsp;
         <button onclick="resetEdit()">Reset<br>Edit</button>
         <!-- <button onclick="newnewnew()">참조지도에<br>띄우는버튼</button> -->
       </div>
@@ -144,6 +135,16 @@
         <label><input type="checkbox" name="showLayers" value="canvas" onclick="updateProperty(this)" checked> 캔버스</label>
         <label><input type="checkbox" name="showLayers" value="sections" onclick="updateProperty(this)" checked> 바닥판</label>
         <label><input type="checkbox" name="showLayers" value="objects" onclick="updateProperty(this)" checked> 오브젝트</label>
+      </div>
+      <br>
+      <hr width="70%">
+      <div class="rowRangeBox">
+        <h3>레이어 그룹 선택</h3>
+        <select id="groupName" class="selectBox">
+          <option value="">분류선택</option>
+          <option value="DEP">DEP</option>
+          <option value="AVN">AVN</option>
+        </select>
       </div>
       <div id="outsvg"></div>
     </div>

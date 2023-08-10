@@ -48,6 +48,7 @@ const convertGeojson = (fileName) => {
   svg.setAttribute("width", String(box.width) + "px"); // 가로 설정
   svg.setAttribute("height", String(box.height) + "px"); // 세로 설정
 
+  console.log(box);
   const center = map.getView().getCenter();
   const [longitude, latitude] = ol.proj.toLonLat(center);
 
@@ -173,11 +174,24 @@ const svgToMapLayer = (fileData, fileName) => {
  * 현재는 잠실점 기준으로 1500으로 설정
  */
 const calculateLon = (lon, lat, box) => {
-  const radius = 111319.49079; // 1 degree of longitude at the equator, in meters
-  const radians = (lat * Math.PI) / 180; // Convert latitude from degrees to radians
-  const deltaLongitude = (box.width * 0.1) / (radius * Math.cos(radians)); // Calculate the change in longitude
-  const newLongitude = lon + deltaLongitude; // Add the change in longitude to the original longitude
-  return newLongitude;
+  const a = 6378137.0; // WGS 84 타원체의 장축 meters
+  const b = 6356752.3142; // WGS 84 타원체의 단축 meters
+
+  // 타원체의 이심률의 제곱 계산
+  const eSquared = (a ** 2 - b ** 2) / a ** 2;
+  // 위도를 라디안 단위로 변환
+  const phi = (lat * Math.PI) / 180;
+
+  // 타원체의 수평 반경 (normal radius of curvature) 계산
+  const N = a / Math.sqrt(1 - eSquared * Math.sin(phi) ** 2);
+  // (box.width * 0.1)m 동쪽으로 이동할 때의 라디안 경도 변화 계산
+  const deltaLambda = (box.width * 0.1) / (N * Math.cos(phi));
+
+  // 변화한 경도 값
+  const deltaLon = (deltaLambda * 180) / Math.PI;
+
+  // 새로운 경도 반환
+  return lon + deltaLon;
 };
 
 /**
@@ -186,8 +200,23 @@ const calculateLon = (lon, lat, box) => {
  * 현재는 잠실점 기준으로 750으로 설정
  */
 const calculateLat = (lon, lat, box) => {
-  const metersPerDegree = 111000; // 1 degree of latitude in meters
-  const deltaLatitude = (box.height * 0.1) / metersPerDegree; // Calculate the change in latitude
-  const newLatitude = lat + deltaLatitude; // Add the change in latitude to the original latitude
-  return newLatitude;
+  const a = 6378137.0; // WGS 84 타원체의 장축 meters
+  const b = 6356752.3142; // WGS 84 타원체의 단축 meters
+
+  // 타원체의 이심률의 제곱 계산
+  const eSquared = (a ** 2 - b ** 2) / a ** 2;
+  // 주어진 위도 값을 라디안 단위로 변환
+  const phi = (lat * Math.PI) / 180;
+
+  // 타원체의 meridional radius of curvature (위도 방향의 반경) 계산
+  const M =
+    (a * (1 - eSquared)) / Math.pow(1 - eSquared * Math.sin(phi) ** 2, 1.5);
+
+  // (box.height * 0.1)만큼 북쪽으로 이동할 때의 위도 라디안 변화량 계산
+  const deltaPhi = (box.height * 0.1) / M;
+
+  // 변화한 위도 값
+  const deltaLat = (deltaPhi * 180) / Math.PI;
+
+  return lat + deltaLat;
 };
