@@ -42,13 +42,13 @@ const addVectorLayer = (fileData) => {
         width: 2,
       }),
       fill: new ol.style.Fill({
-        color: "rgba(0, 130, 15, 0.6)",
+        color: "rgba(25, 42, 104, 0.4)",
       }),
     }),
   });
 
-  // // geojson을 편집 가능한 상태로 불러오고 싶을 경우 아래 코드 추가하여 빌딩 mask import
-  vectorLayer.push(vectorFromGeojson);
+  // // geojson을 편집 가능한 상태로 불러오고 싶을 경우 아래 코드 주석해제하여 import
+  // vectorLayer.push(vectorFromGeojson);
 
   // map에 레이어 추가
   map.addLayer(vectorFromGeojson);

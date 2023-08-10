@@ -55,13 +55,13 @@ map.addInteraction(undoInteraction);
 // });
 // mainbar.addControl(bar);
 
-const resetEdit = () => {
+const resetEdit = async () => {
   const actionCnt = undoInteraction.length();
   for (let i = 0; i < actionCnt; i++) {
     undoInteraction.undo();
     $("#rotateinfo").text("0");
     $("#scaleinfo").text("1, 1");
     makeResetValue();
-    searchPlaceToCoor();
+    await searchPlaceToCoor();
   }
 };

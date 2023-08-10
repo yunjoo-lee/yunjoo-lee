@@ -5,8 +5,6 @@ const updateProperty = (checkboxElement) => {
     return e.getProperties().layerType === checkboxElement.value;
   });
 
-  //   console.log(optionLayer);
-
   // 객체의 해당 속성을 업데이트하고 화면에 표시합니다.
   optionLayer.setProperties({ visible: checkboxElement.checked });
 };
