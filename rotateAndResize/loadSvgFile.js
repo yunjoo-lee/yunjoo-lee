@@ -52,7 +52,10 @@ const convertGeojson = (fileName) => {
   const [longitude, latitude] = ol.proj.toLonLat(center);
 
   const bound = [
-    [latitude + box.height * 0.000001, longitude + box.width * 0.000001],
+    [
+      calculateLat(longitude, latitude, box),
+      calculateLon(longitude, latitude, box),
+    ],
     [latitude, longitude],
   ];
 
@@ -64,8 +67,8 @@ const convertGeojson = (fileName) => {
 
   svgToMapLayer(geoJson, fileName);
 
-  document.getElementById("outsvg").innerHTML =
-    "지도에 SVG 레이어를 추가했습니다.";
+  document.getElementById("outsvg").innerHTML = "";
+  // "지도에 SVG 레이어를 추가했습니다.";
 };
 
 /**
@@ -100,6 +103,7 @@ const svgToMapLayer = (fileData, fileName) => {
           color: "rgba(0, 0, 0, 0)",
         }),
       }),
+      zIndex: 0,
       properties: {
         layerType: fileName,
       },
@@ -109,21 +113,31 @@ const svgToMapLayer = (fileData, fileName) => {
     vectorLayer.push(convasLayer);
     map.addLayer(convasLayer);
 
+    const canvasFeature = features[0].getGeometry();
+    const boxLonLat = new ol.proj.toLonLat(canvasFeature.getFirstCoordinate());
+
+    boxLatitude.innerHTML = boxLonLat[1];
+    boxlongitude.innerHTML = boxLonLat[0];
+
     return;
   }
 
-  if (!fileName.includes("canvas")) {
+  if (fileName.includes("sections")) {
     const vectorFromSvg = new ol.layer.Vector({
       source: vectorSource,
       style: new ol.style.Style({
         stroke: new ol.style.Stroke({
-          color: "rgba(255, 255, 255, 0.5)",
-          width: 2,
+          color: "rgba(255, 255, 255, 0.3)",
+          width: 1,
         }),
         fill: new ol.style.Fill({
-          color: "rgba(100, 0, 120, 0.3)",
+          color: "rgba(102, 102, 102, 0.4)",
         }),
       }),
+      zIndex: 1,
+      properties: {
+        layerType: fileName,
+      },
     });
 
     // map에 레이어 추가하고, vectorLayer 배열에 추가한 레이어 객체 추가
@@ -132,4 +146,82 @@ const svgToMapLayer = (fileData, fileName) => {
 
     return;
   }
+
+  if (!fileName.includes("canvas") && !fileName.includes("sections")) {
+    const vectorFromSvg = new ol.layer.Vector({
+      source: vectorSource,
+      style: new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: "rgba(255, 255, 255, 0.3)",
+          width: 1,
+        }),
+        fill: new ol.style.Fill({
+          color: "rgba(102, 255, 102, 0.5)",
+        }),
+      }),
+      zIndex: 5,
+      properties: {
+        layerType: fileName,
+      },
+    });
+
+    // map에 레이어 추가하고, vectorLayer 배열에 추가한 레이어 객체 추가
+    vectorLayer.push(vectorFromSvg);
+    map.addLayer(vectorFromSvg);
+
+    return;
+  }
+};
+
+/**
+ * 위도와 경도를 넣어서 경도의 값 구하는 공식 (width)
+ * TO-DO: pixel이나 scale비 넣어서 실제와 비슷하게 계산
+ * 현재는 잠실점 기준으로 1500으로 설정
+ */
+const calculateLon = (lon, lat, box) => {
+  const a = 6378137.0; // WGS 84 타원체의 장축 meters
+  const b = 6356752.3142; // WGS 84 타원체의 단축 meters
+
+  // 타원체의 이심률의 제곱 계산
+  const eSquared = (a ** 2 - b ** 2) / a ** 2;
+  // 위도를 라디안 단위로 변환
+  const phi = (lat * Math.PI) / 180;
+
+  // 타원체의 수평 반경 (normal radius of curvature) 계산
+  const N = a / Math.sqrt(1 - eSquared * Math.sin(phi) ** 2);
+  // (box.width * 0.1)m 동쪽으로 이동할 때의 라디안 경도 변화 계산
+  const deltaLambda = (box.width * 0.1) / (N * Math.cos(phi));
+
+  // 변화한 경도 값
+  const deltaLon = (deltaLambda * 180) / Math.PI;
+
+  // 새로운 경도 반환
+  return lon + deltaLon;
+};
+
+/**
+ * 위도와 경도를 넣어서 위도의 값 구하는 공식 (height)
+ * TO-DO: pixel이나 scale비 넣어서 실제와 비슷하게 계산
+ * 현재는 잠실점 기준으로 750으로 설정
+ */
+const calculateLat = (lon, lat, box) => {
+  const a = 6378137.0; // WGS 84 타원체의 장축 meters
+  const b = 6356752.3142; // WGS 84 타원체의 단축 meters
+
+  // 타원체의 이심률의 제곱 계산
+  const eSquared = (a ** 2 - b ** 2) / a ** 2;
+  // 주어진 위도 값을 라디안 단위로 변환
+  const phi = (lat * Math.PI) / 180;
+
+  // 타원체의 meridional radius of curvature (위도 방향의 반경) 계산
+  const M =
+    (a * (1 - eSquared)) / Math.pow(1 - eSquared * Math.sin(phi) ** 2, 1.5);
+
+  // (box.height * 0.1)만큼 북쪽으로 이동할 때의 위도 라디안 변화량 계산
+  const deltaPhi = (box.height * 0.1) / M;
+
+  // 변화한 위도 값
+  const deltaLat = (deltaPhi * 180) / Math.PI;
+
+  return lat + deltaLat;
 };

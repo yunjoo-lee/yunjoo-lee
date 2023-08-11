@@ -1,12 +1,6 @@
 var referMap;
 
 /**
- * 초기 위경도값 지정
- */
-let latitude = parseFloat(document.getElementById("latitude").value); // 위도
-let longitude = parseFloat(document.getElementById("longitude").value); // 경도
-
-/**
  * 위경도값을 변수로 받아 네이버맵 로드
  */
 const setNaverMap = async (latitude, longitude) => {
@@ -20,10 +14,8 @@ const setNaverMap = async (latitude, longitude) => {
  * 위경도값을 변수로 받아 구글맵 로드
  */
 const setGoogleMap = async (latitude, longitude) => {
-  //   const infowindow = await new google.maps.InfoWindow();
-
-  referMap = await new google.maps.Map(document.getElementById("referMap"), {
-    center: await new google.maps.LatLng(latitude, longitude),
+  referMap = new google.maps.Map(document.getElementById("referMap"), {
+    center: new google.maps.LatLng(latitude, longitude),
     zoom: 17,
   });
 };
@@ -56,8 +48,8 @@ const mapSelector = document.getElementById("tileMapSelect");
  * select box가 선택될 때 실행될 함수 정의
  */
 const setReferenceMap = () => {
-  latitude = parseFloat(document.getElementById("latitude").value); // 위도
-  longitude = parseFloat(document.getElementById("longitude").value); // 경도
+  const latitude = parseFloat(document.getElementById("latitude").innerHTML); // 위도
+  const longitude = parseFloat(document.getElementById("longitude").innerHTML); // 경도
 
   const loadMap = maplist[mapSelector.value];
 
@@ -69,12 +61,10 @@ const setReferenceMap = () => {
   // 기존 referMap 요소 삭제
   if (childCont) {
     parentCont.removeChild(childCont);
-    const newchildCont = document
-      .querySelector(".mapContainer")
-      .appendChild(document.createElement("div"));
-
+    const referMapContainer = document.createElement("div");
     // 생성된 요소에 id 설정
-    newchildCont.id = "referMap";
+    referMapContainer.id = "referMap";
+    document.querySelector(".mapContainer").prepend(referMapContainer);
   }
 
   loadMap(latitude, longitude);
