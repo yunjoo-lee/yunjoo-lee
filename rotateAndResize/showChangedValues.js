@@ -29,16 +29,30 @@ const makeResetValue = () => {
 
 // Handle rotate on first point
 const firstPoint = false;
-interaction.on(["select"], (e) => {
+interaction.on("select", (e) => {
   if (vectorLayer.length > previousLength) {
     makeResetValue();
     // 이전 배열의 길이 업데이트
     previousLength = vectorLayer.length;
   }
-  if (firstPoint) {
-    interaction.setCenter(
-      e.features.getArray()[0].getGeometry().getFirstCoordinate()
-    );
+  // const canvasLayer = vectorLayer.find((e) => {
+  //   return e.getProperties().layerType === "canvas";
+  // });
+  // if (canvasLayer) {
+  //   interaction.setCenter(
+  //     canvasLayer
+  //       .getSource()
+  //       .getFeatures()[0]
+  //       .getGeometry()
+  //       .getFirstCoordinate()
+  //   );
+  // }
+
+  if (e.features.getArray().length === 1) {
+    const allFeatures = vectorLayer
+      .map((item) => item.getSource().getFeatures())
+      .flat();
+    interaction.setSelection(allFeatures);
   }
 });
 
@@ -83,9 +97,14 @@ interaction.on(["rotateend", "translateend", "scaleend"], (e) => {
     return e.getProperties().layerType === "canvas";
   });
 
-  const canvasFeature = canvasLayer.getSource().getFeatures()[0].getGeometry();
-  const boxLonLat = new ol.proj.toLonLat(canvasFeature.getFirstCoordinate());
+  if (canvasLayer) {
+    const canvasFeature = canvasLayer
+      .getSource()
+      .getFeatures()[0]
+      .getGeometry();
+    const boxLonLat = new ol.proj.toLonLat(canvasFeature.getFirstCoordinate());
 
-  boxLatitude.innerHTML = boxLonLat[1];
-  boxlongitude.innerHTML = boxLonLat[0];
+    boxLatitude.innerHTML = boxLonLat[1];
+    boxlongitude.innerHTML = boxLonLat[0];
+  }
 });

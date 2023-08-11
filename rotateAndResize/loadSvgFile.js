@@ -48,7 +48,6 @@ const convertGeojson = (fileName) => {
   svg.setAttribute("width", String(box.width) + "px"); // 가로 설정
   svg.setAttribute("height", String(box.height) + "px"); // 세로 설정
 
-  console.log(box);
   const center = map.getView().getCenter();
   const [longitude, latitude] = ol.proj.toLonLat(center);
 
@@ -143,7 +142,7 @@ const svgToMapLayer = (fileData, fileName) => {
 
     // map에 레이어 추가하고, vectorLayer 배열에 추가한 레이어 객체 추가
     vectorLayer.push(vectorFromSvg);
-    map.addLayer(vectorFromSvgㅊ);
+    map.addLayer(vectorFromSvg);
 
     return;
   }
