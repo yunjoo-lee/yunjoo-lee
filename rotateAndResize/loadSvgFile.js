@@ -68,8 +68,8 @@ const convertGeojson = (fileName) => {
 
   svgToMapLayer(geoJson, fileName);
 
-  document.getElementById("outsvg").innerHTML =
-    "지도에 SVG 레이어를 추가했습니다.";
+  document.getElementById("outsvg").innerHTML = "";
+  // "지도에 SVG 레이어를 추가했습니다.";
 };
 
 /**
@@ -114,6 +114,12 @@ const svgToMapLayer = (fileData, fileName) => {
     vectorLayer.push(convasLayer);
     map.addLayer(convasLayer);
 
+    const canvasFeature = features[0].getGeometry();
+    const boxLonLat = new ol.proj.toLonLat(canvasFeature.getFirstCoordinate());
+
+    boxLatitude.innerHTML = boxLonLat[1];
+    boxlongitude.innerHTML = boxLonLat[0];
+
     return;
   }
 
@@ -137,7 +143,7 @@ const svgToMapLayer = (fileData, fileName) => {
 
     // map에 레이어 추가하고, vectorLayer 배열에 추가한 레이어 객체 추가
     vectorLayer.push(vectorFromSvg);
-    map.addLayer(vectorFromSvg);
+    map.addLayer(vectorFromSvgㅊ);
 
     return;
   }

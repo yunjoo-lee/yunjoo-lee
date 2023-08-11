@@ -110,9 +110,9 @@
       </select> -->
       <h3>참조 지도 선택</h3>
       <select id="tileMapSelect" class="selectBox">
-        <option value="kakao" selected>Kakao</option>
+        <option value="kakao">Kakao</option>
         <option value="naver">Naver</option>
-        <option value="google">Google</option>
+        <option value="google" selected>Google</option>
       </select>
       <div>
         <ul>
@@ -156,6 +156,9 @@
         <h4>Georeferencing</h4>
         <li>위도: <span id='latitude'>37.5468962</span></li>
         <li>경도: <span id='longitude'>126.9535027</span></li>
+        <br>
+        <li>캔버스 좌상단 위도: <span id='boxLatitude'></span></li>
+        <li>캔버스 좌상단 경도: <span id='boxlongitude'></span></li>
         <br>
         <li>Scale: <span id="scaleinfo">-</span></li>
         <li>Rotate: <span id="rotateinfo">-</span></li>

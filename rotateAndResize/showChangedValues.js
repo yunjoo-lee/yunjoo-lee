@@ -76,3 +76,16 @@ interaction.on(["scaleend"], (e) => {
 interaction.on(["rotateend"], (e) => {
   rotated = rotating + rotated;
 });
+
+// // edit이 끝났을 때 좌상단의 좌표값 수정
+interaction.on(["rotateend", "translateend", "scaleend"], (e) => {
+  const canvasLayer = vectorLayer.find((e) => {
+    return e.getProperties().layerType === "canvas";
+  });
+
+  const canvasFeature = canvasLayer.getSource().getFeatures()[0].getGeometry();
+  const boxLonLat = new ol.proj.toLonLat(canvasFeature.getFirstCoordinate());
+
+  boxLatitude.innerHTML = boxLonLat[1];
+  boxlongitude.innerHTML = boxLonLat[0];
+});
