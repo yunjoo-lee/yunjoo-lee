@@ -1,5 +1,5 @@
 {
-  "name": "source",
+  "name": "georeferencing",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -12,10 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
-    "morgan": "^1.10.0",
-    "@googlemaps/google-maps-services-js": "^3.3.34",
-    "axios": "^1.4.0",
-    "ol": "^7.4.0",
-    "openlayers": "^3.0.0"
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
   }
 }
