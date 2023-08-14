@@ -48,25 +48,29 @@ const mapSelector = document.getElementById("tileMapSelect");
  * select box가 선택될 때 실행될 함수 정의
  */
 const setReferenceMap = () => {
+  console.log("실행됨?? 1");
   const latitude = parseFloat(document.getElementById("latitude").innerHTML); // 위도
   const longitude = parseFloat(document.getElementById("longitude").innerHTML); // 경도
 
   const loadMap = maplist[mapSelector.value];
 
+  console.log("실행됨2");
   // 부모 요소 찾기
   const parentCont = document.querySelector(".mapContainer");
   // 기존 referMap 요소 찾기
   const childCont = document.querySelector("#referMap");
 
-  // 기존 referMap 요소 삭제
-  if (childCont) {
-    parentCont.removeChild(childCont);
-    const referMapContainer = document.createElement("div");
-    // 생성된 요소에 id 설정
-    referMapContainer.id = "referMap";
-    document.querySelector(".mapContainer").prepend(referMapContainer);
-  }
-
+  console.log("실행됨3");
+  // // 기존 referMap 요소 삭제
+  // if (childCont) {
+  //   console.log("if 문 실행됨4");
+  //   parentCont.removeChild(childCont);
+  //   const referMapContainer = document.createElement("div");
+  //   // 생성된 요소에 id 설정
+  //   referMapContainer.id = "referMap";
+  //   document.querySelector(".mapContainer").prepend(referMapContainer);
+  // }
+  console.log("실행됨5");
   loadMap(latitude, longitude);
 };
 

@@ -17,6 +17,11 @@ app.get(
   })
 );
 
+// /dev 경로로 접속시 index_dev.html 응답
+app.get("/dev", (req, res) => {
+  res.sendFile(path.join(__dirname, "/index_dev.html"));
+});
+
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send(err.message);
