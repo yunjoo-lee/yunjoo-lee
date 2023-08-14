@@ -47,31 +47,36 @@ const mapSelector = document.getElementById("tileMapSelect");
 /**
  * select box가 선택될 때 실행될 함수 정의
  */
-const setReferenceMap = () => {
-  console.log("실행됨?? 1");
+const setReferenceMap = async () => {
+  // console.log("함수 동작");
   const latitude = parseFloat(document.getElementById("latitude").innerHTML); // 위도
   const longitude = parseFloat(document.getElementById("longitude").innerHTML); // 경도
 
   const loadMap = maplist[mapSelector.value];
 
-  console.log("실행됨2");
   // 부모 요소 찾기
-  const parentCont = document.querySelector(".mapContainer");
-  // 기존 referMap 요소 찾기
-  const childCont = document.querySelector("#referMap");
+  const containerElement = document.querySelector("#mapContainer");
 
-  console.log("실행됨3");
-  // // 기존 referMap 요소 삭제
-  // if (childCont) {
-  //   console.log("if 문 실행됨4");
-  //   parentCont.removeChild(childCont);
-  //   const referMapContainer = document.createElement("div");
-  //   // 생성된 요소에 id 설정
-  //   referMapContainer.id = "referMap";
-  //   document.querySelector(".mapContainer").prepend(referMapContainer);
-  // }
-  console.log("실행됨5");
-  loadMap(latitude, longitude);
+  // 기존 referMap 요소 삭제
+  if (containerElement) {
+    containerElement.innerHTML = "";
+    // console.log("내부 요소 지움");
+    const referMapElement = document.createElement("div");
+    // console.log("div 생성");
+    // // 생성된 요소에 id 설정
+    referMapElement.id = "referMap";
+    referMapElement.style.height = "100%";
+    // console.log("id, 높이 부여");
+    containerElement.append(referMapElement);
+
+    // console.log("child 요소로 추가");
+
+    setTimeout(() => {
+      loadMap(latitude, longitude);
+      // console.log("set time out 실행됨");
+    }, 100);
+  }
+  // console.log("끝");
 };
 
 /**
@@ -79,7 +84,8 @@ const setReferenceMap = () => {
  */
 mapSelector.addEventListener("change", setReferenceMap);
 
-/**
- * 기본값으로 선택된 함수 실행
- */
+// // OSM tile load
+// document.addEventListener("DOMContentLoaded", (event) => {
 setReferenceMap();
+// });
+// 참조 지도에서 기본값으로 설정된 지도 로드

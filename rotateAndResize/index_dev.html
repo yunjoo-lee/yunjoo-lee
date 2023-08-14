@@ -10,7 +10,7 @@
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/ol.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <!-- <-- OpenLayers 라이브러리 가져오기 -->
     <script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
     <!-- ol-ext -->
@@ -34,6 +34,23 @@
       .searchAddress-box {
         height: calc(100% - 40px);
       }
+
+      .overlay {
+          display: none;
+          position: absolute;
+          background-color: rgba(255, 255, 255, 0.8);
+          z-index: 1000;
+          color: black;
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 20px;
+          line-height: 2;
+      }
+
+      .highlight {
+        color: #0070C0;
+      }
+
     </style>
   </head>
   <body>
@@ -78,7 +95,7 @@
           <div class="flex gap-4">
             <div class="basis-2/6 shrink-0">
               <h5
-                class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                class="mb-2 text-xl font-bold tracking-tight text-gray-900"
               >
                 건물 주소 설정
               </h5>
@@ -96,7 +113,6 @@
                         type="submit"
                         class="absolute top-0 right-0 p-2.5 h-full text-sm font-medium text-white bg-blue-700 border border-blue-700"
                       >
-                    </form>
                       <svg
                         class="w-4 h-4"
                         aria-hidden="true"
@@ -112,7 +128,13 @@
                           d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                         />
                       </svg>
-                    </button>
+                      </button>
+                    </form>
+                    <div class="overlay" id ="overlay">
+                      <div id="menu_wrap" class="bg_white">
+                          <ul id="placesList"></ul>
+                      </div>
+                    </div>
                   </div>
                   <div class="flex flex-col gap-2 w-full p-2">
                     <div class="flex">
@@ -131,7 +153,7 @@
               <div class="flex items-center mb-2">
                 <div class="flex items-center flex-1 gap-2">
                   <h5
-                    class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                    class="text-xl font-bold tracking-tight text-gray-900"
                   >
                     도면 설정
                   </h5>
@@ -275,7 +297,7 @@
                           />
                           <label
                             for="canvas-checkbox"
-                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                            class="ml-2 text-sm font-medium text-gray-900"
                             >캔버스</label
                           >
                         </div>
@@ -290,7 +312,7 @@
                           />
                           <label
                             for="section-checkbox"
-                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                            class="ml-2 text-sm font-medium text-gray-900"
                             >바닥판</label
                           >
                         </div>
@@ -305,7 +327,7 @@
                           />
                           <label
                             for="object-checkbox"
-                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                            class="ml-2 text-sm font-medium text-gray-900"
                             >오브젝트</label
                           >
                         </div>
@@ -364,9 +386,10 @@
                   <option value="google">Google</option>
                 </select>
               </div>
-              <div class="mapContainer" style="height: 470px;">
-                <div class="border border-slate-700 h-full" id="referMap"></div>
-              </div>
+                <div class="border border-slate-700 h-full" id="mapContainer">
+                  <div id="referMap">
+                  </div>
+                </div>
             </div>
             <div class="flex-1">
               <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900">
@@ -449,6 +472,7 @@
     <script src="./searchPlaceCoor.js"></script>
     <script src="./moveHandler.js"></script>
     <script src="./onOffSelectBox.js"></script>
+    <script src="./displayPlaceList.js"></script>
   
   </body>
 </html>

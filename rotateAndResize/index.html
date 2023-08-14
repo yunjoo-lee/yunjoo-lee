@@ -20,7 +20,7 @@
   <style>
     /* 지도 컨테이너의 크기 지정 */
 
-    .mapContainer{
+    .containerClass{
       display: grid;
       flex-direction: column;
       grid-template-columns: 2fr 3fr;
@@ -91,8 +91,10 @@
   </style>
 </head>
 <body>
-  <div class="mapContainer">
-    <div id="referMap"></div>
+  <div class="containerClass">
+    <div id="mapContainer">
+      <div id="referMap"></div>
+    </div>
     <div id="map"></div> 
   </div>
   <div class="externalBox">
@@ -117,7 +119,6 @@
       <div>
         <ul>
           <hr>
-          <li><b>Ctrl</b> or <b>Cmd</b> 버튼을 누른 채로 드래그하면 영역을 전체 선택할 수 있습니다.</li>
           <li><b>Shift</b> 버튼을 누른 채로 조절하면 원본 비율을 유지할 수 있습니다.</li>
           <hr>
         </ul>
