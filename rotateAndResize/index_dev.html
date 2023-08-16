@@ -186,7 +186,6 @@
                     role="tooltip"
                     class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
                   >
-                    <!-- <div>∙ Ctrl (cmd) + 마우스 드래그 : 영역 전체 선택</div> -->
                     <div>∙ Shift + 마우스 드래그 : 비율 유지하며 조정</div>
                     <div class="tooltip-arrow" data-popper-arrow></div>
                   </div>
@@ -354,18 +353,11 @@
                         </div>
                         <span class="text-gray-950" id='boxLatitude'>-</span>
                         <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
-                      <!-- </div>
-                      <div class="flex">
-                        <div class="flex-1 shrink-0 text-gray-400">
-                          캔버스 좌상단 경도
-                        </div> -->
                         <span class="text-gray-950" id='boxlongitude'>-</span>
                       </div>
                       <div class="flex flex-row gap-10">
                         <div class="flex-1 shrink-0 text-gray-400">Scale</div>
                         <div class="text-gray-950" id="scaleinfo">-</div>
-                      <!-- </div>
-                      <div class="flex"> -->
                         <div class="flex-1 shrink-0 text-gray-400">Rotate</div>
                         <div class="text-gray-950" id="rotateinfo">-</div>
                       </div>
@@ -389,18 +381,21 @@
               </div>
                 <div class="border border-slate-700 h-full relative" id="mapContainer">
                   <div class="absolute z-50	bottom-5 left-1/2 transform -translate-x-1/2 flex gap-3">
-                    <button
+                    <button id = "kakao"
                             class="bg-yellow-300 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded"
-                    >
+                            onclick="setReferenceMap(this)"
+                            >
                       카카오
                     </button>
-                    <button
+                    <button id = "naver"
                             class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                    >
+                            onclick="setReferenceMap(this)"
+                             >
                       네이버
                     </button>
-                    <button
+                    <button id = "google"
                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            onclick="setReferenceMap(this)"
                     >
                       구글
                     </button>

@@ -11,6 +11,7 @@ const placesSearch = async (keyword) => {
 
   return new Promise((resolve, reject) => {
     placeApi.keywordSearch(keyword, (data, status) => {
+      // // TO-DO: if문을 다른 함수에서 처리하도록 로직 수정
       if (status === kakao.maps.services.Status.OK) {
         const removeSpace = keyword.replace(/\s+/g, "");
         const newPlaceArray = data.filter((obj) =>
@@ -18,7 +19,7 @@ const placesSearch = async (keyword) => {
         );
 
         if (newPlaceArray.length <= 1) {
-          resolve(data[0]);
+          resolve(data[0], removeSpace);
           return;
         }
         if (newPlaceArray.length > 1) {
@@ -108,7 +109,7 @@ const searchGoogleMap = (keyword) => {
   });
 };
 
-const moveMapToResult = async (onlyResult) => {
+const moveMapToResult = async (onlyResult, removeSpace) => {
   // // 어떤 함수를 실행시켜서 data object 하나를 넣으면, 해당 위치로 이동
   const coorX = onlyResult.x;
   const coorY = onlyResult.y;

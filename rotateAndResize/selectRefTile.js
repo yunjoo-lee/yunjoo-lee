@@ -47,36 +47,44 @@ const mapSelector = document.getElementById("tileMapSelect");
 /**
  * select box가 선택될 때 실행될 함수 정의
  */
-const setReferenceMap = async () => {
-  // console.log("함수 동작");
+const setReferenceMap = async (option) => {
+  // if (!option) {
+
+  // }
+  const selectedOption = option ? option.id : "naver";
+
+  const buttonList = {
+    naver: setNaverMap,
+    google: setGoogleMap,
+    kakao: setKakaoMap,
+  };
+
+  // // TO-DO
+  /**
+   * 선택했을때 투명도 조절, 기본값은 투명도 낮추기
+   */
+  const loadMap = buttonList[selectedOption];
+
   const latitude = parseFloat(document.getElementById("latitude").innerHTML); // 위도
   const longitude = parseFloat(document.getElementById("longitude").innerHTML); // 경도
-
-  const loadMap = maplist[mapSelector.value];
 
   // 부모 요소 찾기
   const containerElement = document.querySelector("#mapContainer");
 
   // 기존 referMap 요소 삭제
   if (containerElement) {
-    containerElement.querySelector('#referMap')?.remove();
-    // console.log("내부 요소 지움");
+    containerElement.querySelector("#referMap")?.remove();
+
     const referMapElement = document.createElement("div");
-    // console.log("div 생성");
-    // // 생성된 요소에 id 설정
+
     referMapElement.id = "referMap";
     referMapElement.style.height = "100%";
-    // console.log("id, 높이 부여");
     containerElement.append(referMapElement);
-
-    // console.log("child 요소로 추가");
 
     setTimeout(() => {
       loadMap(latitude, longitude);
-      // console.log("set time out 실행됨");
     }, 100);
   }
-  // console.log("끝");
 };
 
 /**
@@ -89,3 +97,14 @@ mapSelector.addEventListener("change", setReferenceMap);
 setReferenceMap();
 // });
 // 참조 지도에서 기본값으로 설정된 지도 로드
+
+// const handleButtonClick = (optionId) => {
+//   setSelectedOption(optionId);
+// };
+
+// const setSelectedOption = (optionId) => {
+//   selectedOption = optionId;
+//   setReferenceMap();
+// };
+
+// const setOption = () => {};
