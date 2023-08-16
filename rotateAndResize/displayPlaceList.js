@@ -55,6 +55,9 @@ const getListItem = (removeSpace, places) => {
 
 // 검색결과 검색 목록에서 결과를 선택했을 때, 해당하는 POI로 이동하는 함수
 const moveMapOnPoi = async (clickedObject) => {
+  // // input box를 선택한 단어료 변경
+
+  // // 어떤 함수를 실행시켜서 data object 하나를 넣으면, 해당 위치로 이동
   const coorX = clickedObject.x;
   const coorY = clickedObject.y;
 

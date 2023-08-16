@@ -77,16 +77,7 @@ const searchPlaceToCoor = async () => {
 
   try {
     const placeResult = await placesSearch(keyword);
-
-    const coorX = placeResult.x;
-    const coorY = placeResult.y;
-
-    // 받아온 결과로 지도 center 이동
-    map.getView().setCenter(ol.proj.fromLonLat([coorX, coorY]));
-    // 받아온 결과로 행정동 위치 검색
-    const coordResult = await getAddressName(coorX, coorY);
-    // 행정코드를 var areaCode에 저장
-    areaCode = coordResult.code.substring(0, 5);
+    await moveMapToResult(placeResult);
   } catch (error) {
     console.error("An error occurred:", error);
   }
@@ -115,4 +106,17 @@ const searchGoogleMap = (keyword) => {
       map.getView().setCenter(ol.proj.fromLonLat([newLon, newLat]));
     }
   });
+};
+
+const moveMapToResult = async (onlyResult) => {
+  // // 어떤 함수를 실행시켜서 data object 하나를 넣으면, 해당 위치로 이동
+  const coorX = onlyResult.x;
+  const coorY = onlyResult.y;
+
+  // 받아온 결과로 지도 center 이동
+  map.getView().setCenter(ol.proj.fromLonLat([coorX, coorY]));
+  // 받아온 결과로 행정동 위치 검색
+  const coordResult = await getAddressName(coorX, coorY);
+  // 행정코드를 var areaCode에 저장
+  areaCode = coordResult.code.substring(0, 5);
 };
