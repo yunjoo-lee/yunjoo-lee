@@ -193,8 +193,9 @@
                 </div>
                 <div class="flex gap-2">
                   <button
-                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center h-8"
+                    class="bg-gray-300 hover:bg-gray-400 disabled:bg-gray-500 disabled:text-gray-200 disabled:opacity-30 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center h-8"
                     onclick="downloadFileWithAttr()"
+                    disabled
                     >
                     <svg
                       class="fill-current w-4 h-4 mr-2"
@@ -386,7 +387,24 @@
                   <option value="google">Google</option>
                 </select>
               </div>
-                <div class="border border-slate-700 h-full" id="mapContainer">
+                <div class="border border-slate-700 h-full relative" id="mapContainer">
+                  <div class="absolute z-50	bottom-5 left-1/2 transform -translate-x-1/2 flex gap-3">
+                    <button
+                            class="bg-yellow-300 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded"
+                    >
+                      카카오
+                    </button>
+                    <button
+                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      네이버
+                    </button>
+                    <button
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      구글
+                    </button>
+                  </div>
                   <div id="referMap">
                   </div>
                 </div>

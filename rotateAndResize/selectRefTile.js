@@ -59,7 +59,7 @@ const setReferenceMap = async () => {
 
   // 기존 referMap 요소 삭제
   if (containerElement) {
-    containerElement.innerHTML = "";
+    containerElement.querySelector('#referMap')?.remove();
     // console.log("내부 요소 지움");
     const referMapElement = document.createElement("div");
     // console.log("div 생성");
