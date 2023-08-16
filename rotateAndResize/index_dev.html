@@ -194,8 +194,7 @@
                   <button
                     class="bg-gray-300 hover:bg-gray-400 disabled:bg-gray-500 disabled:text-gray-200 disabled:opacity-30 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center h-8"
                     onclick="downloadFileWithAttr()"
-                    disabled
-                    >
+                  >
                     <svg
                       class="fill-current w-4 h-4 mr-2"
                       xmlns="http://www.w3.org/2000/svg"
@@ -373,28 +372,28 @@
                 <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900">
                   ※ 불러온 도면 파일의 방향을 맞출 때 참조하세요
                 </h5>
-                <select id="tileMapSelect" class="selectBox">
+                <!-- <select id="tileMapSelect" class="selectBox">
                   <option value="kakao" >Kakao</option>
                   <option value="naver" selected>Naver</option>
                   <option value="google">Google</option>
-                </select>
+                </select> -->
               </div>
                 <div class="border border-slate-700 h-full relative" id="mapContainer">
-                  <div class="absolute z-50	bottom-5 left-1/2 transform -translate-x-1/2 flex gap-3">
+                  <div id ="buttonGroup" class="absolute z-50	bottom-5 left-1/2 transform -translate-x-1/2 flex gap-3">
                     <button id = "kakao"
-                            class="bg-yellow-300 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded"
+                            class="bg-yellow-400 hover:bg-yellow-500 opacity-40 opa text-white font-bold py-2 px-4 rounded"
                             onclick="setReferenceMap(this)"
                             >
                       카카오
                     </button>
                     <button id = "naver"
-                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                            class="bg-green-500 hover:bg-green-700 opacity-40 text-white font-bold py-2 px-4 rounded"
                             onclick="setReferenceMap(this)"
                              >
                       네이버
                     </button>
                     <button id = "google"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            class="bg-blue-500 hover:bg-blue-700 opacity-40 text-white font-bold py-2 px-4 rounded"
                             onclick="setReferenceMap(this)"
                     >
                       구글

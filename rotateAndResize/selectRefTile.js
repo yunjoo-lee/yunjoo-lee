@@ -35,23 +35,11 @@ const setKakaoMap = async (latitude, longitude) => {
 };
 
 /**
- * select box의 value와 함수 매치
- */
-const maplist = {
-  naver: setNaverMap,
-  google: setGoogleMap,
-  kakao: setKakaoMap,
-};
-const mapSelector = document.getElementById("tileMapSelect");
-
-/**
  * select box가 선택될 때 실행될 함수 정의
  */
 const setReferenceMap = async (option) => {
-  // if (!option) {
-
-  // }
-  const selectedOption = option ? option.id : "naver";
+  // // 초기 로딩 시 불러올 지도 설정 (option ? option.id : "초기 선택 지도")
+  const selectedOption = option ? option.id : "kakao";
 
   const buttonList = {
     naver: setNaverMap,
@@ -59,10 +47,19 @@ const setReferenceMap = async (option) => {
     kakao: setKakaoMap,
   };
 
-  // // TO-DO
-  /**
-   * 선택했을때 투명도 조절, 기본값은 투명도 낮추기
-   */
+  // 'buttonGroup' 내의 모든 버튼에 대해서
+  document.querySelectorAll("#buttonGroup button").forEach((button) => {
+    // 클릭된 버튼이 아닌 다른 버튼의 투명도를 40%로 설정
+    if (button.id !== selectedOption) {
+      button.classList.remove("opacity-100");
+      button.classList.add("opacity-40");
+    } else {
+      // 클릭된 버튼의 투명도를 100%로 설정
+      button.classList.remove("opacity-40");
+      button.classList.add("opacity-100");
+    }
+  });
+
   const loadMap = buttonList[selectedOption];
 
   const latitude = parseFloat(document.getElementById("latitude").innerHTML); // 위도
@@ -87,24 +84,4 @@ const setReferenceMap = async (option) => {
   }
 };
 
-/**
- * 셀렉트 박스의 선택이 바뀔 때 마다 지도 불러오는 함수 실행
- */
-mapSelector.addEventListener("change", setReferenceMap);
-
-// // OSM tile load
-// document.addEventListener("DOMContentLoaded", (event) => {
 setReferenceMap();
-// });
-// 참조 지도에서 기본값으로 설정된 지도 로드
-
-// const handleButtonClick = (optionId) => {
-//   setSelectedOption(optionId);
-// };
-
-// const setSelectedOption = (optionId) => {
-//   selectedOption = optionId;
-//   setReferenceMap();
-// };
-
-// const setOption = () => {};

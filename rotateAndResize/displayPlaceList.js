@@ -46,7 +46,7 @@ const getListItem = (removeSpace, places) => {
   // 검색 단어와 일치하는 부분을 <span> 태그로 감싸는 작업
   const matchedPlaceName = normalizedplaceName
     .split(removeSpace)
-    .join(`<span class="highlight">${removeSpace}</span>`);
+    .join(`<span class="text-green-500">${removeSpace}</span>`);
 
   const el = document.createElement("li");
   const itemStr = `<div class="info">${matchedPlaceName}</div>`;
@@ -60,8 +60,7 @@ const getListItem = (removeSpace, places) => {
 // 검색결과 검색 목록에서 결과를 선택했을 때, 해당하는 POI로 이동하는 함수
 const moveMapOnPoi = async (clickedObject, searchInput) => {
   const overlay = document.getElementById("overlay");
-  // // TO-DO input box를 선택한 단어로 변경
-  // const searchInput = document.getElementById("searchAddress");
+
   searchInput.value = clickedObject.place_name;
 
   // // 어떤 함수를 실행시켜서 data object 하나를 넣으면, 해당 위치로 이동

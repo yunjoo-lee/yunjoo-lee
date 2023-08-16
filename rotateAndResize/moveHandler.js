@@ -6,9 +6,12 @@ addEventListener("DOMContentLoaded", (event) => {
     document.getElementById("longitude").innerHTML = newLon;
     document.getElementById("latitude").innerHTML = newLat;
 
-    const mapSelector = document.getElementById("tileMapSelect");
+    // const mapSelector = document.getElementById("tileMapSelect");
+    const opaqueButtons = document.querySelector(
+      "#buttonGroup button.opacity-100"
+    );
 
-    switch (mapSelector.value) {
+    switch (opaqueButtons.id) {
       case "naver":
         referMap.setCenter(new naver.maps.LatLng(newLat, newLon));
         break;
