@@ -15,7 +15,7 @@ const displayPlaces = (places, removeSpace) => {
     // 마커와 검색결과 항목에 클릭 했을때 해당 장소로 이동
     ((placeObject) => {
       itemEl.onmouseover = function () {
-        itemEl.style.backgroundColor = "#aaa";
+        itemEl.style.backgroundColor = "#D3D3D3";
       };
       itemEl.onmouseout = function () {
         itemEl.style.backgroundColor = "";
