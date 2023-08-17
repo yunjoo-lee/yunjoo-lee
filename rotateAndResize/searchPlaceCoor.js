@@ -26,10 +26,13 @@ const placesSearch = async (keyword) => {
           // 검색 목록과 마커를 표출합니다
           displayPlaces(newPlaceArray, removeSpace);
         }
-      } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+        return;
+      }
+      if (status === kakao.maps.services.Status.ZERO_RESULT) {
         alert("검색 결과가 존재하지 않습니다.");
         return;
-      } else if (status === kakao.maps.services.Status.ERROR) {
+      }
+      if (status === kakao.maps.services.Status.ERROR) {
         alert("검색 결과 중 오류가 발생했습니다.");
         return;
       }
@@ -69,6 +72,8 @@ const searchPlaceToCoor = async () => {
     alert("키워드를 입력해주세요!");
     return false;
   }
+
+  const selectedBtn = document.querySelector("#buttonGroup button.opacity-100");
 
   // // 참조맵이 구글로 설정되어 있고, 검색어가 영어로만 이루어져 있다면 구글맵에서 검색
   if (selectedBtn.id === "google" && !/[\uAC00-\uD7A3]/g.test(keyword)) {
