@@ -52,10 +52,10 @@ const setReferenceMap = async (option) => {
     // 클릭된 버튼이 아닌 다른 버튼의 투명도를 40%로 설정
     if (button.id !== selectedOption) {
       button.classList.remove("opacity-100");
-      button.classList.add("opacity-40");
+      button.classList.add("opacity-50");
     } else {
       // 클릭된 버튼의 투명도를 100%로 설정
-      button.classList.remove("opacity-40");
+      button.classList.remove("opacity-50");
       button.classList.add("opacity-100");
     }
   });

@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <title>Georeferencing</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
+    <!-- <link
       href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css"
       rel="stylesheet"
-    />
+    /> -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/ol.css" />
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <!-- <-- OpenLayers 라이브러리 가져오기 -->
     <script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
     <!-- ol-ext -->
@@ -21,7 +21,7 @@
     <!-- jQuery -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
     <!-- svg to geojson -->
-    <script src="dist/svg-to-geojson.min.js"></script>
+    <script src=".dist/svg-to-geojson.min.js"></script>
     <style>
       .tab-contents {
         height: calc(100vh - 54px);
@@ -208,11 +208,6 @@
                           id="groupName"
                           class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none peer"
                         >
-                          <option selected>
-                            컨트롤 할 건물 그룹을 선택하세요
-                          </option>
-                          <option value="DEP">DEP</option>
-                          <option value="AVN">AVN</option>
                         </select>
                       </div>
                     </div>
@@ -357,28 +352,23 @@
                 <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900">
                   ※ 불러온 도면 파일의 방향을 맞출 때 참조하세요
                 </h5>
-                <!-- <select id="tileMapSelect" class="selectBox">
-                  <option value="kakao" >Kakao</option>
-                  <option value="naver" selected>Naver</option>
-                  <option value="google">Google</option>
-                </select> -->
               </div>
                 <div class="border border-slate-700 h-full relative" id="mapContainer">
                   <div id ="buttonGroup" class="absolute z-50	bottom-5 left-1/2 transform -translate-x-1/2 flex gap-3">
                     <button id = "kakao"
-                            class="bg-yellow-400 hover:bg-yellow-500 opacity-40 opa text-white font-bold py-2 px-4 rounded"
+                            class="bg-yellow-400 hover:bg-yellow-500 opacity-50 opa text-white font-bold py-2 px-4 rounded"
                             onclick="setReferenceMap(this)"
                             >
                       카카오
                     </button>
                     <button id = "naver"
-                            class="bg-green-500 hover:bg-green-700 opacity-40 text-white font-bold py-2 px-4 rounded"
+                            class="bg-green-500 hover:bg-green-700 opacity-50 text-white font-bold py-2 px-4 rounded"
                             onclick="setReferenceMap(this)"
                              >
                       네이버
                     </button>
                     <button id = "google"
-                            class="bg-blue-500 hover:bg-blue-700 opacity-40 text-white font-bold py-2 px-4 rounded"
+                            class="bg-blue-500 hover:bg-blue-700 opacity-50 text-white font-bold py-2 px-4 rounded"
                             onclick="setReferenceMap(this)"
                     >
                       구글
@@ -390,7 +380,7 @@
             </div>
             <div class="flex-1">
               <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900">
-                지도의 중앙에 Georeferencing 좌표를 맞춰 주세요
+                ※ 지도를 불러와 Georeferencing을 맞춰주세요
               </h5>
               <div class="border border-slate-700 h-full" id="map"></div>
               <div id="outsvg"></div>
@@ -470,6 +460,7 @@
     <script src="./moveHandler.js"></script>
     <script src="./onOffSelectBox.js"></script>
     <script src="./displayPlaceList.js"></script>
+    <script src="./getMapInfo.js"></script>
   
   </body>
 </html>
