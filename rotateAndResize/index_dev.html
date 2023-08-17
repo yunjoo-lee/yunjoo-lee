@@ -35,22 +35,6 @@
         height: calc(100% - 40px);
       }
 
-      .overlay {
-          display: none;
-          position: absolute;
-          background-color: rgba(255, 255, 255, 0.8);
-          z-index: 1000;
-          color: black;
-          align-items: flex-start;
-          flex-direction: column;
-          padding: 20px;
-          line-height: 2;
-      }
-
-      .highlight {
-        color: #0070C0;
-      }
-
     </style>
   </head>
   <body>
@@ -130,7 +114,8 @@
                       </svg>
                       </button>
                     </form>
-                    <div class="overlay" id ="overlay">
+                    <div class="hidden absolute bg-white bg-opacity-80 z-50 text-black items-start flex-col p-5 leading-relaxed"
+                         id ="overlay">
                       <div id="menu_wrap" class="bg_white">
                           <ul id="placesList"></ul>
                       </div>
