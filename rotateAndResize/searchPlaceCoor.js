@@ -24,7 +24,7 @@ const placesSearch = async (keyword) => {
         }
         if (newPlaceArray.length > 1) {
           // 검색 목록과 마커를 표출합니다
-          displayPlaces(removeSpace, data);
+          displayPlaces(newPlaceArray, removeSpace);
         }
       } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
         alert("검색 결과가 존재하지 않습니다.");
@@ -71,7 +71,7 @@ const searchPlaceToCoor = async () => {
   }
 
   // // 참조맵이 구글로 설정되어 있고, 검색어가 영어로만 이루어져 있다면 구글맵에서 검색
-  if (mapSelector.value === "google" && !/[\uAC00-\uD7A3]/g.test(keyword)) {
+  if (selectedBtn.id === "google" && !/[\uAC00-\uD7A3]/g.test(keyword)) {
     searchGoogleMap(keyword);
     return;
   }

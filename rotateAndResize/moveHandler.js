@@ -1,3 +1,5 @@
+var selectedBtn = document.querySelector("#buttonGroup button.opacity-100");
+
 addEventListener("DOMContentLoaded", (event) => {
   map.on("moveend", () => {
     const center = map.getView().getCenter();
@@ -7,11 +9,8 @@ addEventListener("DOMContentLoaded", (event) => {
     document.getElementById("latitude").innerHTML = newLat;
 
     // const mapSelector = document.getElementById("tileMapSelect");
-    const opaqueButtons = document.querySelector(
-      "#buttonGroup button.opacity-100"
-    );
 
-    switch (opaqueButtons.id) {
+    switch (selectedBtn.id) {
       case "naver":
         referMap.setCenter(new naver.maps.LatLng(newLat, newLon));
         break;

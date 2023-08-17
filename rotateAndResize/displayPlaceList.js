@@ -1,5 +1,5 @@
 // 검색 결과 목록을 표출하는 함수입니다
-const displayPlaces = (removeSpace, places) => {
+const displayPlaces = (places, removeSpace) => {
   var listEl = document.getElementById("placesList"),
     menuEl = document.getElementById("menu_wrap"),
     fragment = document.createDocumentFragment();
@@ -10,7 +10,7 @@ const displayPlaces = (removeSpace, places) => {
   const searchInput = document.getElementById("searchAddress");
   // 여기서 if문으로 결과가 1개 이하일때 리스트 띄우지 말고 바로 이동하도록
   places.forEach((place) => {
-    const itemEl = getListItem(removeSpace, place); // 검색 결과 항목 Element를 생성합니다
+    const itemEl = getListItem(place, removeSpace); // 검색 결과 항목 Element를 생성합니다
 
     // 마커와 검색결과 항목에 클릭 했을때 해당 장소로 이동
     ((placeObject) => {
@@ -34,7 +34,7 @@ const displayPlaces = (removeSpace, places) => {
 };
 
 // 검색결과 항목을 Element로 반환하는 함수입니다
-const getListItem = (removeSpace, places) => {
+const getListItem = (places, removeSpace) => {
   // Show overlay
   const overlay = document.getElementById("overlay");
   overlay.style.display = "flex";
@@ -46,7 +46,7 @@ const getListItem = (removeSpace, places) => {
   // 검색 단어와 일치하는 부분을 <span> 태그로 감싸는 작업
   const matchedPlaceName = normalizedplaceName
     .split(removeSpace)
-    .join(`<span class="text-green-500">${removeSpace}</span>`);
+    .join(`<span class="text-blue-800">${removeSpace}</span>`);
 
   const el = document.createElement("li");
   const itemStr = `<div class="info">${matchedPlaceName}</div>`;
