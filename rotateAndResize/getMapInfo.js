@@ -1,8 +1,8 @@
 const getMapInfo = async () => {
   // // 현재 하드 코딩됨 추후에는 접속 url window.location.href로 받아오기
   const urlObject = new URL(
-    // "http://localhost:3000/dev?mapId=MP-1iauw5wdscoyt0262" // 현대백화점 판교
-    "http://localhost:3000/dev?mapId=MP-r1fmy3te76sy0482" // 롯데백화점 잠실점
+    "http://localhost:3000/dev?mapId=MP-1iauw5wdscoyt0262" // 현대백화점 판교
+    // "http://localhost:3000/dev?mapId=MP-r1fmy3te76sy0482" // 롯데백화점 잠실점
   );
   //   const urlObject = new URL(window.location.href);
 
@@ -20,6 +20,7 @@ const getMapInfo = async () => {
 
   const selectBox = document.getElementById("groupName");
   const defaultOption = document.createElement("option");
+  defaultOption.value = "";
 
   if (response.data.groupCodes.length === 0) {
     defaultOption.innerHTML = "선택할 건물 그룹이 없습니다";
