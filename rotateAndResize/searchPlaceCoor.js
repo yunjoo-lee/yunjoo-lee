@@ -1,5 +1,3 @@
-var areaCode = "00000"; // 지역코드를 담을 변수 선언
-
 /**
  * kakaAPI를 사용해 검색한 위치의 정보 값을 받아오는 함수
  * 결과값이 여러개일 경우 목록으로 표출
@@ -123,6 +121,6 @@ const moveMapToResult = async (onlyResult, removeSpace) => {
   map.getView().setCenter(ol.proj.fromLonLat([coorX, coorY]));
   // 받아온 결과로 행정동 위치 검색
   const coordResult = await getAddressName(coorX, coorY);
-  // 행정코드를 var areaCode에 저장
-  areaCode = coordResult.code.substring(0, 5);
+  // 행정코드를 areaCode에 저장
+  storage.storeValue("areaCode", coordResult.code.substring(0, 5));
 };

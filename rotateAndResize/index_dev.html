@@ -21,7 +21,7 @@
     <!-- jQuery -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
     <!-- svg to geojson -->
-    <script src=".dist/svg-to-geojson.min.js"></script>
+    <script src="./dist/svg-to-geojson.min.js"></script>
     <style>
       .tab-contents {
         height: calc(100vh - 54px);
@@ -218,7 +218,7 @@
                       <div class="flex gap-2">
                         <button
                           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                          onclick="openSVGFile()"
+                          onclick="pressSvgBtn()"
                           >
                           SVG
                         </button>
@@ -451,7 +451,7 @@
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71ab92bd93f47073d9668e4884c29f83&libraries=services"></script>  
     <script src="./selectRefTile.js"></script>
     <script src="./loadGeojsonFile.js"></script>
-    <script src="./loadSvgFile.js"></script>
+    <!-- <script src="./loadSvgFile.js"></script> -->
     <script src="./setStyleOfMap.js"></script>
     <script src="./setInteractionMode.js"></script>
     <script src="./showChangedValues.js"></script>
@@ -461,6 +461,7 @@
     <script src="./onOffSelectBox.js"></script>
     <script src="./displayPlaceList.js"></script>
     <script src="./getMapInfo.js"></script>
+    <script src="./loadSvgFromServer.js"></script>
   
   </body>
 </html>

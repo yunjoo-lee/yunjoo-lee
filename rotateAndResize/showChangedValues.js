@@ -6,7 +6,7 @@ setHandleStyle();
 // let startRadius = 10;
 let previousLength = vectorLayer.length;
 
-var rotated, scaled;
+let rotated, scaled;
 let rotating, scaling;
 
 const makeResetValue = () => {
@@ -14,6 +14,9 @@ const makeResetValue = () => {
   rotated = 0;
   scaling = [1, 1];
   scaled = [1, 1];
+
+  $("#rotateinfo").text("0");
+  $("#scaleinfo").text("1, 1");
 };
 
 // const sumArrayElements = (arr) => {
@@ -94,7 +97,7 @@ interaction.on(["rotateend"], (e) => {
 // // edit이 끝났을 때 좌상단의 좌표값 수정
 interaction.on(["rotateend", "translateend", "scaleend"], (e) => {
   const canvasLayer = vectorLayer.find((e) => {
-    return e.getProperties().layerType === "canvas";
+    return e.getProperties().layerType.includes("canvas");
   });
 
   if (canvasLayer) {

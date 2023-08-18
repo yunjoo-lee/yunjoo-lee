@@ -1,3 +1,45 @@
+/**
+ * save 기능만을 하는 함수 구현
+ * @returns 필요한 함수
+ */
+const createStore = () => {
+  const data = {};
+
+  /**
+   * Store a value by key.
+   * @param {string} key - The key under which the value should be stored.
+   * @param {*} value - The value to be stored.
+   */
+  const storeValue = (key, value) => {
+    data[key] = value;
+  };
+
+  /**
+   * Retrieve a value by key.
+   * @param {string} key - The key of the value to be retrieved.
+   * @return {*} The value associated with the key or undefined if not found.
+   */
+  const getValue = (key) => {
+    return data[key];
+  };
+
+  /**
+   * Retrieve all stored data.
+   * @return {object} The entire storage object.
+   */
+  const getAllValues = () => {
+    return data;
+  };
+
+  return {
+    storeValue,
+    getValue,
+    getAllValues,
+  };
+};
+
+var storage = createStore();
+
 const downloadFileWithAttr = (e) => {
   // 수동으로 crs 정보 추가
   const myCrs = {
@@ -15,14 +57,14 @@ const downloadFileWithAttr = (e) => {
   if (vectorOrder > 1) {
     geoJsonArr.forEach((e) => {
       e.setProperties({
-        map_id: "MP-r1l5pvkoe6p20169", //  mapId, -> imstudio api에서 받아오기 [하드코딩]
-        group_code: document.getElementById("groupName").value, // 완료
-        area_code: areaCode, // 카카오,네이버 지도 api에서 획득 가능
+        map_id: storage.getValue("mapId"), //
+        group_code: document.getElementById("groupName").value, //
+        area_code: storage.getValue("areaCode"), //
         level_section_name: "SECTION", // imstudio api에서 받아오기 [하드코딩]
         width_ratio: scaled[0] || 1, // 완료
         height_ratio: scaled[1] || 1, // 완료
-        rotate: rotated || 0, // 완료
-        source_crs: map.getProperties().view.getProjection().code_, // 완료 (지도 api에서 획득 가능)
+        rotate: rotated || 0,
+        source_crs: map.getProperties().view.getProjection().code_, // osm 지도 기준
         lon: document.getElementById("boxlongitude").innerHTML,
         lat: document.getElementById("boxLatitude").innerHTML,
       });
@@ -51,3 +93,10 @@ const downloadFileWithAttr = (e) => {
   // 메모리 해제
   URL.revokeObjectURL(link.href);
 };
+
+// /////////////////////////////////////////////////////////////
+
+// // 사용 예제
+// storage.storeValue("username", "Alice");
+// console.log(storage.getValue("username")); // Alice
+// console.log(storage.getAllValues()); // { username: "Alice" }

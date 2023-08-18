@@ -1,6 +1,6 @@
 // 검색 결과 목록을 표출하는 함수입니다
 const displayPlaces = (places, removeSpace) => {
-  var listEl = document.getElementById("placesList"),
+  const listEl = document.getElementById("placesList"),
     menuEl = document.getElementById("menu_wrap"),
     fragment = document.createDocumentFragment();
 
