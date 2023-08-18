@@ -58,7 +58,7 @@ const downloadFileWithAttr = (e) => {
     geoJsonArr.forEach((e) => {
       e.setProperties({
         map_id: storage.getValue("mapId"), //
-        group_code: document.getElementById("groupName").value, //
+        group_code: storage.getValue("groupName"), //
         area_code: storage.getValue("areaCode"), //
         level_section_name: "SECTION", // imstudio api에서 받아오기 [하드코딩]
         width_ratio: scaled[0] || 1, // 완료

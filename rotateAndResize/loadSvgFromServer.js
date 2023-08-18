@@ -94,10 +94,15 @@ const convertGeojson = (layerName) => {
   const center = map.getView().getCenter();
   const [longitude, latitude] = ol.proj.toLonLat(center);
 
+  const mapPxToCm = [
+    box.height * storage.getValue("pxRatio"),
+    box.width * storage.getValue("pxRatio"),
+  ];
+
   const bound = [
     [
-      calculateLat(longitude, latitude, box),
-      calculateLon(longitude, latitude, box),
+      calculateLat(longitude, latitude, mapPxToCm),
+      calculateLon(longitude, latitude, mapPxToCm),
     ],
     [latitude, longitude],
   ];
@@ -221,7 +226,7 @@ const svgToMapLayer = (fileData, layerName) => {
  * TO-DO: pixel이나 scale비 넣어서 실제와 비슷하게 계산
  * 현재는 잠실점 기준으로 1500으로 설정
  */
-const calculateLon = (lon, lat, box) => {
+const calculateLon = (lon, lat, mapPxToCm) => {
   const a = 6378137.0; // WGS 84 타원체의 장축 meters
   const b = 6356752.3142; // WGS 84 타원체의 단축 meters
 
@@ -233,7 +238,7 @@ const calculateLon = (lon, lat, box) => {
   // 타원체의 수평 반경 (normal radius of curvature) 계산
   const N = a / Math.sqrt(1 - eSquared * Math.sin(phi) ** 2);
   // (box.width * 0.1)m 동쪽으로 이동할 때의 라디안 경도 변화 계산
-  const deltaLambda = (box.width * 0.1) / (N * Math.cos(phi));
+  const deltaLambda = mapPxToCm[1] / (N * Math.cos(phi));
 
   // 변화한 경도 값
   const deltaLon = (deltaLambda * 180) / Math.PI;
@@ -247,7 +252,7 @@ const calculateLon = (lon, lat, box) => {
  * TO-DO: pixel이나 scale비 넣어서 실제와 비슷하게 계산
  * 현재는 잠실점 기준으로 750으로 설정
  */
-const calculateLat = (lon, lat, box) => {
+const calculateLat = (lon, lat, mapPxToCm) => {
   const a = 6378137.0; // WGS 84 타원체의 장축 meters
   const b = 6356752.3142; // WGS 84 타원체의 단축 meters
 
@@ -261,7 +266,7 @@ const calculateLat = (lon, lat, box) => {
     (a * (1 - eSquared)) / Math.pow(1 - eSquared * Math.sin(phi) ** 2, 1.5);
 
   // (box.height * 0.1)만큼 북쪽으로 이동할 때의 위도 라디안 변화량 계산
-  const deltaPhi = (box.height * 0.1) / M;
+  const deltaPhi = mapPxToCm[0] / M;
 
   // 변화한 위도 값
   const deltaLat = (deltaPhi * 180) / Math.PI;
