@@ -1,17 +1,17 @@
 const getMapInfo = async () => {
   // // 현재 하드 코딩됨 추후에는 접속 url window.location.href로 받아오기
-  const urlObject = new URL(
-    "http://localhost:3000/dev?mapId=MP-1iauw5wdscoyt0262" // 현대백화점 판교
-    // "http://localhost:3000/dev?mapId=MP-r1fmy3te76sy0482" // 롯데백화점 잠실점
-  );
-  //   const urlObject = new URL(window.location.href);
+  // const urlObject = new URL(
+  //   "http://localhost:3000/dev?mapId=MP-1iauw5wdscoyt0262" // 현대백화점 판교
+  //   // "http://localhost:3000/dev?mapId=MP-r1fmy3te76sy0482" // 롯데백화점 잠실점
+  // );
+  const urlObject = new URL(window.location.href);
 
   const queryString = urlObject.searchParams;
   storage.storeValue("mapId", queryString.get("mapId"));
 
   // // 현재 Scott 주소로 하드코딩됨
   const response = await axios(
-    `http://192.168.2.240:8080/api/georeferencing/groupCode/${storage.getValue(
+    `https://ims-develop3.dabeeomaps.com/api/georeferencing/groupCode/${storage.getValue(
       "mapId"
     )}`
   );

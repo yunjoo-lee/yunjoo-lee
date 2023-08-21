@@ -39,7 +39,6 @@
  */
 const pressSvgBtn = async () => {
   const groupCodeBox = document.getElementById("groupName");
-  // const groupCodeBox = document.querySelector("#yourSelectBoxId");
   storage.storeValue("groupName", groupCodeBox.value);
 
   if (groupCodeBox.options.length > 1 && groupCodeBox.value === "") {
@@ -48,7 +47,7 @@ const pressSvgBtn = async () => {
   }
   // // 현재 Scott 주소로 하드코딩됨
   const response = await axios.post(
-    `http://192.168.2.240:8080/api/georeferencing/svg`,
+    `https://ims-develop3.dabeeomaps.com/api/georeferencing/svg`,
     {
       mapId: storage.getValue("mapId"),
       groupCode: groupCodeBox.value,
