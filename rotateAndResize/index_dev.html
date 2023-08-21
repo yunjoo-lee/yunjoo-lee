@@ -31,8 +31,8 @@
         height: calc(100% - 54px);
       }
 
-      .searchAddress-box {
-        height: calc(100% - 40px);
+      .upper-information-box {
+        height: calc(100% - 45px);
       }
 
     </style>
@@ -75,7 +75,7 @@
     </div>
     <div class="p-4 tab-contents" id="tabContent">
       <div class="hidden h-full" id="georeferencing" role="tabpanel">
-        <div class="flex flex-col gap-6 contents-container">
+        <div class="flex flex-col gap-2 contents-container">
           <div class="flex gap-4">
             <div class="basis-2/6 shrink-0">
               <h5
@@ -83,7 +83,7 @@
               >
                 건물 주소 설정
               </h5>
-              <div class="rounded-lg bg-gray-50 searchAddress-box">
+              <div class="rounded-lg bg-gray-50 upper-information-box">
                 <div class="p-4">
                   <div class="relative w-full mb-4">
                     <form name="searchAdd" action="" method="" onsubmit="event.preventDefault(); searchPlaceToCoor()">
@@ -134,7 +134,7 @@
                 </div>
               </div>
             </div>
-            <div class="flex-1">
+            <div class="basis-2/6 shrink-0">
               <div class="flex items-center mb-2">
                 <div class="flex items-center flex-1 gap-2">
                   <h5
@@ -175,28 +175,8 @@
                     <div class="tooltip-arrow" data-popper-arrow></div>
                   </div>
                 </div>
-                <div class="flex gap-2">
-                  <button
-                    class="bg-gray-300 hover:bg-gray-400 disabled:bg-gray-500 disabled:text-gray-200 disabled:opacity-30 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center h-8"
-                    onclick="downloadFileWithAttr()"
-                  >
-                    <svg
-                      class="fill-current w-4 h-4 mr-2"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
-                    </svg>
-                    <span>GeoJson</span>
-                  </button>
-                  <button
-                    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded inline-flex items-center h-8"
-                    >
-                    Save
-                  </button>
-                </div>
               </div>
-              <div class="p-4 rounded-lg bg-gray-50">
+              <div class="p-4 rounded-lg bg-gray-50 upper-information-box">
                 <div class="flex">
                   <div class="flex flex-col gap-6 basis-6/12">
                     <div class="flex items-center">
@@ -313,35 +293,69 @@
                       </div>
                     </div>
                   </div>
-                  <div
-                    class="basis-6/12 rounded-lg bg-white border bg-slate-700 p-4"
+                </div>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center mb-2">
+                <div class="flex items-center flex-1 gap-2">
+                  <h5
+                    class="text-xl font-bold tracking-tight text-gray-900"
                   >
-                    <h5 class="text-neutral-800 font-bold mb-4">
-                      Georeferencing
-                    </h5>
-                    <div class="flex flex-col gap-2">
-                      <div class="flex">
-                        <div class="flex-1 shrink-0 text-gray-400">지도 중심 위경도</div>
-                        <span class="text-gray-950" id='latitude'>37.5468962</span>
-                        <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
-                        <span class="text-gray-950" id='longitude'>126.9535027</span>
-                      </div>
-                      <div class="flex">
-                        <div class="flex-1 shrink-0 text-gray-400">
-                          캔버스 좌상단 위경도
-                        </div>
-                        <span class="text-gray-950" id='boxLatitude'>-</span>
-                        <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
-                        <span class="text-gray-950" id='boxlongitude'>-</span>
-                      </div>
-                      <div class="flex flex-row gap-10">
-                        <div class="flex-1 shrink-0 text-gray-400">Scale</div>
-                        <div class="text-gray-950" id="scaleinfo">-</div>
-                        <div class="flex-1 shrink-0 text-gray-400">Rotate</div>
-                        <div class="text-gray-950" id="rotateinfo">-</div>
-                      </div>
-                    </div>
+                    Georeferencing
+                  </h5>
+                  <div
+                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+                  >
                   </div>
+                </div>
+                <div class="flex gap-2">
+                  <button
+                    class="bg-gray-300 hover:bg-gray-400 disabled:bg-gray-500 disabled:text-gray-200 disabled:opacity-30 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center h-7"
+                    onclick="downloadFileWithAttr()"
+                  >
+                    <svg
+                      class="fill-current w-4 h-4 mr-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+                    </svg>
+                    <span>GeoJson</span>
+                  </button>
+                  <button
+                    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded inline-flex items-center h-7"
+                    onclick="pressSaveBtn()"
+                    >
+                    Save
+                  </button>
+                </div>
+              </div>
+              <div class="rounded-lg bg-gray-50 flex flex-col gap-5 w-full p-4 upper-information-box">
+                <div class="flex">
+                  <div class="flex-1 shrink-0 text-gray-400">지도 중심 위경도</div>
+                    <span class="text-gray-950" id='latitude'>37.5468962</span>
+                    <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+                    <span class="text-gray-950" id='longitude'>126.9535027</span>
+                </div>
+                <div class="flex">
+                  <div class="flex-1 shrink-0 text-gray-400">캔버스 좌상단 위경도</div>
+                    <span class="text-gray-950" id='boxLatitude'>-</span>
+                    <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+                    <span class="text-gray-950" id='boxlongitude'>-</span>
+                </div>
+                <div class="flex flex-row gap-10">
+                  <div class="flex-1 shrink-0 text-gray-400">Scale</div>
+                  <div class="text-gray-950" id="scaleinfo">-</div>
+                  <div class="flex-1 shrink-0 text-gray-400">Rotate</div>
+                  <div class="text-gray-950" id="rotateinfo">-</div>
+                </div>
+                <div class ="flex flex-row items-center gap-10">
+                  <div class="shrink-0 text-gray-400">바닥판</div>
+                  <input
+                    id = "bottomSection"
+                    class="block p-3 z-20 w-full flex-1 text-sm text-gray-900  border-l-2 border border-gray-300"
+                    placeholder="바닥판 이름을 입력하세요"></input>
                 </div>
               </div>
             </div>
@@ -462,6 +476,7 @@
     <script src="./displayPlaceList.js"></script>
     <script src="./getMapInfo.js"></script>
     <script src="./loadSvgFromServer.js"></script>
+    <script src="./saveIntoDatabase.js"></script>
   
   </body>
 </html>
