@@ -3,25 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <title>Georeferencing</title>
+    <!-- tailwindcss -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
+    <!-- <link
       href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css"
       rel="stylesheet"
-    />
+    /> -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- flowbite -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/ol.css" />
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <!-- <-- OpenLayers 라이브러리 가져오기 -->
     <script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
-    <!-- ol-ext -->
-    <link rel="stylesheet" href="./dist/ol-ext.css" />
-    <script type="text/javascript" src="./dist/ol-ext.js"></script>
-    <!-- FontAwesome -->
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
     <!-- jQuery -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
     <!-- svg to geojson -->
-    <script src="dist/svg-to-geojson.min.js"></script>
+    <script src="./dist/svg-to-geojson.min.js"></script>
+    <!-- ol-ext -->
+    <link rel="stylesheet" href="./dist/ol-ext.css" />
+    <script type="text/javascript" src="./dist/ol-ext.js"></script>
     <style>
       .tab-contents {
         height: calc(100vh - 54px);
@@ -31,29 +31,18 @@
         height: calc(100% - 54px);
       }
 
-      .searchAddress-box {
-        height: calc(100% - 40px);
-      }
-
-      .overlay {
-          display: none;
-          position: absolute;
-          background-color: rgba(255, 255, 255, 0.8);
-          z-index: 1000;
-          color: black;
-          align-items: flex-start;
-          flex-direction: column;
-          padding: 20px;
-          line-height: 2;
-      }
-
-      .highlight {
-        color: #0070C0;
+      .upper-information-box {
+        height: calc(100% - 45px);
       }
 
     </style>
   </head>
   <body>
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center hidden">
+      <div class="text-white text-xl bg-gray-400 p-4 rounded">
+            로딩중입니다...
+      </div>
+    </div>
     <div class="border-b border-gray-200">
       <ul
         class="flex flex-wrap -mb-px text-sm font-medium text-center"
@@ -91,7 +80,7 @@
     </div>
     <div class="p-4 tab-contents" id="tabContent">
       <div class="hidden h-full" id="georeferencing" role="tabpanel">
-        <div class="flex flex-col gap-6 contents-container">
+        <div class="flex flex-col gap-2 contents-container">
           <div class="flex gap-4">
             <div class="basis-2/6 shrink-0">
               <h5
@@ -99,7 +88,7 @@
               >
                 건물 주소 설정
               </h5>
-              <div class="rounded-lg bg-gray-50 searchAddress-box">
+              <div class="rounded-lg bg-gray-50 upper-information-box">
                 <div class="p-4">
                   <div class="relative w-full mb-4">
                     <form name="searchAdd" action="" method="" onsubmit="event.preventDefault(); searchPlaceToCoor()">
@@ -130,7 +119,8 @@
                       </svg>
                       </button>
                     </form>
-                    <div class="overlay" id ="overlay">
+                    <div class="hidden absolute bg-white bg-opacity-80 z-40 text-black items-start flex-col p-5 leading-relaxed"
+                         id ="overlay">
                       <div id="menu_wrap" class="bg_white">
                           <ul id="placesList"></ul>
                       </div>
@@ -149,7 +139,7 @@
                 </div>
               </div>
             </div>
-            <div class="flex-1">
+            <div class="basis-2/6 shrink-0">
               <div class="flex items-center mb-2">
                 <div class="flex items-center flex-1 gap-2">
                   <h5
@@ -190,28 +180,8 @@
                     <div class="tooltip-arrow" data-popper-arrow></div>
                   </div>
                 </div>
-                <div class="flex gap-2">
-                  <button
-                    class="bg-gray-300 hover:bg-gray-400 disabled:bg-gray-500 disabled:text-gray-200 disabled:opacity-30 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center h-8"
-                    onclick="downloadFileWithAttr()"
-                  >
-                    <svg
-                      class="fill-current w-4 h-4 mr-2"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
-                    </svg>
-                    <span>GeoJson</span>
-                  </button>
-                  <button
-                    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded inline-flex items-center h-8"
-                    >
-                    Save
-                  </button>
-                </div>
               </div>
-              <div class="p-4 rounded-lg bg-gray-50">
+              <div class="p-4 rounded-lg bg-gray-50 upper-information-box">
                 <div class="flex">
                   <div class="flex flex-col gap-6 basis-6/12">
                     <div class="flex items-center">
@@ -223,11 +193,6 @@
                           id="groupName"
                           class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none peer"
                         >
-                          <option selected>
-                            컨트롤 할 건물 그룹을 선택하세요
-                          </option>
-                          <option value="DEP">DEP</option>
-                          <option value="AVN">AVN</option>
                         </select>
                       </div>
                     </div>
@@ -238,7 +203,7 @@
                       <div class="flex gap-2">
                         <button
                           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                          onclick="openSVGFile()"
+                          onclick="pressSvgBtn()"
                           >
                           SVG
                         </button>
@@ -333,35 +298,69 @@
                       </div>
                     </div>
                   </div>
-                  <div
-                    class="basis-6/12 rounded-lg bg-white border bg-slate-700 p-4"
+                </div>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center mb-2">
+                <div class="flex items-center flex-1 gap-2">
+                  <h5
+                    class="text-xl font-bold tracking-tight text-gray-900"
                   >
-                    <h5 class="text-neutral-800 font-bold mb-4">
-                      Georeferencing
-                    </h5>
-                    <div class="flex flex-col gap-2">
-                      <div class="flex">
-                        <div class="flex-1 shrink-0 text-gray-400">지도 중심 위경도</div>
-                        <span class="text-gray-950" id='latitude'>37.5468962</span>
-                        <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
-                        <span class="text-gray-950" id='longitude'>126.9535027</span>
-                      </div>
-                      <div class="flex">
-                        <div class="flex-1 shrink-0 text-gray-400">
-                          캔버스 좌상단 위경도
-                        </div>
-                        <span class="text-gray-950" id='boxLatitude'>-</span>
-                        <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
-                        <span class="text-gray-950" id='boxlongitude'>-</span>
-                      </div>
-                      <div class="flex flex-row gap-10">
-                        <div class="flex-1 shrink-0 text-gray-400">Scale</div>
-                        <div class="text-gray-950" id="scaleinfo">-</div>
-                        <div class="flex-1 shrink-0 text-gray-400">Rotate</div>
-                        <div class="text-gray-950" id="rotateinfo">-</div>
-                      </div>
-                    </div>
+                    Georeferencing
+                  </h5>
+                  <div
+                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+                  >
                   </div>
+                </div>
+                <div class="flex gap-2">
+                  <button
+                    class="bg-gray-300 hover:bg-gray-400 disabled:bg-gray-500 disabled:text-gray-200 disabled:opacity-30 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center h-7"
+                    onclick="downloadFileWithAttr()"
+                  >
+                    <svg
+                      class="fill-current w-4 h-4 mr-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+                    </svg>
+                    <span>GeoJson</span>
+                  </button>
+                  <button
+                    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded inline-flex items-center h-7"
+                    onclick="pressSaveBtn()"
+                    >
+                    Save
+                  </button>
+                </div>
+              </div>
+              <div class="rounded-lg bg-gray-50 flex flex-col gap-5 w-full p-4 upper-information-box">
+                <div class="flex">
+                  <div class="flex-1 shrink-0 text-gray-400">지도 중심 위경도</div>
+                    <span class="text-gray-950" id='latitude'>37.5468962</span>
+                    <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+                    <span class="text-gray-950" id='longitude'>126.9535027</span>
+                </div>
+                <div class="flex">
+                  <div class="flex-1 shrink-0 text-gray-400">캔버스 좌상단 위경도</div>
+                    <span class="text-gray-950" id='boxLatitude'>-</span>
+                    <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+                    <span class="text-gray-950" id='boxlongitude'>-</span>
+                </div>
+                <div class="flex flex-row gap-10">
+                  <div class="flex-1 shrink-0 text-gray-400">Scale</div>
+                  <div class="text-gray-950" id="scaleinfo">-</div>
+                  <div class="flex-1 shrink-0 text-gray-400">Rotate</div>
+                  <div class="text-gray-950" id="rotateinfo">-</div>
+                </div>
+                <div class ="flex flex-row items-center gap-10">
+                  <div class="shrink-0 text-gray-400">바닥판</div>
+                  <input
+                    id = "bottomSection"
+                    class="block p-3 w-full flex-1 text-sm text-gray-900  border-l-2 border border-gray-300"
+                    placeholder="바닥판 이름을 입력하세요"></input>
                 </div>
               </div>
             </div>
@@ -372,28 +371,23 @@
                 <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900">
                   ※ 불러온 도면 파일의 방향을 맞출 때 참조하세요
                 </h5>
-                <!-- <select id="tileMapSelect" class="selectBox">
-                  <option value="kakao" >Kakao</option>
-                  <option value="naver" selected>Naver</option>
-                  <option value="google">Google</option>
-                </select> -->
               </div>
                 <div class="border border-slate-700 h-full relative" id="mapContainer">
-                  <div id ="buttonGroup" class="absolute z-50	bottom-5 left-1/2 transform -translate-x-1/2 flex gap-3">
+                  <div id ="buttonGroup" class="absolute z-40	bottom-5 left-1/2 transform -translate-x-1/2 flex gap-3">
                     <button id = "kakao"
-                            class="bg-yellow-400 hover:bg-yellow-500 opacity-40 opa text-white font-bold py-2 px-4 rounded"
+                            class="bg-yellow-400 hover:bg-yellow-500 opacity-50 opa text-white font-bold py-2 px-4 rounded"
                             onclick="setReferenceMap(this)"
                             >
                       카카오
                     </button>
                     <button id = "naver"
-                            class="bg-green-500 hover:bg-green-700 opacity-40 text-white font-bold py-2 px-4 rounded"
+                            class="bg-green-500 hover:bg-green-700 opacity-50 text-white font-bold py-2 px-4 rounded"
                             onclick="setReferenceMap(this)"
                              >
                       네이버
                     </button>
                     <button id = "google"
-                            class="bg-blue-500 hover:bg-blue-700 opacity-40 text-white font-bold py-2 px-4 rounded"
+                            class="bg-blue-500 hover:bg-blue-700 opacity-50 text-white font-bold py-2 px-4 rounded"
                             onclick="setReferenceMap(this)"
                     >
                       구글
@@ -405,7 +399,7 @@
             </div>
             <div class="flex-1">
               <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900">
-                지도의 중앙에 Georeferencing 좌표를 맞춰 주세요
+                ※ 지도를 불러와 Georeferencing을 맞춰주세요
               </h5>
               <div class="border border-slate-700 h-full" id="map"></div>
               <div id="outsvg"></div>
@@ -476,7 +470,7 @@
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71ab92bd93f47073d9668e4884c29f83&libraries=services"></script>  
     <script src="./selectRefTile.js"></script>
     <script src="./loadGeojsonFile.js"></script>
-    <script src="./loadSvgFile.js"></script>
+    <!-- <script src="./loadSvgFile.js"></script> -->
     <script src="./setStyleOfMap.js"></script>
     <script src="./setInteractionMode.js"></script>
     <script src="./showChangedValues.js"></script>
@@ -485,6 +479,9 @@
     <script src="./moveHandler.js"></script>
     <script src="./onOffSelectBox.js"></script>
     <script src="./displayPlaceList.js"></script>
+    <script src="./getMapInfo.js"></script>
+    <script src="./loadSvgFromServer.js"></script>
+    <script src="./saveIntoDatabase.js"></script>
   
   </body>
 </html>

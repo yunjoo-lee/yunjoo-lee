@@ -1,10 +1,10 @@
 /** Set properties
  */
-const setPropertie = (p) => {
-  interaction.set(p, $("#" + p).prop("checked"));
-  if (!$("#scale").prop("checked")) $("#stretch").prop("disabled", true);
-  else $("#stretch").prop("disabled", false);
-};
+// const setPropertie = (p) => {
+//   interaction.set(p, $("#" + p).prop("checked"));
+//   if (!$("#scale").prop("checked")) $("#stretch").prop("disabled", true);
+//   else $("#stretch").prop("disabled", false);
+// };
 
 const setAspectRatio = (p) => {
   // if ($("#" + p).prop("checked"))
@@ -43,10 +43,7 @@ const resetEdit = async () => {
   const actionCnt = undoInteraction.length();
   for (let i = 0; i < actionCnt; i++) {
     undoInteraction.undo();
-    $("#rotateinfo").text("0");
-    $("#scaleinfo").text("1, 1");
     makeResetValue();
-    await searchPlaceToCoor();
   }
 };
 
