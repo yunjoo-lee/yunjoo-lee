@@ -35,47 +35,53 @@ const setKakaoMap = async (latitude, longitude) => {
 };
 
 /**
- * select box의 value와 함수 매치
- */
-const maplist = {
-  naver: setNaverMap,
-  google: setGoogleMap,
-  kakao: setKakaoMap,
-};
-const mapSelector = document.getElementById("tileMapSelect");
-
-/**
  * select box가 선택될 때 실행될 함수 정의
  */
-const setReferenceMap = () => {
+const setReferenceMap = async (option) => {
+  // // 초기 로딩 시 불러올 지도 설정 (option ? option.id : "초기 선택 지도")
+  const selectedOption = option ? option.id : "kakao";
+
+  const buttonList = {
+    naver: setNaverMap,
+    google: setGoogleMap,
+    kakao: setKakaoMap,
+  };
+
+  // 'buttonGroup' 내의 모든 버튼에 대해서
+  document.querySelectorAll("#buttonGroup button").forEach((button) => {
+    // 클릭된 버튼이 아닌 다른 버튼의 투명도를 40%로 설정
+    if (button.id !== selectedOption) {
+      button.classList.remove("opacity-100");
+      button.classList.add("opacity-40");
+    } else {
+      // 클릭된 버튼의 투명도를 100%로 설정
+      button.classList.remove("opacity-40");
+      button.classList.add("opacity-100");
+    }
+  });
+
+  const loadMap = buttonList[selectedOption];
+
   const latitude = parseFloat(document.getElementById("latitude").innerHTML); // 위도
   const longitude = parseFloat(document.getElementById("longitude").innerHTML); // 경도
 
-  const loadMap = maplist[mapSelector.value];
-
   // 부모 요소 찾기
-  const parentCont = document.querySelector(".mapContainer");
-  // 기존 referMap 요소 찾기
-  const childCont = document.querySelector("#referMap");
+  const containerElement = document.querySelector("#mapContainer");
 
   // 기존 referMap 요소 삭제
-  if (childCont) {
-    parentCont.removeChild(childCont);
-    const referMapContainer = document.createElement("div");
-    // 생성된 요소에 id 설정
-    referMapContainer.id = "referMap";
-    document.querySelector(".mapContainer").prepend(referMapContainer);
-  }
+  if (containerElement) {
+    containerElement.querySelector("#referMap")?.remove();
 
-  loadMap(latitude, longitude);
+    const referMapElement = document.createElement("div");
+
+    referMapElement.id = "referMap";
+    referMapElement.style.height = "100%";
+    containerElement.append(referMapElement);
+
+    setTimeout(() => {
+      loadMap(latitude, longitude);
+    }, 100);
+  }
 };
 
-/**
- * 셀렉트 박스의 선택이 바뀔 때 마다 지도 불러오는 함수 실행
- */
-mapSelector.addEventListener("change", setReferenceMap);
-
-/**
- * 기본값으로 선택된 함수 실행
- */
 setReferenceMap();

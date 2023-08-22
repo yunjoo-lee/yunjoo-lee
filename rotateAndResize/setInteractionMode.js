@@ -28,12 +28,27 @@ const interaction = new ol.interaction.Transform({
   translateFeature: true,
   scale: true,
   rotate: true,
-  // keepRectangle: ,
   translate: true,
   stretch: false,
 });
 
 map.addInteraction(interaction);
+
+// Undo redo interaction
+const undoInteraction = new ol.interaction.UndoRedo();
+map.addInteraction(undoInteraction);
+
+// // 버튼을 클릭 했을 때 수정한 내역을 모두 되돌리는 함수
+const resetEdit = async () => {
+  const actionCnt = undoInteraction.length();
+  for (let i = 0; i < actionCnt; i++) {
+    undoInteraction.undo();
+    $("#rotateinfo").text("0");
+    $("#scaleinfo").text("1, 1");
+    makeResetValue();
+    await searchPlaceToCoor();
+  }
+};
 
 // // 드래그영역으로 선택해야할 경우 아래 주석을 해제하면 됩니다.
 /** // /////////////////////////////////////////////////////////////////////////
