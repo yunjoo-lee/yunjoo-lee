@@ -3,25 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <title>Georeferencing</title>
+    <!-- tailwindcss -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- <link
       href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css"
       rel="stylesheet"
     /> -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- flowbite -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/ol.css" />
     <!-- <-- OpenLayers 라이브러리 가져오기 -->
     <script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
-    <!-- ol-ext -->
-    <link rel="stylesheet" href="./dist/ol-ext.css" />
-    <script type="text/javascript" src="./dist/ol-ext.js"></script>
-    <!-- FontAwesome -->
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
     <!-- jQuery -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
     <!-- svg to geojson -->
     <script src="./dist/svg-to-geojson.min.js"></script>
+    <!-- ol-ext -->
+    <link rel="stylesheet" href="./dist/ol-ext.css" />
+    <script type="text/javascript" src="./dist/ol-ext.js"></script>
     <style>
       .tab-contents {
         height: calc(100vh - 54px);
@@ -38,6 +38,11 @@
     </style>
   </head>
   <body>
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center hidden">
+      <div class="text-white text-xl bg-gray-400 p-4 rounded">
+            로딩중입니다...
+      </div>
+    </div>
     <div class="border-b border-gray-200">
       <ul
         class="flex flex-wrap -mb-px text-sm font-medium text-center"
@@ -114,7 +119,7 @@
                       </svg>
                       </button>
                     </form>
-                    <div class="hidden absolute bg-white bg-opacity-80 z-50 text-black items-start flex-col p-5 leading-relaxed"
+                    <div class="hidden absolute bg-white bg-opacity-80 z-40 text-black items-start flex-col p-5 leading-relaxed"
                          id ="overlay">
                       <div id="menu_wrap" class="bg_white">
                           <ul id="placesList"></ul>
@@ -354,7 +359,7 @@
                   <div class="shrink-0 text-gray-400">바닥판</div>
                   <input
                     id = "bottomSection"
-                    class="block p-3 z-20 w-full flex-1 text-sm text-gray-900  border-l-2 border border-gray-300"
+                    class="block p-3 w-full flex-1 text-sm text-gray-900  border-l-2 border border-gray-300"
                     placeholder="바닥판 이름을 입력하세요"></input>
                 </div>
               </div>
@@ -368,7 +373,7 @@
                 </h5>
               </div>
                 <div class="border border-slate-700 h-full relative" id="mapContainer">
-                  <div id ="buttonGroup" class="absolute z-50	bottom-5 left-1/2 transform -translate-x-1/2 flex gap-3">
+                  <div id ="buttonGroup" class="absolute z-40	bottom-5 left-1/2 transform -translate-x-1/2 flex gap-3">
                     <button id = "kakao"
                             class="bg-yellow-400 hover:bg-yellow-500 opacity-50 opa text-white font-bold py-2 px-4 rounded"
                             onclick="setReferenceMap(this)"

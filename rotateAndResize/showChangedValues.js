@@ -1,9 +1,6 @@
 // Style handles
 setHandleStyle();
 
-// Events handlers
-// let startangle = 0;
-// let startRadius = 10;
 let previousLength = vectorLayer.length;
 
 let rotated, scaled;
@@ -19,17 +16,6 @@ const makeResetValue = () => {
   $("#scaleinfo").text("1, 1");
 };
 
-// const sumArrayElements = (arr) => {
-//   return arr.reduce((sum, current) => sum + current, 0);
-// };
-
-// const multiplyArrayElements = (arr) => {
-//   return arr.reduce(
-//     (product, current) => [product[0] * current[0], product[1] * current[1]],
-//     [1, 1]
-//   );
-// };
-
 // Handle rotate on first point
 const firstPoint = false;
 interaction.on("select", (e) => {
@@ -38,18 +24,6 @@ interaction.on("select", (e) => {
     // 이전 배열의 길이 업데이트
     previousLength = vectorLayer.length;
   }
-  // const canvasLayer = vectorLayer.find((e) => {
-  //   return e.getProperties().layerType === "canvas";
-  // });
-  // if (canvasLayer) {
-  //   interaction.setCenter(
-  //     canvasLayer
-  //       .getSource()
-  //       .getFeatures()[0]
-  //       .getGeometry()
-  //       .getFirstCoordinate()
-  //   );
-  // }
 
   if (e.features.getArray().length === 1) {
     const allFeatures = vectorLayer

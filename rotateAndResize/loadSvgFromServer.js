@@ -1,40 +1,4 @@
 /**
- * svg 파일 불러오기 버튼을 클릭하면 실행되는 함수
- * file input 창을 띄우고, svg를 선택
- */
-// const openSVGFile = () => {
-//   const input = document.createElement("input");
-//   input.type = "file";
-//   input.accept = "svg";
-//   input.onchange = (event) => {
-//     const svgFile = event.target.files[0];
-//     transFile(svgFile)
-//       .then((res) => {
-//         const svgName = svgFile.name.split(".")[0];
-//         convertGeojson(svgName);
-//       })
-//       .catch(console.error);
-//   };
-//   input.click();
-// };
-
-// /**
-//  * fileReader로 svg 파일을 텍스트로 읽고,
-//  * svg의 이미지 형태로 html 화면에 출력
-//  */
-// const transFile = (file) => {
-//   return new Promise((resolve, reject) => {
-//     const reader = new FileReader();
-//     reader.onload = () => {
-//       outsvg.innerHTML = reader.result;
-//       resolve();
-//     };
-//     reader.onerror = reject;
-//     reader.readAsText(file, "euc-kr");
-//   });
-// };
-
-/**
  * mapId와 groupcode를 넣으면 svg 태그를 string으로 받아오는 함수
  */
 const pressSvgBtn = async () => {
@@ -45,14 +9,14 @@ const pressSvgBtn = async () => {
     alert("컨트롤 할 건물 그룹을 선택하세요.");
     return;
   }
+
+  document.getElementById("loadingOverlay").classList.remove("hidden");
   // // 현재 개발 서버 주소로 설정됨
   const response = await axios.post(
     `https://ims-develop3.dabeeomaps.com/api/georeferencing/svg`,
     {
       mapId: storage.getValue("mapId"),
       groupCode: groupCodeBox.value,
-      // mapId: "MP-r1fmy3te76sy0482",
-      // groupCode: "",
       floorId: null,
       includeCanvas: true,
       includeSection: true,
@@ -115,7 +79,8 @@ const convertGeojson = (layerName) => {
   svgToMapLayer(geoJson, layerName);
 
   document.getElementById("outsvg").innerHTML = "";
-  // "지도에 SVG 레이어를 추가했습니다.";
+
+  document.getElementById("loadingOverlay").classList.add("hidden");
 };
 
 /**
@@ -215,15 +180,12 @@ const svgToMapLayer = (fileData, layerName) => {
     // map에 레이어 추가하고, vectorLayer 배열에 추가한 레이어 객체 추가
     vectorLayer.push(vectorFromSvg);
     map.addLayer(vectorFromSvg);
-
     return;
   }
 };
 
 /**
  * 위도와 경도를 넣어서 경도의 값 구하는 공식 (width)
- * TO-DO: pixel이나 scale비 넣어서 실제와 비슷하게 계산
- * 현재는 잠실점 기준으로 1500으로 설정
  */
 const calculateLon = (lon, lat, mapPxToCm) => {
   const a = 6378137.0; // WGS 84 타원체의 장축 meters
@@ -248,8 +210,6 @@ const calculateLon = (lon, lat, mapPxToCm) => {
 
 /**
  * 위도와 경도를 넣어서 위도의 값 구하는 공식 (height)
- * TO-DO: pixel이나 scale비 넣어서 실제와 비슷하게 계산
- * 현재는 잠실점 기준으로 750으로 설정
  */
 const calculateLat = (lon, lat, mapPxToCm) => {
   const a = 6378137.0; // WGS 84 타원체의 장축 meters
