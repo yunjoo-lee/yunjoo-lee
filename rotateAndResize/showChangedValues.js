@@ -61,7 +61,7 @@ interaction.on("select", (e) => {
 
 interaction.on("rotating", (e) => {
   rotating = (((e.angle * 180) / Math.PI - 180) % 360) + 180 || 0;
-  $("#rotateinfo").text((rotated + rotating).toFixed(2));
+  $("#rotateinfo").text((rotated - rotating).toFixed(2));
   // Set angle attribute to be used on style !
   // e.feature.set("angle", startangle - e.angle);
 });
@@ -91,7 +91,7 @@ interaction.on(["scaleend"], (e) => {
 
 // // 이동이 끝났을 때 rotated, scaled에 기존 값 저장
 interaction.on(["rotateend"], (e) => {
-  rotated = rotating + rotated;
+  rotated = rotated - rotating;
 });
 
 // // edit이 끝났을 때 좌상단의 좌표값 수정

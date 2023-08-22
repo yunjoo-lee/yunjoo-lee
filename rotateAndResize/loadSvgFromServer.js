@@ -45,7 +45,7 @@ const pressSvgBtn = async () => {
     alert("컨트롤 할 건물 그룹을 선택하세요.");
     return;
   }
-  // // 현재 Scott 주소로 하드코딩됨
+  // // 현재 개발 서버 주소로 설정됨
   const response = await axios.post(
     `https://ims-develop3.dabeeomaps.com/api/georeferencing/svg`,
     {

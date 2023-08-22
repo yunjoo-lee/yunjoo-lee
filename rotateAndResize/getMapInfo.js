@@ -9,7 +9,7 @@ const getMapInfo = async () => {
   const queryString = urlObject.searchParams;
   storage.storeValue("mapId", queryString.get("mapId"));
 
-  // // 현재 Scott 주소로 하드코딩됨
+  // // 현재 dev서버로 세팅되어있음
   const response = await axios(
     `https://ims-develop3.dabeeomaps.com/api/georeferencing/groupCode/${storage.getValue(
       "mapId"
