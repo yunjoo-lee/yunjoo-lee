@@ -73,8 +73,8 @@ const searchPlaceToCoor = async () => {
 
   const selectedBtn = document.querySelector("#buttonGroup button.opacity-100");
 
-  // // 참조맵이 구글로 설정되어 있고, 검색어가 영어로만 이루어져 있다면 구글맵에서 검색
-  if (selectedBtn.id === "google" && !/[\uAC00-\uD7A3]/g.test(keyword)) {
+  // // 검색어가 영어로만 이루어져 있다면 구글맵에서 검색 + 구글 검색에 대한 추가 조건 필요
+  if (!/[\uAC00-\uD7A3]/g.test(keyword)) {
     searchGoogleMap(keyword);
     return;
   }

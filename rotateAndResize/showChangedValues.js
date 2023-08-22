@@ -16,6 +16,14 @@ const makeResetValue = () => {
   $("#scaleinfo").text("1, 1");
 };
 
+map.on("moveend", () => {
+  const center = map.getView().getCenter();
+  const [newLon, newLat] = ol.proj.toLonLat(center);
+
+  document.getElementById("longitude").innerHTML = newLon.toFixed(8);
+  document.getElementById("latitude").innerHTML = newLat.toFixed(8);
+});
+
 // Handle rotate on first point
 const firstPoint = false;
 interaction.on("select", (e) => {
@@ -81,7 +89,9 @@ interaction.on(["rotateend", "translateend", "scaleend"], (e) => {
       .getGeometry();
     const boxLonLat = new ol.proj.toLonLat(canvasFeature.getFirstCoordinate());
 
-    boxLatitude.innerHTML = boxLonLat[1];
-    boxlongitude.innerHTML = boxLonLat[0];
+    boxLatitude.innerHTML = boxLonLat[1].toFixed(8);
+    boxlongitude.innerHTML = boxLonLat[0].toFixed(8);
+
+    storage.storeValue("boxCoordinate", boxLonLat);
   }
 });
