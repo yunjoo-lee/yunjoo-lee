@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Georeferencing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/ol.css" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <!-- <-- OpenLayers 라이브러리 가져오기 -->
+    <script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
+    <!-- ol-ext -->
+    <link rel="stylesheet" href="./dist/ol-ext.css" />
+    <script type="text/javascript" src="./dist/ol-ext.js"></script>
+    <!-- FontAwesome -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <!-- svg to geojson -->
+    <script src="dist/svg-to-geojson.min.js"></script>
+    <style>
+      .tab-contents {
+        height: calc(100vh - 54px);
+      }
+
+      .contents-container {
+        height: calc(100% - 54px);
+      }
+
+      .searchAddress-box {
+        height: calc(100% - 40px);
+      }
+
+      .overlay {
+          display: none;
+          position: absolute;
+          background-color: rgba(255, 255, 255, 0.8);
+          z-index: 1000;
+          color: black;
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 20px;
+          line-height: 2;
+      }
+
+      .highlight {
+        color: #0070C0;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="border-b border-gray-200">
+      <ul
+        class="flex flex-wrap -mb-px text-sm font-medium text-center"
+        id="tab"
+        data-tabs-toggle="#tabContent"
+        role="tablist"
+      >
+        <li class="mr-2" role="presentation">
+          <button
+            class="inline-block p-4 border-b-2 rounded-t-lg"
+            id="georeferencing-tab"
+            data-tabs-target="#georeferencing"
+            type="button"
+            role="tab"
+            aria-controls="georeferencing"
+            aria-selected="false"
+          >
+            Georeferencing
+          </button>
+        </li>
+        <li class="mr-2" role="presentation">
+          <button
+            class="inline-block p-4 border-b-2 border-transparent rounded-t-lg"
+            id="poi-tab"
+            data-tabs-target="#poi"
+            type="button"
+            role="tab"
+            aria-controls="poi"
+            aria-selected="false"
+          >
+            POI
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div class="p-4 tab-contents" id="tabContent">
+      <div class="hidden h-full" id="georeferencing" role="tabpanel">
+        <div class="flex flex-col gap-6 contents-container">
+          <div class="flex gap-4">
+            <div class="basis-2/6 shrink-0">
+              <h5
+                class="mb-2 text-xl font-bold tracking-tight text-gray-900"
+              >
+                건물 주소 설정
+              </h5>
+              <div class="rounded-lg bg-gray-50 searchAddress-box">
+                <div class="p-4">
+                  <div class="relative w-full mb-4">
+                    <form name="searchAdd" action="" method="" onsubmit="event.preventDefault(); searchPlaceToCoor()">
+                      <input
+                        type="search"
+                        id="searchAddress"
+                        class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-slate-50 border-l-2 border border-gray-300"
+                        placeholder="건물 이름을 검색하세요 ex) 마포 T타운"
+                      />
+                      <button
+                        type="submit"
+                        class="absolute top-0 right-0 p-2.5 h-full text-sm font-medium text-white bg-blue-700 border border-blue-700"
+                      >
+                      <svg
+                        class="w-4 h-4"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                        />
+                      </svg>
+                      </button>
+                    </form>
+                    <div class="overlay" id ="overlay">
+                      <div id="menu_wrap" class="bg_white">
+                          <ul id="placesList"></ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-2 w-full p-2">
+                    <div class="flex">
+                      <div class="w-16 shrink-0 text-gray-400">주소</div>
+                      <div class="text-stone-800">서울 마포구 마포대로 144</div>
+                    </div>
+                    <div class="flex">
+                      <div class="w-16 shrink-0 text-gray-400">건물명</div>
+                      <div class="text-stone-800">마포T타운</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center mb-2">
+                <div class="flex items-center flex-1 gap-2">
+                  <h5
+                    class="text-xl font-bold tracking-tight text-gray-900"
+                  >
+                    도면 설정
+                  </h5>
+                  <svg
+                    data-tooltip-target="tooltip-settings-floor-plan"
+                    fill="#000000"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16px"
+                    height="16px"
+                    viewBox="0 0 416.979 416.979"
+                    xml:space="preserve"
+                    stroke="#000000"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <g>
+                        <path
+                          d="M356.004,61.156c-81.37-81.47-213.377-81.551-294.848-0.182c-81.47,81.371-81.552,213.379-0.181,294.85 c81.369,81.47,213.378,81.551,294.849,0.181C437.293,274.636,437.375,142.626,356.004,61.156z M237.6,340.786 c0,3.217-2.607,5.822-5.822,5.822h-46.576c-3.215,0-5.822-2.605-5.822-5.822V167.885c0-3.217,2.607-5.822,5.822-5.822h46.576 c3.215,0,5.822,2.604,5.822,5.822V340.786z M208.49,137.901c-18.618,0-33.766-15.146-33.766-33.765 c0-18.617,15.147-33.766,33.766-33.766c18.619,0,33.766,15.148,33.766,33.766C242.256,122.755,227.107,137.901,208.49,137.901z"
+                        ></path>
+                      </g>
+                    </g>
+                  </svg>
+                  <div
+                    id="tooltip-settings-floor-plan"
+                    role="tooltip"
+                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+                  >
+                    <div>∙ Shift + 마우스 드래그 : 비율 유지하며 조정</div>
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                  </div>
+                </div>
+                <div class="flex gap-2">
+                  <button
+                    class="bg-gray-300 hover:bg-gray-400 disabled:bg-gray-500 disabled:text-gray-200 disabled:opacity-30 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center h-8"
+                    onclick="downloadFileWithAttr()"
+                  >
+                    <svg
+                      class="fill-current w-4 h-4 mr-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+                    </svg>
+                    <span>GeoJson</span>
+                  </button>
+                  <button
+                    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded inline-flex items-center h-8"
+                    >
+                    Save
+                  </button>
+                </div>
+              </div>
+              <div class="p-4 rounded-lg bg-gray-50">
+                <div class="flex">
+                  <div class="flex flex-col gap-6 basis-6/12">
+                    <div class="flex items-center">
+                      <div class="w-28 shrink-0 text-neutral-800 font-bold">
+                        그룹
+                      </div>
+                      <div>
+                        <select
+                          id="groupName"
+                          class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none peer"
+                        >
+                          <option selected>
+                            컨트롤 할 건물 그룹을 선택하세요
+                          </option>
+                          <option value="DEP">DEP</option>
+                          <option value="AVN">AVN</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="flex items-center">
+                      <div class="w-28 shrink-0 text-neutral-800 font-bold">
+                        파일 타입
+                      </div>
+                      <div class="flex gap-2">
+                        <button
+                          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                          onclick="openSVGFile()"
+                          >
+                          SVG
+                        </button>
+                        <button
+                          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                          onclick="loadGeojsonFile()"
+                          >
+                          GeoJson
+                        </button>
+                        <button
+                          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                          onclick="resetEdit()"
+                          >
+                          <svg
+                            fill="#FFFFFF"
+                            height="16px"
+                            width="16px"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                            viewBox="0 0 489.645 489.645"
+                            xml:space="preserve"
+                            transform="rotate(90)"
+                          >
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g
+                              id="SVGRepo_tracerCarrier"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></g>
+                            <g id="SVGRepo_iconCarrier">
+                              <g>
+                                <path
+                                  d="M460.656,132.911c-58.7-122.1-212.2-166.5-331.8-104.1c-9.4,5.2-13.5,16.6-8.3,27c5.2,9.4,16.6,13.5,27,8.3 c99.9-52,227.4-14.9,276.7,86.3c65.4,134.3-19,236.7-87.4,274.6c-93.1,51.7-211.2,17.4-267.6-70.7l69.3,14.5 c10.4,2.1,21.8-4.2,23.9-15.6c2.1-10.4-4.2-21.8-15.6-23.9l-122.8-25c-20.6-2-25,16.6-23.9,22.9l15.6,123.8 c1,10.4,9.4,17.7,19.8,17.7c12.8,0,20.8-12.5,19.8-23.9l-6-50.5c57.4,70.8,170.3,131.2,307.4,68.2 C414.856,432.511,548.256,314.811,460.656,132.911z"
+                                ></path>
+                              </g>
+                            </g>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="flex items-center">
+                      <div class="w-28 shrink-0 text-neutral-800 font-bold">
+                        레이어
+                      </div>
+                      <div class="flex gap-4">
+                        <div class="flex items-center">
+                          <input
+                            id="canvas-checkbox"
+                            type="checkbox"
+                            value="canvas"
+                            name="showLayers"
+                            onclick="updateProperty(this)" checked
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
+                          />
+                          <label
+                            for="canvas-checkbox"
+                            class="ml-2 text-sm font-medium text-gray-900"
+                            >캔버스</label
+                          >
+                        </div>
+                        <div class="flex items-center">
+                          <input
+                            id="section-checkbox"
+                            type="checkbox"
+                            value="sections"
+                            name="showLayers"
+                            onclick="updateProperty(this)" checked
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
+                          />
+                          <label
+                            for="section-checkbox"
+                            class="ml-2 text-sm font-medium text-gray-900"
+                            >바닥판</label
+                          >
+                        </div>
+                        <div class="flex items-center">
+                          <input
+                            id="object-checkbox"
+                            type="checkbox"
+                            value="objects"
+                            name="showLayers"
+                            onclick="updateProperty(this)" checked
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
+                          />
+                          <label
+                            for="object-checkbox"
+                            class="ml-2 text-sm font-medium text-gray-900"
+                            >오브젝트</label
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="basis-6/12 rounded-lg bg-white border bg-slate-700 p-4"
+                  >
+                    <h5 class="text-neutral-800 font-bold mb-4">
+                      Georeferencing
+                    </h5>
+                    <div class="flex flex-col gap-2">
+                      <div class="flex">
+                        <div class="flex-1 shrink-0 text-gray-400">지도 중심 위경도</div>
+                        <span class="text-gray-950" id='latitude'>37.5468962</span>
+                        <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+                        <span class="text-gray-950" id='longitude'>126.9535027</span>
+                      </div>
+                      <div class="flex">
+                        <div class="flex-1 shrink-0 text-gray-400">
+                          캔버스 좌상단 위경도
+                        </div>
+                        <span class="text-gray-950" id='boxLatitude'>-</span>
+                        <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+                        <span class="text-gray-950" id='boxlongitude'>-</span>
+                      </div>
+                      <div class="flex flex-row gap-10">
+                        <div class="flex-1 shrink-0 text-gray-400">Scale</div>
+                        <div class="text-gray-950" id="scaleinfo">-</div>
+                        <div class="flex-1 shrink-0 text-gray-400">Rotate</div>
+                        <div class="text-gray-950" id="rotateinfo">-</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-4 h-full">
+            <div class="basis-2/6 shrink-0">
+              <div class="flex flex-shrink w-full">
+                <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900">
+                  ※ 불러온 도면 파일의 방향을 맞출 때 참조하세요
+                </h5>
+                <!-- <select id="tileMapSelect" class="selectBox">
+                  <option value="kakao" >Kakao</option>
+                  <option value="naver" selected>Naver</option>
+                  <option value="google">Google</option>
+                </select> -->
+              </div>
+                <div class="border border-slate-700 h-full relative" id="mapContainer">
+                  <div id ="buttonGroup" class="absolute z-50	bottom-5 left-1/2 transform -translate-x-1/2 flex gap-3">
+                    <button id = "kakao"
+                            class="bg-yellow-400 hover:bg-yellow-500 opacity-40 opa text-white font-bold py-2 px-4 rounded"
+                            onclick="setReferenceMap(this)"
+                            >
+                      카카오
+                    </button>
+                    <button id = "naver"
+                            class="bg-green-500 hover:bg-green-700 opacity-40 text-white font-bold py-2 px-4 rounded"
+                            onclick="setReferenceMap(this)"
+                             >
+                      네이버
+                    </button>
+                    <button id = "google"
+                            class="bg-blue-500 hover:bg-blue-700 opacity-40 text-white font-bold py-2 px-4 rounded"
+                            onclick="setReferenceMap(this)"
+                    >
+                      구글
+                    </button>
+                  </div>
+                  <div id="referMap">
+                  </div>
+                </div>
+            </div>
+            <div class="flex-1">
+              <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900">
+                지도의 중앙에 Georeferencing 좌표를 맞춰 주세요
+              </h5>
+              <div class="border border-slate-700 h-full" id="map"></div>
+              <div id="outsvg"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hidden" id="poi" role="tabpanel">
+        <div class="flex gap-4 contents-container">
+          <div class="basis-1/5 shrink-0 flex flex-col gap-4">
+            <h5
+              class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+            >
+              층 정보
+            </h5>
+            <div class="flex flex-col border divide-y">
+              <div class="flex p-4 bg-slate-400">
+                <div>G</div>
+                <div class="flex-1 text-right">FL-t84m2svvc38h0862</div>
+              </div>
+              <div class="flex p-4">
+                <div>B1</div>
+                <div class="flex-1 text-right">FL-1jeyv3bplvokz0894</div>
+              </div>
+              <div class="flex p-4">
+                <div>B2</div>
+                <div class="flex-1 text-right">FL-1jeyv3456asd2gqw</div>
+              </div>
+            </div>
+          </div>
+          <div class="flex-1 flex flex-col gap-4">
+            <div class="flex">
+              <h5
+                class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+              >
+                POI 리스트
+              </h5>
+            </div>
+            <table class="w-full">
+              <thead class="bg-stone-300 text-white border">
+                <tr class="h-14">
+                  <th>POI ID</th>
+                  <th>POI 이름</th>
+                  <th>전화번호</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="h-14 text-center border-b">
+                  <td>PO-2oKh__snF8028</td>
+                  <td>고객서비스라운지</td>
+                  <td>
+                    <input
+                      type="tel"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-7/12"
+                      placeholder="전화번호를 입력해주세요."
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./addTileLayer.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBdbA1dwQpU-jLr_TvYSqZwlvjITpCor8&libraries=places&callback=initMap"></script>
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=sbnmewccyt"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71ab92bd93f47073d9668e4884c29f83&libraries=services"></script>  
+    <script src="./selectRefTile.js"></script>
+    <script src="./loadGeojsonFile.js"></script>
+    <script src="./loadSvgFile.js"></script>
+    <script src="./setStyleOfMap.js"></script>
+    <script src="./setInteractionMode.js"></script>
+    <script src="./showChangedValues.js"></script>
+    <script src="./downloadFileWithAttr.js"></script>
+    <script src="./searchPlaceCoor.js"></script>
+    <script src="./moveHandler.js"></script>
+    <script src="./onOffSelectBox.js"></script>
+    <script src="./displayPlaceList.js"></script>
+  
+  </body>
+</html>
