@@ -24,6 +24,7 @@ const getPoiList = async (e) => {
 
   // div의 innerHTML 값을 가져와 변수에 저장합니다.
   const floorId = childDiv.innerHTML;
+  storage.storeValue("selectFloor", floorId);
   // // 현재 dev서버로 세팅되어있음
   const response = await axios(
     `https://ims-develop3.dabeeomaps.com/api/georeferencing/poi-tel/${storage.getValue(
@@ -49,7 +50,7 @@ const getPoiList = async (e) => {
       "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-7/12";
 
     inputBox.onfocus = recordValue;
-    inputBox.onblur = saveChangedValue;
+    inputBox.onblur = storeChangedValue;
     if (item.tel === "") {
       inputBox.placeholder = "전화번호를 입력해주세요.";
     } else {

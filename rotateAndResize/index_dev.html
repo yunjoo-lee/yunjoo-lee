@@ -442,12 +442,13 @@
               <div class="flex gap-2">
                 <button
                   class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center h-8"
-                >
+                  onclick="savePoiTel()"
+                  >
                   Save
                 </button>
               </div>
             </div>
-            <table class="w-full">
+            <table class="w-full mb-10">
               <thead class="bg-stone-300 text-white border">
                 <tr class="h-14">
                   <th>POI ID</th>
@@ -482,6 +483,7 @@
     <script src="./saveIntoDatabase.js"></script>
     <script src="./getFloorList.js"></script>
     <script src="./getPoiList.js"></script>
+    <script src="./storeInputTel.js"></script>
     <script src="./savePOItel.js"></script>
   
   </body>
