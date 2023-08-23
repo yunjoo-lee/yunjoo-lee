@@ -86,7 +86,10 @@ const searchPlaceToCoor = async () => {
 };
 
 const searchGoogleMap = (keyword) => {
-  const service = new google.maps.places.PlacesService(referMap);
+  // const referMap = new google.maps.Map();
+  const service = new google.maps.places.PlacesService(
+    document.createElement("div")
+  );
   const request = {
     query: keyword,
     fields: [
