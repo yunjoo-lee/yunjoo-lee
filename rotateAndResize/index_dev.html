@@ -411,9 +411,9 @@
               층 정보
             </div>
             <div class="flex flex-col border divide-y">
-              <a class="flex p-4 bg-slate-400" onclick="getPoiList()">
+              <a class="flex p-4 bg-slate-400 hover:cursor-pointer" onclick="getPoiList(event)">
                 <div>Sample</div>
-                <div class="flex-1 text-right">FL-sonfi7q0yu791611</div>
+                <div class="flex-1 text-right" id ="childDiv">FL-sonfi7q0yu791611</div>
               </a>
               <div class="flex p-4">
                 <div>B1</div>
@@ -434,14 +434,7 @@
                 <button
                   class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center h-8"
                 >
-                  <svg
-                    class="fill-current w-4 h-4 mr-2"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
-                  </svg>
-                  <span>Save</span>
+                  Save
                 </button>
               </div>
             </div>
@@ -453,18 +446,8 @@
                   <th>전화번호</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr class="h-14 text-center border-b">
-                  <td>PO-2oKh__snF8028</td>
-                  <td>고객서비스라운지</td>
-                  <td>
-                    <input
-                      type="tel"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-7/12"
-                      placeholder="전화번호를 입력해주세요."
-                    />
-                  </td>
-                </tr>
+              <tbody id="tableBody">
+              <!-- TO-DO 층 누를 때 간격 변하는 부분 수정 -->
               </tbody>
             </table>
           </div>
@@ -472,19 +455,19 @@
       </div>
     </div>
     <script src="./addTileLayer.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBdbA1dwQpU-jLr_TvYSqZwlvjITpCor8&libraries=places&callback=initMap"></script>
-    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=sbnmewccyt"></script>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71ab92bd93f47073d9668e4884c29f83&libraries=services"></script>  
-    <script src="./hrefToMapSite.js"></script>
-    <script src="./loadSvgFromServer.js"></script>
-    <script src="./loadGeojsonFile.js"></script>
     <script src="./setStyleOfMap.js"></script>
     <script src="./setInteractionMode.js"></script>
-    <script src="./showChangedValues.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBdbA1dwQpU-jLr_TvYSqZwlvjITpCor8&libraries=places&callback=initMap"></script>
+    <!-- <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=sbnmewccyt"></script> -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71ab92bd93f47073d9668e4884c29f83&libraries=services"></script>
     <script src="./searchPlaceCoor.js"></script>
-    <script src="./onOffSelectBox.js"></script>
     <script src="./displayPlaceList.js"></script>
+    <script src="./hrefToMapSite.js"></script>
     <script src="./getMapInfo.js"></script>
+    <script src="./loadSvgFromServer.js"></script>
+    <script src="./loadGeojsonFile.js"></script>
+    <script src="./showChangedValues.js"></script>
+    <script src="./onOffSelectBox.js"></script>
     <script src="./downloadFileWithAttr.js"></script>
     <script src="./saveIntoDatabase.js"></script>
     <script src="./getPoiList.js"></script>
