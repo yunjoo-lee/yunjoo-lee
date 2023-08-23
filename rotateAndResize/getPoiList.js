@@ -1,4 +1,6 @@
 const getPoiList = async (e) => {
+  storage.storeValue("changedPoi", []);
+
   // 이벤트가 발생한 a 태그를 가져옵니다.
   const anchorElement = e.currentTarget;
 
@@ -15,11 +17,10 @@ const getPoiList = async (e) => {
     )}/${floorId}`
   );
 
+  // console.log(response.data);
   const tableBody = document.getElementById("tableBody");
-  // const templateRow = tableBody.querySelector("tr");
 
   response.data.forEach((item) => {
-    // const tr = templateRow.cloneNode();
     const tr = document.createElement("tr");
     tr.className = "h-14 text-center border-b";
 
@@ -35,7 +36,9 @@ const getPoiList = async (e) => {
     const inputBox = document.createElement("input");
     inputBox.className =
       "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-7/12";
-    inputBox.type = "tel";
+
+    inputBox.onfocus = recordValue;
+    inputBox.onblur = saveChangedValue;
     if (item.tel === "") {
       inputBox.placeholder = "전화번호를 입력해주세요.";
     } else {
