@@ -72,6 +72,7 @@
             role="tab"
             aria-controls="poi"
             aria-selected="false"
+            onclick="getFloorList()"
           >
             POI
           </button>
@@ -410,19 +411,27 @@
             <div class="mb-2 text-xl font-bold tracking-tight text-gray-900">
               층 정보
             </div>
-            <div class="flex flex-col border divide-y">
-              <a class="flex p-4 bg-slate-400 hover:cursor-pointer" onclick="getPoiList(event)">
-                <div id="childName">Sample</div>
+            <div class="flex flex-col border divide-y" id="floorGroup">
+              <a class="flex p-4 hover:cursor-pointer" onclick="getPoiList(event)">
+                <div id="childName">3F</div>
+                <div class="flex-1 text-right" id ="childDiv">FL-1jeafwdbo4kf71438</div>
+              </a>
+              <a class="flex p-4 hover:cursor-pointer" onclick="getPoiList(event)">
+                <div id="childName">2F</div>
                 <div class="flex-1 text-right" id ="childDiv">FL-sonfi7q0yu791611</div>
               </a>
-              <div class="flex p-4">
-                <div>B1</div>
-                <div class="flex-1 text-right">FL-1jeyv3bplvokz0894</div>
-              </div>
-              <div class="flex p-4">
-                <div>B2</div>
-                <div class="flex-1 text-right">FL-1jeyv3456asd2gqw</div>
-              </div>
+              <a class="flex p-4 hover:cursor-pointer" onclick="getPoiList(event)">
+                <div id="childName">1F</div>
+                <div class="flex-1 text-right" id ="childDiv">FL-1jenqi8d4vfc21829</div>
+              </a>
+              <a class="flex p-4 hover:cursor-pointer" onclick="getPoiList(event)">
+                <div id="childName">B1</div>
+                <div class="flex-1 text-right" id ="childDiv">FL-ts4pjb6lfar92112</div>
+              </a>
+              <a class="flex p-4 hover:cursor-pointer" onclick="getPoiList(event)">
+                <div id="childName">B2</div>
+                <div class="flex-1 text-right" id ="childDiv">FL-1ji4zdrw12zp02503</div>
+              </a>
             </div>
           </div>
           <div class="flex-1 flex flex-col gap-4">
@@ -471,6 +480,7 @@
     <script src="./onOffSelectBox.js"></script>
     <script src="./downloadFileWithAttr.js"></script>
     <script src="./saveIntoDatabase.js"></script>
+    <script src="./getFloorList.js"></script>
     <script src="./getPoiList.js"></script>
     <script src="./savePOItel.js"></script>
   
