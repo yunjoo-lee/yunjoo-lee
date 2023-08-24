@@ -128,8 +128,10 @@ const svgToMapLayer = (fileData, layerName) => {
     const canvasFeature = features[0].getGeometry();
     const boxLonLat = new ol.proj.toLonLat(canvasFeature.getFirstCoordinate());
 
-    boxLatitude.innerHTML = boxLonLat[1];
-    boxlongitude.innerHTML = boxLonLat[0];
+    boxLatitude.innerHTML = boxLonLat[1].toFixed(8);
+    boxlongitude.innerHTML = boxLonLat[0].toFixed(8);
+
+    storage.storeValue("boxCoordinate", boxLonLat);
 
     return;
   }

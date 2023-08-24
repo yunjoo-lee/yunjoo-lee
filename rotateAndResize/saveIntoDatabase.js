@@ -40,8 +40,8 @@ const makeAttribute = () => {
     widthRatio: scaled ? scaled[0] : 1, // 완료
     heightRatio: scaled ? scaled[1] : 1, // 완료
     rotate: rotated || 0,
-    lon: document.getElementById("boxlongitude").innerHTML,
-    lat: document.getElementById("boxLatitude").innerHTML,
+    lon: storage.getValue("boxCoordinate")[0],
+    lat: storage.getValue("boxCoordinate")[1],
     sourceCrs: map.getProperties().view.getProjection().code_, // osm 지도 기준
   };
 

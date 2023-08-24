@@ -72,6 +72,7 @@
             role="tab"
             aria-controls="poi"
             aria-selected="false"
+            onclick="getFloorList()"
           >
             POI
           </button>
@@ -80,9 +81,9 @@
     </div>
     <div class="p-4 tab-contents" id="tabContent">
       <div class="hidden h-full" id="georeferencing" role="tabpanel">
-        <div class="flex flex-col gap-2 contents-container">
-          <div class="flex gap-4">
-            <div class="basis-2/6 shrink-0">
+        <div class="flex flex-row gap-2 contents-container">
+          <div class="flex flex-col gap-4 basis-2/6">
+            <div class="shrink-0">
               <h5
                 class="mb-2 text-xl font-bold tracking-tight text-gray-900"
               >
@@ -95,7 +96,7 @@
                       <input
                         type="search"
                         id="searchAddress"
-                        class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-slate-50 border-l-2 border border-gray-300"
+                        class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-slate-50 border border-gray-300"
                         placeholder="건물 이름을 검색하세요 ex) 마포 T타운"
                       />
                       <button
@@ -139,7 +140,8 @@
                 </div>
               </div>
             </div>
-            <div class="basis-2/6 shrink-0">
+            <hr>
+            <div class="shrink-0 basis-2/6 ">
               <div class="flex items-center mb-2">
                 <div class="flex items-center flex-1 gap-2">
                   <h5
@@ -301,6 +303,7 @@
                 </div>
               </div>
             </div>
+            <hr>
             <div class="flex-1">
               <div class="flex items-center mb-2">
                 <div class="flex items-center flex-1 gap-2">
@@ -316,7 +319,7 @@
                 </div>
                 <div class="flex gap-2">
                   <button
-                    class="bg-gray-300 hover:bg-gray-400 disabled:bg-gray-500 disabled:text-gray-200 disabled:opacity-30 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center h-7"
+                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center h-9"
                     onclick="downloadFileWithAttr()"
                   >
                     <svg
@@ -329,7 +332,7 @@
                     <span>GeoJson</span>
                   </button>
                   <button
-                    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded inline-flex items-center h-7"
+                    class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded inline-flex items-center h-9"
                     onclick="pressSaveBtn()"
                     >
                     Save
@@ -339,15 +342,19 @@
               <div class="rounded-lg bg-gray-50 flex flex-col gap-5 w-full p-4 upper-information-box">
                 <div class="flex">
                   <div class="flex-1 shrink-0 text-gray-400">지도 중심 위경도</div>
+                  <div>
                     <span class="text-gray-950" id='latitude'>37.5468962</span>
                     <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
                     <span class="text-gray-950" id='longitude'>126.9535027</span>
+                  </div>
                 </div>
                 <div class="flex">
                   <div class="flex-1 shrink-0 text-gray-400">캔버스 좌상단 위경도</div>
-                    <span class="text-gray-950" id='boxLatitude'>-</span>
-                    <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
-                    <span class="text-gray-950" id='boxlongitude'>-</span>
+                    <div>
+                      <span class="text-gray-950" id='boxLatitude'>-</span>
+                      <span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+                      <span class="text-gray-950" id='boxlongitude'>-</span>
+                    </div>
                 </div>
                 <div class="flex flex-row gap-10">
                   <div class="flex-1 shrink-0 text-gray-400">Scale</div>
@@ -359,48 +366,39 @@
                   <div class="shrink-0 text-gray-400">바닥판</div>
                   <input
                     id = "bottomSection"
-                    class="block p-3 w-full flex-1 text-sm text-gray-900  border-l-2 border border-gray-300"
+                    class="block p-3 w-full flex-1 text-sm text-gray-900 border border-gray-300"
                     placeholder="바닥판 이름을 입력하세요"></input>
                 </div>
               </div>
             </div>
           </div>
-          <div class="flex gap-4 h-full">
-            <div class="basis-2/6 shrink-0">
-              <div class="flex flex-shrink w-full">
-                <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900">
-                  ※ 불러온 도면 파일의 방향을 맞출 때 참조하세요
-                </h5>
-              </div>
-                <div class="border border-slate-700 h-full relative" id="mapContainer">
-                  <div id ="buttonGroup" class="absolute z-40	bottom-5 left-1/2 transform -translate-x-1/2 flex gap-3">
-                    <button id = "kakao"
-                            class="bg-yellow-400 hover:bg-yellow-500 opacity-50 opa text-white font-bold py-2 px-4 rounded"
-                            onclick="setReferenceMap(this)"
-                            >
-                      카카오
-                    </button>
-                    <button id = "naver"
-                            class="bg-green-500 hover:bg-green-700 opacity-50 text-white font-bold py-2 px-4 rounded"
-                            onclick="setReferenceMap(this)"
-                             >
-                      네이버
-                    </button>
-                    <button id = "google"
-                            class="bg-blue-500 hover:bg-blue-700 opacity-50 text-white font-bold py-2 px-4 rounded"
-                            onclick="setReferenceMap(this)"
-                    >
-                      구글
-                    </button>
-                  </div>
-                  <div id="referMap">
-                  </div>
-                </div>
-            </div>
+          <div class="flex gap-4 h-full w-full">
             <div class="flex-1">
-              <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900">
-                ※ 지도를 불러와 Georeferencing을 맞춰주세요
-              </h5>
+              <div class="flex flex-row ">
+                <h5 class="mb-2 text-l font-bold tracking-tight text-gray-900">
+                  ※ 지도를 불러와 Georeferencing을 맞춰주세요
+                </h5>
+                <div id ="buttonGroup" class="absolute z-40 right-4 transform flex gap-3" style="top: 3.6rem;">
+                  <button id = "kakao"
+                          class="bg-yellow-300 hover:bg-yellow-400 text-white font-bold py-2 px-4 rounded"
+                          onclick="setReferenceMap(this)"
+                          >
+                    카카오
+                  </button>
+                  <button id = "naver"
+                          class="bg-green-400 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                          onclick="setReferenceMap(this)"
+                          >
+                    네이버
+                  </button>
+                  <button id = "google"
+                          class="bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                          onclick="setReferenceMap(this)"
+                  >
+                    구글
+                  </button>
+                </div>
+              </div>
               <div class="border border-slate-700 h-full" id="map"></div>
               <div id="outsvg"></div>
             </div>
@@ -410,35 +408,47 @@
       <div class="hidden" id="poi" role="tabpanel">
         <div class="flex gap-4 contents-container">
           <div class="basis-1/5 shrink-0 flex flex-col gap-4">
-            <h5
-              class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-            >
+            <div class="mb-2 text-xl font-bold tracking-tight text-gray-900">
               층 정보
-            </h5>
-            <div class="flex flex-col border divide-y">
-              <div class="flex p-4 bg-slate-400">
-                <div>G</div>
-                <div class="flex-1 text-right">FL-t84m2svvc38h0862</div>
-              </div>
-              <div class="flex p-4">
-                <div>B1</div>
-                <div class="flex-1 text-right">FL-1jeyv3bplvokz0894</div>
-              </div>
-              <div class="flex p-4">
-                <div>B2</div>
-                <div class="flex-1 text-right">FL-1jeyv3456asd2gqw</div>
-              </div>
+            </div>
+            <div class="flex flex-col border divide-y" id="floorGroup">
+              <a class="flex p-4 hover:cursor-pointer" onclick="getPoiList(event)">
+                <div id="childName">3F</div>
+                <div class="flex-1 text-right" id ="childDiv">FL-1jeafwdbo4kf71438</div>
+              </a>
+              <a class="flex p-4 hover:cursor-pointer" onclick="getPoiList(event)">
+                <div id="childName">2F</div>
+                <div class="flex-1 text-right" id ="childDiv">FL-sonfi7q0yu791611</div>
+              </a>
+              <a class="flex p-4 hover:cursor-pointer" onclick="getPoiList(event)">
+                <div id="childName">1F</div>
+                <div class="flex-1 text-right" id ="childDiv">FL-1jenqi8d4vfc21829</div>
+              </a>
+              <a class="flex p-4 hover:cursor-pointer" onclick="getPoiList(event)">
+                <div id="childName">B1</div>
+                <div class="flex-1 text-right" id ="childDiv">FL-ts4pjb6lfar92112</div>
+              </a>
+              <a class="flex p-4 hover:cursor-pointer" onclick="getPoiList(event)">
+                <div id="childName">B2</div>
+                <div class="flex-1 text-right" id ="childDiv">FL-1ji4zdrw12zp02503</div>
+              </a>
             </div>
           </div>
           <div class="flex-1 flex flex-col gap-4">
-            <div class="flex">
-              <h5
-                class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-              >
+            <div class="flex justify-between">
+              <div class="mb-2 text-xl font-bold tracking-tight text-gray-900">
                 POI 리스트
-              </h5>
+              </div>
+              <div class="flex gap-2">
+                <button
+                  class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center h-8"
+                  onclick="savePoiTel()"
+                  >
+                  Save
+                </button>
+              </div>
             </div>
-            <table class="w-full">
+            <table class="w-full mb-10">
               <thead class="bg-stone-300 text-white border">
                 <tr class="h-14">
                   <th>POI ID</th>
@@ -446,42 +456,35 @@
                   <th>전화번호</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr class="h-14 text-center border-b">
-                  <td>PO-2oKh__snF8028</td>
-                  <td>고객서비스라운지</td>
-                  <td>
-                    <input
-                      type="tel"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-7/12"
-                      placeholder="전화번호를 입력해주세요."
-                    />
-                  </td>
-                </tr>
+              <tbody id="tableBody">
+              <!-- TO-DO 층 누를 때 간격 변하는 부분 수정 -->
               </tbody>
             </table>
           </div>
         </div>
       </div>
     </div>
+    <script src="./storeTempVar.js"></script>
     <script src="./addTileLayer.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBdbA1dwQpU-jLr_TvYSqZwlvjITpCor8&libraries=places&callback=initMap"></script>
-    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=sbnmewccyt"></script>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71ab92bd93f47073d9668e4884c29f83&libraries=services"></script>  
-    <script src="./selectRefTile.js"></script>
-    <script src="./loadGeojsonFile.js"></script>
-    <!-- <script src="./loadSvgFile.js"></script> -->
     <script src="./setStyleOfMap.js"></script>
     <script src="./setInteractionMode.js"></script>
-    <script src="./showChangedValues.js"></script>
-    <script src="./downloadFileWithAttr.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBdbA1dwQpU-jLr_TvYSqZwlvjITpCor8&libraries=places&callback=initMap"></script>
+    <!-- <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=sbnmewccyt"></script> -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71ab92bd93f47073d9668e4884c29f83&libraries=services"></script>
     <script src="./searchPlaceCoor.js"></script>
-    <script src="./moveHandler.js"></script>
-    <script src="./onOffSelectBox.js"></script>
     <script src="./displayPlaceList.js"></script>
+    <script src="./hrefToMapSite.js"></script>
     <script src="./getMapInfo.js"></script>
     <script src="./loadSvgFromServer.js"></script>
+    <script src="./loadGeojsonFile.js"></script>
+    <script src="./showChangedValues.js"></script>
+    <script src="./onOffSelectBox.js"></script>
+    <script src="./downloadFileWithAttr.js"></script>
     <script src="./saveIntoDatabase.js"></script>
+    <script src="./getFloorList.js"></script>
+    <script src="./getPoiList.js"></script>
+    <script src="./storeInputTel.js"></script>
+    <script src="./savePOItel.js"></script>
   
   </body>
 </html>
