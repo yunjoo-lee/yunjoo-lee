@@ -42,8 +42,10 @@ const makeAttribute = () => {
     widthRatio: storage.getValue("widthRatio"), // 완료
     heightRatio: storage.getValue("heightRatio"), // 완료
     rotate: rotated || 0,
-    lon: storage.getValue("boxCoordinate")[0],
-    lat: storage.getValue("boxCoordinate")[1],
+    lon: storage.getValue("topLeftCoor")[0],
+    lat: storage.getValue("topLeftCoor")[1],
+    lon2: storage.getValue("bottomRightCoor")[0],
+    lat2: storage.getValue("bottomRightCoor")[1],
     sourceCrs: map.getProperties().view.getProjection().code_, // osm 지도 기준
   };
 

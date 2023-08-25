@@ -91,10 +91,14 @@ interaction.on(["rotateend", "translateend", "scaleend"], (e) => {
       .getFeatures()[0]
       .getGeometry();
     const boxLonLat = new ol.proj.toLonLat(canvasFeature.getFirstCoordinate());
+    const boxLonLat2 = new ol.proj.toLonLat(
+      canvasFeature.getCoordinates()[0][2]
+    );
 
     boxLatitude.innerHTML = boxLonLat[1].toFixed(8);
     boxlongitude.innerHTML = boxLonLat[0].toFixed(8);
 
-    storage.storeValue("boxCoordinate", boxLonLat);
+    storage.storeValue("topLeftCoor", boxLonLat);
+    storage.storeValue("bottomRightCoor", boxLonLat2);
   }
 });

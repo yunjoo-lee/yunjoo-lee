@@ -52,7 +52,7 @@ const responseToSvg = (resObj) => {
       .filter(([key]) => key.includes("Svg"))
       .forEach(([key, value]) => {
         outsvg.innerHTML = value;
-        convertNewGeojson(key, geoRef);
+        convertGeojonWithRef(key, geoRef);
         return;
       });
   }
