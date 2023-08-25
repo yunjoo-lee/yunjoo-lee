@@ -25,7 +25,7 @@ const pressSvgBtn = async () => {
   );
 
   responseToSvg(response.data);
-  return response.data;
+  return;
 };
 
 /**
@@ -34,11 +34,28 @@ const pressSvgBtn = async () => {
 const responseToSvg = (resObj) => {
   const outsvg = document.getElementById("outsvg");
 
-  // object을 순회하면서 geojson을 만드는 반복문
-  Object.entries(resObj).forEach(([key, value]) => {
-    outsvg.innerHTML = value;
-    convertGeojson(key);
-  });
+  if (resObj.georeferencingInfo.mapId === null) {
+    // object을 순회하면서 geojson을 만드는 반복문
+    Object.entries(resObj)
+      .filter(([key]) => key.includes("Svg"))
+      .forEach(([key, value]) => {
+        outsvg.innerHTML = value;
+        convertGeojson(key);
+        return;
+      });
+  }
+
+  if (resObj.georeferencingInfo.mapId !== null) {
+    const geoRef = resObj.georeferencingInfo;
+
+    Object.entries(resObj)
+      .filter(([key]) => key.includes("Svg"))
+      .forEach(([key, value]) => {
+        outsvg.innerHTML = value;
+        convertNewGeojson(key, geoRef);
+        return;
+      });
+  }
 };
 
 /**

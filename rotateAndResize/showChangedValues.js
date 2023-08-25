@@ -8,12 +8,15 @@ let rotating, scaling;
 
 const makeResetValue = () => {
   rotating = 0;
-  rotated = 0;
+  rotated = storage.getValue("rotate") || 0;
   scaling = [1, 1];
-  scaled = [1, 1];
+  scaled = [
+    storage.getValue("widthRatio") || 1,
+    storage.getValue("heightRatio") || 1,
+  ];
 
-  $("#rotateinfo").text("0");
-  $("#scaleinfo").text("1, 1");
+  $("#rotateinfo").text(rotated.toFixed(2));
+  $("#scaleinfo").text(scaled[0].toFixed(2) + "," + scaled[1].toFixed(2));
 };
 
 map.on("moveend", () => {

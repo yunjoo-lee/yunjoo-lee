@@ -31,14 +31,16 @@ const makeAttribute = () => {
     alert("바닥판 이름을 입력해주세요");
     return;
   }
+  storage.storeValue("widthRatio", scaled ? scaled[0] : 1);
+  storage.storeValue("heightRatio", scaled ? scaled[1] : 1);
 
   const georeferencingData = {
     mapId: storage.getValue("mapId"), //
     groupCode: storage.getValue("groupName"), //
     areaCode: storage.getValue("areaCode"), //
     levelSectionName: storage.getValue("levelSectionName"), // imstudio api에서 받아오기 [하드코딩]
-    widthRatio: scaled ? scaled[0] : 1, // 완료
-    heightRatio: scaled ? scaled[1] : 1, // 완료
+    widthRatio: storage.getValue("widthRatio"), // 완료
+    heightRatio: storage.getValue("heightRatio"), // 완료
     rotate: rotated || 0,
     lon: storage.getValue("boxCoordinate")[0],
     lat: storage.getValue("boxCoordinate")[1],
