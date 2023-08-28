@@ -44,25 +44,30 @@ const convertGeojonWithRef = (layerName, geoRef) => {
 
 // const canvasFeature = map.getAllLayers()[1].getSource().getFeatures()[0];
 // const rotateCenter = canvasFeature.getGeometry().getFirstCoordinate();
-// canvasFeature.getGeometry().rotate(convertRotate(geoRefInfo.rotate), rotateCenter);
+// canvasFeature
+//   .getGeometry()
+//   .rotate(convertRotate(geoRefInfo.rotate), rotateCenter);
 
 /**
  * 회전 로직에 필요한 공식
  * 도 단위 각도 -> 라디안 단위 각도
  */
-// const convertRotate = (degrees) => {
-//   const PI = Math.PI;
-//   // 시계 방향의 각도를 반시계 방향으로 바꿉니다.
-//   const minusDegree = -degrees;
-//   // 도를 라디안으로 변환합니다.
-//   return minusDegree * (PI / 180);
-// };
-// const rotateMultipleLayerFeatures = (layers, angle, anchor) => {
-//   layers.forEach((layer) => {
-//     layer.getSource().forEachFeature(function (feature) {
-//       let geometry = feature.getGeometry();
-//       geometry.rotate(angle, anchor);
-//     });
-//     layer.changed(); // 레이어를 갱신하여 변동 사항을 반영
-//   });
-// };
+const convertRotate = (degrees) => {
+  const PI = Math.PI;
+  // 시계 방향의 각도를 반시계 방향으로 바꿉니다.
+  const minusDegree = -degrees;
+  // 도를 라디안으로 변환합니다.
+  return minusDegree * (PI / 180);
+};
+
+const rotateMultipleLayerFeatures = (layers, angle, anchor) => {
+  layers.forEach((layer) => {
+    layer.getSource().forEachFeature(function (feature) {
+      let geometry = feature.getGeometry();
+      geometry.rotate(angle, anchor);
+    });
+    layer.changed(); // 레이어를 갱신하여 변동 사항을 반영
+  });
+};
+
+rotateMultipleLayerFeatures(vectorLayer, convertRotate(30));
