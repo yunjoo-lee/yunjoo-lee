@@ -55,6 +55,12 @@ const responseToSvg = (resObj) => {
         convertGeojonWithRef(key, geoRef);
         return;
       });
+
+    rotateMultipleLayerFeatures(
+      vectorLayer,
+      convertRotate(geoRef.rotate),
+      ol.proj.fromLonLat([geoRef.lon, geoRef.lat])
+    );
   }
 };
 
@@ -144,11 +150,15 @@ const svgToMapLayer = (fileData, layerName) => {
 
     const canvasFeature = features[0].getGeometry();
     const boxLonLat = new ol.proj.toLonLat(canvasFeature.getFirstCoordinate());
+    const boxLonLat2 = new ol.proj.toLonLat(
+      canvasFeature.getCoordinates()[0][2]
+    );
 
     boxLatitude.innerHTML = boxLonLat[1].toFixed(8);
     boxlongitude.innerHTML = boxLonLat[0].toFixed(8);
 
-    storage.storeValue("boxCoordinate", boxLonLat);
+    storage.storeValue("topLeftCoor", boxLonLat);
+    storage.storeValue("bottomRightCoor", boxLonLat2);
 
     return;
   }
@@ -250,4 +260,32 @@ const calculateLat = (lon, lat, mapPxToCm) => {
   const deltaLat = (deltaPhi * 180) / Math.PI;
 
   return lat + deltaLat;
+};
+
+/**
+ * 회전 로직에 필요한 공식
+ * 도 단위 각도 -> 라디안 단위 각도
+ */
+const convertRotate = (degrees) => {
+  const PI = Math.PI;
+  // 시계 방향의 각도를 반시계 방향으로 바꿉니다.
+  const minusDegree = -degrees;
+  // 도를 라디안으로 변환합니다.
+  return minusDegree * (PI / 180);
+};
+
+/**
+ * 모든 레이어를 회전각만큼 회전시키는 함수
+ * @param {array} layers 편집할 레이어
+ * @param {double} angle 회전각
+ * @param {coordinate} 회전 중심점
+ */
+const rotateMultipleLayerFeatures = (layers, angle, anchor) => {
+  layers.forEach((layer) => {
+    layer.getSource().forEachFeature(function (feature) {
+      let geometry = feature.getGeometry();
+      geometry.rotate(angle, anchor);
+    });
+    layer.changed(); // 레이어를 갱신하여 변동 사항을 반영
+  });
 };

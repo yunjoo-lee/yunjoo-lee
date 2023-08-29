@@ -1,20 +1,3 @@
-/** Set properties
- */
-// const setPropertie = (p) => {
-//   interaction.set(p, $("#" + p).prop("checked"));
-//   if (!$("#scale").prop("checked")) $("#stretch").prop("disabled", true);
-//   else $("#stretch").prop("disabled", false);
-// };
-
-const setAspectRatio = (p) => {
-  // if ($("#" + p).prop("checked"))
-  //   interaction.set("keepAspectRatio", ol.events.condition.always);
-  // else
-  interaction.set("keepAspectRatio", (e) => {
-    return e.originalEvent.shiftKey;
-  });
-};
-
 /**
  * interaction 관련 설정
  * layer를 특정 레이어로 제한하여, 고정할 수 있는 레이어 설정

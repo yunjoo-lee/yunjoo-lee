@@ -1,5 +1,5 @@
 const pressSaveBtn = async () => {
-  const georeferencingData = makeAttribute();
+  const georeferencingData = await makeAttribute();
   if (!georeferencingData) {
     return;
   }
@@ -17,7 +17,7 @@ const pressSaveBtn = async () => {
   }
 };
 
-const makeAttribute = () => {
+const makeAttribute = async () => {
   if (vectorLayer.length === 0) {
     alert("지도 SVG를 불러와주세요.");
     return;
@@ -31,6 +31,7 @@ const makeAttribute = () => {
     alert("바닥판 이름을 입력해주세요");
     return;
   }
+
   storage.storeValue("widthRatio", scaled ? scaled[0] : 1);
   storage.storeValue("heightRatio", scaled ? scaled[1] : 1);
 
@@ -38,7 +39,7 @@ const makeAttribute = () => {
     mapId: storage.getValue("mapId"), //
     groupCode: storage.getValue("groupName"), //
     areaCode: storage.getValue("areaCode"), //
-    levelSectionName: storage.getValue("levelSectionName"), // imstudio api에서 받아오기 [하드코딩]
+    levelSectionName: storage.getValue("levelSectionName"), // input 값으로 받아오기
     widthRatio: storage.getValue("widthRatio"), // 완료
     heightRatio: storage.getValue("heightRatio"), // 완료
     rotate: rotated || 0,

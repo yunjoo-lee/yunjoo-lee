@@ -1,5 +1,5 @@
-const downloadFileWithAttr = (e) => {
-  const georeferencingData = makeAttribute();
+const downloadFileWithAttr = async (e) => {
+  const georeferencingData = await makeAttribute();
   if (!georeferencingData) {
     return;
   }
